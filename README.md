@@ -1,11 +1,10 @@
 # VirtualLogicLabs
-#Group #10
-#Khalid Akash, Yiwen Tao, Joseph Cella, Sagar Phanda, Dhruvik Patel, Vikas Khan
+Group #10
+Khalid Akash, Yiwen Tao, Joseph Cella, Sagar Phanda, Dhruvik Patel, Vikas Khan
 
-#Project Proposal: Virtual Lab Simulation
-#Website: https://bitbucket.org/virtualsquad/virtual-labs/commits/
+Project Proposal: Virtual Lab Simulation
 
-#Team Profile:
+Team Profile:
 	Khalid Akash: Coding, Git
 	Yiwen Tao: Java, Database
 	Joseph Cella: C++, Java, 
