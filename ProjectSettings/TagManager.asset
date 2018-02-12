@@ -41,3 +41,9 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Characters
+    uniqueID: 3530049149
+    locked: 0
+  - name: Logic
+    uniqueID: 440356375
+    locked: 0
