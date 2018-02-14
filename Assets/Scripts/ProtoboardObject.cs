@@ -33,7 +33,12 @@ public class ProtoboardObject : MonoBehaviour {
             SpriteRenderer sprite_renderer_0 = logicNode_0.AddComponent<SpriteRenderer>();
             sprite_renderer_0.sprite = Resources.Load<Sprite>("logicCircle");
             sprite_renderer_0.sortingLayerName = "Logic";
-
+            LogicBehavior logic_behavior_0 = logicNode_0.AddComponent<LogicBehavior>() as LogicBehavior; //Adds the LogicBehavior.cs component to this gameobject to control logic behavior
+            logic_behavior_0.setLogicId(LEFT_NODE + "_LEFT"); //logic id that sets all the nodes on the left column of the LEFT section of the protoboard the same id
+            logic_behavior_0.setLogicNode(logicNode_0);
+            CircleCollider2D circle_collider_0 = logicNode_0.AddComponent<CircleCollider2D>() as CircleCollider2D;
+            circle_collider_0.isTrigger = true;
+            circle_collider_0.radius = .05F;
 
             GameObject logicNode_1 = new GameObject(LEFT_NODE + "_" + i + "_" + 1); //logic node with the name leftlogicnode_{i}_1
             logicNode_1.transform.parent = protoboard.transform; //sets the Protoboard game object as logicNode_1's parent
@@ -42,6 +47,12 @@ public class ProtoboardObject : MonoBehaviour {
             SpriteRenderer sprite_renderer_1 = logicNode_1.AddComponent<SpriteRenderer>();
             sprite_renderer_1.sprite = Resources.Load<Sprite>("logicCircle");
             sprite_renderer_1.sortingLayerName = "Logic";
+            LogicBehavior logic_behavior_1 = logicNode_1.AddComponent<LogicBehavior>(); //Adds the LogicBehavior.cs component to this gameobject to control logic behavior
+            logic_behavior_1.setLogicId(LEFT_NODE + "_RIGHT"); //logic id that sets all the nodes on the right column of the LEFT section of the protoboard the same id
+            logic_behavior_1.setLogicNode(logicNode_1);
+            CircleCollider2D circle_collider_1 = logicNode_1.AddComponent<CircleCollider2D>() as CircleCollider2D;
+            circle_collider_1.isTrigger = true;
+            circle_collider_1.radius = .05F;
 
             vertical_offset = vertical_offset - .21F;
             if (i == 4 || i == 9 || i == 14) //At these intervals, there are bigger gaps that need to be accounted for
@@ -61,7 +72,12 @@ public class ProtoboardObject : MonoBehaviour {
             SpriteRenderer sprite_renderer_0 = logicNode_0.AddComponent<SpriteRenderer>();
             sprite_renderer_0.sprite = Resources.Load<Sprite>("logicCircle");
             sprite_renderer_0.sortingLayerName = "Logic";
-
+            LogicBehavior logic_behavior_0 = logicNode_0.AddComponent<LogicBehavior>(); //Adds the LogicBehavior.cs component to this gameobject to control logic behavior
+            logic_behavior_0.setLogicId(RIGHT_NODE + "_LEFT"); //logic id that sets all the nodes on the right column of the RIGHT section of the protoboard the same id
+            logic_behavior_0.setLogicNode(logicNode_0);
+            CircleCollider2D circle_collider_0 = logicNode_0.AddComponent<CircleCollider2D>() as CircleCollider2D;
+            circle_collider_0.isTrigger = true;
+            circle_collider_0.radius = .05F;
 
             GameObject logicNode_1 = new GameObject(RIGHT_NODE + "_" + i + "_" + 1); //logic node with the name rightlogicnode_{i}_1
             logicNode_1.transform.parent = protoboard.transform; //sets the Protoboard game object as logicNode_1's parent
@@ -70,6 +86,12 @@ public class ProtoboardObject : MonoBehaviour {
             SpriteRenderer sprite_renderer_1 = logicNode_1.AddComponent<SpriteRenderer>();
             sprite_renderer_1.sprite = Resources.Load<Sprite>("logicCircle");
             sprite_renderer_1.sortingLayerName = "Logic";
+            LogicBehavior logic_behavior_1 = logicNode_1.AddComponent<LogicBehavior>(); //Adds the LogicBehavior.cs component to this gameobject to control logic behavior
+            logic_behavior_1.setLogicId(RIGHT_NODE + "_RIGHT"); //logic id that sets all the nodes on the right column of the RIGHT section of the protoboard the same id
+            logic_behavior_1.setLogicNode(logicNode_1);
+            CircleCollider2D circle_collider_1 = logicNode_1.AddComponent<CircleCollider2D>() as CircleCollider2D;
+            circle_collider_1.isTrigger = true;
+            circle_collider_1.radius = .05F;
 
             vertical_offset = vertical_offset - .21F;
             if (i == 4 || i == 9 || i == 14) //At these intervals, there are bigger gaps that need to be accounted for
@@ -88,6 +110,12 @@ public class ProtoboardObject : MonoBehaviour {
             SpriteRenderer sprite_renderer_0 = logicNode_0.AddComponent<SpriteRenderer>();
             sprite_renderer_0.sprite = Resources.Load<Sprite>("logicCircle");
             sprite_renderer_0.sortingLayerName = "Logic";
+            LogicBehavior logic_behavior_0 = logicNode_0.AddComponent<LogicBehavior>(); //Adds the LogicBehavior.cs component to this gameobject to control logic behavior
+            logic_behavior_0.setLogicId(MIDDLE_L_NODE + "_" +  i); //logic id that sets all the nodes on the same row the same logic ID on the middle left section
+            logic_behavior_0.setLogicNode(logicNode_0);
+            CircleCollider2D circle_collider_0 = logicNode_0.AddComponent<CircleCollider2D>() as CircleCollider2D;
+            circle_collider_0.isTrigger = true;
+            circle_collider_0.radius = .05F;
 
 
             GameObject logicNode_1 = new GameObject(MIDDLE_L_NODE + "_" + i + "_" + 1); //logic node with the name rightlogicnode_{i}_1
@@ -97,6 +125,12 @@ public class ProtoboardObject : MonoBehaviour {
             SpriteRenderer sprite_renderer_1 = logicNode_1.AddComponent<SpriteRenderer>();
             sprite_renderer_1.sprite = Resources.Load<Sprite>("logicCircle");
             sprite_renderer_1.sortingLayerName = "Logic";
+            LogicBehavior logic_behavior_1 = logicNode_1.AddComponent<LogicBehavior>(); //Adds the LogicBehavior.cs component to this gameobject to control logic behavior
+            logic_behavior_1.setLogicId(MIDDLE_L_NODE + "_" + i); //logic id that sets all the nodes on the same row the same logic ID on the middle left section
+            logic_behavior_1.setLogicNode(logicNode_1);
+            CircleCollider2D circle_collider_1 = logicNode_1.AddComponent<CircleCollider2D>() as CircleCollider2D;
+            circle_collider_1.isTrigger = true;
+            circle_collider_1.radius = .05F;
 
             GameObject logicNode_2 = new GameObject(MIDDLE_L_NODE + "_" + i + "_" + 2); //logic node with the name rightlogicnode_{i}_2
             logicNode_2.transform.parent = protoboard.transform; //sets the Protoboard game object as logicNode_1's parent
@@ -105,6 +139,12 @@ public class ProtoboardObject : MonoBehaviour {
             SpriteRenderer sprite_renderer_2 = logicNode_2.AddComponent<SpriteRenderer>();
             sprite_renderer_2.sprite = Resources.Load<Sprite>("logicCircle");
             sprite_renderer_2.sortingLayerName = "Logic";
+            LogicBehavior logic_behavior_2 = logicNode_2.AddComponent<LogicBehavior>(); //Adds the LogicBehavior.cs component to this gameobject to control logic behavior
+            logic_behavior_2.setLogicId(MIDDLE_L_NODE + "_" + i); //logic id that sets all the nodes on the same row the same logic ID on the middle left section
+            logic_behavior_2.setLogicNode(logicNode_2);
+            CircleCollider2D circle_collider_2 = logicNode_2.AddComponent<CircleCollider2D>() as CircleCollider2D;
+            circle_collider_2.isTrigger = true;
+            circle_collider_2.radius = .05F;
 
             GameObject logicNode_3 = new GameObject(MIDDLE_L_NODE + "_" + i + "_" + 3); //logic node with the name rightlogicnode_{i}_3
             logicNode_3.transform.parent = protoboard.transform; //sets the Protoboard game object as logicNode_1's parent
@@ -113,6 +153,12 @@ public class ProtoboardObject : MonoBehaviour {
             SpriteRenderer sprite_renderer_3 = logicNode_3.AddComponent<SpriteRenderer>();
             sprite_renderer_3.sprite = Resources.Load<Sprite>("logicCircle");
             sprite_renderer_3.sortingLayerName = "Logic";
+            LogicBehavior logic_behavior_3 = logicNode_3.AddComponent<LogicBehavior>(); //Adds the LogicBehavior.cs component to this gameobject to control logic behavior
+            logic_behavior_3.setLogicId(MIDDLE_L_NODE + "_" + i); //logic id that sets all the nodes on the same row the same logic ID on the middle left section
+            logic_behavior_3.setLogicNode(logicNode_3);
+            CircleCollider2D circle_collider_3 = logicNode_3.AddComponent<CircleCollider2D>() as CircleCollider2D;
+            circle_collider_3.isTrigger = true;
+            circle_collider_3.radius = .05F;
 
             GameObject logicNode_4 = new GameObject(MIDDLE_L_NODE + "_" + i + "_" + 4); //logic node with the name rightlogicnode_{i}_4
             logicNode_4.transform.parent = protoboard.transform; //sets the Protoboard game object as logicNode_1's parent
@@ -121,6 +167,12 @@ public class ProtoboardObject : MonoBehaviour {
             SpriteRenderer sprite_renderer_4 = logicNode_4.AddComponent<SpriteRenderer>();
             sprite_renderer_4.sprite = Resources.Load<Sprite>("logicCircle");
             sprite_renderer_4.sortingLayerName = "Logic";
+            LogicBehavior logic_behavior_4 = logicNode_4.AddComponent<LogicBehavior>(); //Adds the LogicBehavior.cs component to this gameobject to control logic behavior
+            logic_behavior_4.setLogicId(MIDDLE_L_NODE + "_" + i); //logic id that sets all the nodes on the same row the same logic ID on the middle left section
+            logic_behavior_4.setLogicNode(logicNode_4);
+            CircleCollider2D circle_collider_4 = logicNode_4.AddComponent<CircleCollider2D>() as CircleCollider2D;
+            circle_collider_4.isTrigger = true;
+            circle_collider_4.radius = .05F;
 
             vertical_offset = vertical_offset - .2070F;
         }
@@ -136,7 +188,12 @@ public class ProtoboardObject : MonoBehaviour {
             SpriteRenderer sprite_renderer_0 = logicNode_0.AddComponent<SpriteRenderer>();
             sprite_renderer_0.sprite = Resources.Load<Sprite>("logicCircle");
             sprite_renderer_0.sortingLayerName = "Logic";
-
+            LogicBehavior logic_behavior_0 = logicNode_0.AddComponent<LogicBehavior>(); //Adds the LogicBehavior.cs component to this gameobject to control logic behavior
+            logic_behavior_0.setLogicId(MIDDLE_R_NODE + "_" + i); //logic id that sets all the nodes on the same row the same logic ID on the middle right section
+            logic_behavior_0.setLogicNode(logicNode_0);
+            CircleCollider2D circle_collider_0 = logicNode_0.AddComponent<CircleCollider2D>() as CircleCollider2D;
+            circle_collider_0.isTrigger = true;
+            circle_collider_0.radius = .05F;
 
             GameObject logicNode_1 = new GameObject(MIDDLE_R_NODE + "_" + i + "_" + 1); //logic node with the name rightlogicnode_{i}_1
             logicNode_1.transform.parent = protoboard.transform; //sets the Protoboard game object as logicNode_1's parent
@@ -145,6 +202,12 @@ public class ProtoboardObject : MonoBehaviour {
             SpriteRenderer sprite_renderer_1 = logicNode_1.AddComponent<SpriteRenderer>();
             sprite_renderer_1.sprite = Resources.Load<Sprite>("logicCircle");
             sprite_renderer_1.sortingLayerName = "Logic";
+            LogicBehavior logic_behavior_1 = logicNode_1.AddComponent<LogicBehavior>(); //Adds the LogicBehavior.cs component to this gameobject to control logic behavior
+            logic_behavior_1.setLogicId(MIDDLE_R_NODE + "_" + i); //logic id that sets all the nodes on the same row the same logic ID on the middle right section
+            logic_behavior_1.setLogicNode(logicNode_1);
+            CircleCollider2D circle_collider_1 = logicNode_1.AddComponent<CircleCollider2D>() as CircleCollider2D;
+            circle_collider_1.isTrigger = true;
+            circle_collider_1.radius = .05F;
 
             GameObject logicNode_2 = new GameObject(MIDDLE_R_NODE + "_" + i + "_" + 2); //logic node with the name rightlogicnode_{i}_2
             logicNode_2.transform.parent = protoboard.transform; //sets the Protoboard game object as logicNode_1's parent
@@ -153,6 +216,12 @@ public class ProtoboardObject : MonoBehaviour {
             SpriteRenderer sprite_renderer_2 = logicNode_2.AddComponent<SpriteRenderer>();
             sprite_renderer_2.sprite = Resources.Load<Sprite>("logicCircle");
             sprite_renderer_2.sortingLayerName = "Logic";
+            LogicBehavior logic_behavior_2 = logicNode_2.AddComponent<LogicBehavior>(); //Adds the LogicBehavior.cs component to this gameobject to control logic behavior
+            logic_behavior_2.setLogicId(MIDDLE_R_NODE + "_" + i); //logic id that sets all the nodes on the same row the same logic ID on the middle right section
+            logic_behavior_2.setLogicNode(logicNode_2);
+            CircleCollider2D circle_collider_2 = logicNode_2.AddComponent<CircleCollider2D>() as CircleCollider2D;
+            circle_collider_2.isTrigger = true;
+            circle_collider_2.radius = .05F;
 
             GameObject logicNode_3 = new GameObject(MIDDLE_R_NODE + "_" + i + "_" + 3); //logic node with the name rightlogicnode_{i}_3
             logicNode_3.transform.parent = protoboard.transform; //sets the Protoboard game object as logicNode_1's parent
@@ -161,6 +230,12 @@ public class ProtoboardObject : MonoBehaviour {
             SpriteRenderer sprite_renderer_3 = logicNode_3.AddComponent<SpriteRenderer>();
             sprite_renderer_3.sprite = Resources.Load<Sprite>("logicCircle");
             sprite_renderer_3.sortingLayerName = "Logic";
+            LogicBehavior logic_behavior_3 = logicNode_3.AddComponent<LogicBehavior>(); //Adds the LogicBehavior.cs component to this gameobject to control logic behavior
+            logic_behavior_3.setLogicId(MIDDLE_R_NODE + "_" + i); //logic id that sets all the nodes on the same row the same logic ID on the middle right section
+            logic_behavior_3.setLogicNode(logicNode_3);
+            CircleCollider2D circle_collider_3 = logicNode_3.AddComponent<CircleCollider2D>() as CircleCollider2D;
+            circle_collider_3.isTrigger = true;
+            circle_collider_3.radius = .05F;
 
             GameObject logicNode_4 = new GameObject(MIDDLE_R_NODE + "_" + i + "_" + 4); //logic node with the name rightlogicnode_{i}_4
             logicNode_4.transform.parent = protoboard.transform; //sets the Protoboard game object as logicNode_1's parent
@@ -169,6 +244,12 @@ public class ProtoboardObject : MonoBehaviour {
             SpriteRenderer sprite_renderer_4 = logicNode_4.AddComponent<SpriteRenderer>();
             sprite_renderer_4.sprite = Resources.Load<Sprite>("logicCircle");
             sprite_renderer_4.sortingLayerName = "Logic";
+            LogicBehavior logic_behavior_4 = logicNode_4.AddComponent<LogicBehavior>(); //Adds the LogicBehavior.cs component to this gameobject to control logic behavior
+            logic_behavior_4.setLogicId(MIDDLE_R_NODE + "_" + i); //logic id that sets all the nodes on the same row the same logic ID on the middle right section
+            logic_behavior_4.setLogicNode(logicNode_4);
+            CircleCollider2D circle_collider_4 = logicNode_4.AddComponent<CircleCollider2D>() as CircleCollider2D;
+            circle_collider_4.isTrigger = true;
+            circle_collider_4.radius = .05F;
 
             vertical_offset = vertical_offset - .2070F;
         }

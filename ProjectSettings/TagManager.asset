@@ -41,7 +41,7 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Characters
+  - name: Devices
     uniqueID: 3530049149
     locked: 0
   - name: Logic
