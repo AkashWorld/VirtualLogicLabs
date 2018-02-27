@@ -293,6 +293,7 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\LogicBehavior.cs" />
     <Compile Include="Assets\Scripts\ProtoboardObject.cs" />
+    <Compile Include="Assets\SquareboxObject.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />

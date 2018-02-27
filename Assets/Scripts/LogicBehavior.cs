@@ -14,29 +14,28 @@ public class LogicBehavior : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
-	}
 
-    //test
-    private void OnMouseDown()
+    }
+
+
+    public void OnTriggerEnter2D(Collider2D col)
     {
-        Debug.Log("MouseDown detected on Logic Node: " + logic_id);
-        if(this.getLogicState() == (int)LOGIC.LOW)
+        Debug.Log("Mouse down on Logic Node " + this.getLogicId());
+        if (this.getLogicState() == (int)LOGIC.LOW)
         {
+            Debug.Log("Changing Logic State to High");
             this.setLogicState((int)LOGIC.HIGH);
             SpriteRenderer spriteRenderer = getLogicNode().GetComponent<SpriteRenderer>() as SpriteRenderer;
             spriteRenderer.material.color = new Color(1, 0, 0);
         }
         else
         {
+            Debug.Log("Changing Logic State to Low");
             this.setLogicState((int)LOGIC.LOW);
             SpriteRenderer spriteRenderer = getLogicNode().GetComponent<SpriteRenderer>() as SpriteRenderer;
             spriteRenderer.material.color = new Color(0, 1, 0);
         }
     }
-
-
-
 
     public void setLogicNode(GameObject logic_node)
     {
