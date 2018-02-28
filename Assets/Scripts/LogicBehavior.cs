@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class LogicBehavior : MonoBehaviour {
     enum LOGIC { HIGH = 1, LOW = 0, INVALID = -1}
+    private GameObject logic_node;
     private string logic_id;
     private int logic_state;
-    private GameObject logic_node;
+    LogicInterface OwningDevice;
+
 	// Use this for initialization
 	void Start () {
         logic_state = (int)LOGIC.LOW;
@@ -44,6 +46,12 @@ public class LogicBehavior : MonoBehaviour {
     public GameObject getLogicNode()
     {
         return this.logic_node;
+    }
+
+
+    public void setOwningDevice(LogicInterface deviceInterface)
+    {
+        this.OwningDevice = deviceInterface;
     }
 
 

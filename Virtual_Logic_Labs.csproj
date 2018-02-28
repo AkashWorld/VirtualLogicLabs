@@ -292,8 +292,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\LogicBehavior.cs" />
+    <Compile Include="Assets\Scripts\LogicInterface.cs" />
     <Compile Include="Assets\Scripts\ProtoboardObject.cs" />
-    <Compile Include="Assets\SquareboxObject.cs" />
+    <Compile Include="Assets\Scripts\SquareboxObject.cs" />
+    <Compile Include="Assets\Scripts\WireButtonBehavior.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
