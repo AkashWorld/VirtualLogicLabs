@@ -11,7 +11,7 @@ public class LogicBehavior : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        logic_state = (int)LOGIC.LOW;
+        logic_state = (int)LOGIC.INVALID;
 	}
 	
 	// Update is called once per frame
@@ -25,22 +25,6 @@ public class LogicBehavior : MonoBehaviour {
         OwningDevice.ReactToLogic(logic_node);
     }
 
-    public void OnTriggerEnter2D(Collider2D col)
-    {
-        Debug.Log("Mouse down on Logic Node " + this.getLogicId());
-        if (this.getLogicState() == (int)LOGIC.LOW)
-        {
-            Debug.Log("Changing Logic State to High");
-            this.setLogicState((int)LOGIC.HIGH);
-            this.setSpriteLogicColor((int)LOGIC.HIGH);
-        }
-        else
-        {
-            Debug.Log("Changing Logic State to Low");
-            this.setLogicState((int)LOGIC.LOW);
-            this.setSpriteLogicColor((int)LOGIC.LOW);
-        }
-    }
 
     public void setLogicNode(GameObject logic_node)
     {
@@ -60,16 +44,21 @@ public class LogicBehavior : MonoBehaviour {
 
     public void setSpriteLogicColor(int state)
     {
-        if(state == (int)LOGIC.HIGH)
+        SpriteRenderer spriteRenderer = getLogicNode().GetComponent<SpriteRenderer>() as SpriteRenderer;
+        if (state == (int)LOGIC.INVALID)
+        {
+            Debug.Log("Setting Color to White");
+            spriteRenderer.material.color = new Color(1, 1, 1);
+        }
+        else if(state == (int)LOGIC.HIGH)
         {
             Debug.Log("Setting color to green.");
-            SpriteRenderer spriteRenderer = getLogicNode().GetComponent<SpriteRenderer>() as SpriteRenderer;
+
             spriteRenderer.material.color = new Color(0, 1, 0);
         }
         else if(state == (int)LOGIC.LOW)
         {
             Debug.Log("Setting color to red.");
-            SpriteRenderer spriteRenderer = getLogicNode().GetComponent<SpriteRenderer>() as SpriteRenderer;
             spriteRenderer.material.color = new Color(1, 0, 0);
         }
     }
@@ -79,7 +68,7 @@ public class LogicBehavior : MonoBehaviour {
     //Accepted values are LOGIC.HIGH(int = 1) and LOGIC.LOW(int = 0)
     public int setLogicState(int state)
     {
-        if((state == (int)LOGIC.HIGH || state == (int)LOGIC.LOW) && logic_id != null)
+        if((state == (int)LOGIC.HIGH || state == (int)LOGIC.LOW || state == (int)LOGIC.INVALID) && logic_id != null)
         {
             if(state == 0)
             {

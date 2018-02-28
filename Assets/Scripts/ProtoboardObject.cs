@@ -7,6 +7,7 @@ public class ProtoboardObject : MonoBehaviour, LogicInterface{
      * Left/Right column: 20x2
      * Middle Left/Right column: 27x5
      **/
+    enum LOGIC { HIGH = 1, LOW = 0, INVALID = -1 }
     GameObject protoboard;
     const string LEFT_NODE = "leftlogicnode";
     const string RIGHT_NODE = "rightlogicnode";
@@ -217,15 +218,20 @@ public class ProtoboardObject : MonoBehaviour, LogicInterface{
         LogicBehavior logicBehaviorScript = logicNode.GetComponent<LogicBehavior>();
         string logicID = logicBehaviorScript.getLogicId();
         int state = logicBehaviorScript.getLogicState();
-        if(state == 0)
+        if(state == (int)LOGIC.INVALID)
+        {
+            Debug.Log("Logic INVALID is found, toggling to Logic Low");
+            state = (int)LOGIC.LOW;
+        }
+        else if(state == (int)LOGIC.LOW)
         {
             Debug.Log("Logic LOW is found, Toggling to Logic HIGH");
-            state = 1;
+            state = (int)LOGIC.HIGH;
         }
-        else if(state == 1)
+        else if(state == (int)LOGIC.HIGH)
         {
             Debug.Log("Logic HIGH is found, Toggling to Logic LOW");
-            state = 0;
+            state = (int)LOGIC.INVALID;
         }
         //Get the list of GameObjects (LogicNodes) that have the same ID as the input logicNode
         List<GameObject> LogicNodeList;
