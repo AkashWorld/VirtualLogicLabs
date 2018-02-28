@@ -7,7 +7,6 @@ public class ProtoboardObject : MonoBehaviour, LogicInterface{
      * Left/Right column: 20x2
      * Middle Left/Right column: 27x5
      **/
-    enum LOGIC { HIGH = 1, LOW = 0, INVALID = -1 }
     GameObject protoboard;
     const string LEFT_NODE = "leftlogicnode";
     const string RIGHT_NODE = "rightlogicnode";
@@ -26,7 +25,7 @@ public class ProtoboardObject : MonoBehaviour, LogicInterface{
         sprite_renderer.sprite = Resources.Load<Sprite>("logicCircle");
         sprite_renderer.sortingLayerName = "Logic";
         BoxCollider2D box_collider = logicNode.AddComponent<BoxCollider2D>();
-        box_collider.size = new Vector2(.1f,.1f);
+        box_collider.size = new Vector2(1f,1f);
         box_collider.isTrigger = true;
         Rigidbody2D rigidbody = logicNode.AddComponent<Rigidbody2D>();
         rigidbody.isKinematic = true;
@@ -45,6 +44,7 @@ public class ProtoboardObject : MonoBehaviour, LogicInterface{
         //Populate leftmost column
         for (int i = 0; i < 20; i++)
         {
+            //xx ·····  ·····  ··  
             GameObject logicNode_0 = new GameObject(LEFT_NODE + "_" + i + "_" + 0); //logic node with the name leftlogicnode_{i}_0
             logicNode_0.transform.parent = protoboard.transform; //sets the Protoboard game object as logicNode_0's parent
             logicNode_0.transform.localPosition = new Vector3(-1.745F, 2.275F + vertical_offset, 0); //'localPosition' sets the position of this node RELATIVE to the protoboard
@@ -52,7 +52,6 @@ public class ProtoboardObject : MonoBehaviour, LogicInterface{
             setNodeProperties(logicNode_0, LEFT_NODE + "_LEFT");
             List<GameObject> leftnodeleftlist;
             if(LogicID_Node_Dict.TryGetValue(LEFT_NODE + "_LEFT", out leftnodeleftlist)) {
-                Debug.Log("List Found - Dict");
                 leftnodeleftlist.Add(logicNode_0);
             }
             
@@ -63,9 +62,9 @@ public class ProtoboardObject : MonoBehaviour, LogicInterface{
             logicNode_1.transform.localScale = new Vector3(.10F, .10F, 0);
             setNodeProperties(logicNode_1, LEFT_NODE + "_RIGHT");
             List<GameObject> leftnoderightlist;
-            if (LogicID_Node_Dict.TryGetValue(LEFT_NODE + "_RIGHT", out leftnodeleftlist))
+            if (LogicID_Node_Dict.TryGetValue(LEFT_NODE + "_RIGHT", out leftnoderightlist))
             {
-                leftnodeleftlist.Add(logicNode_1);
+                leftnoderightlist.Add(logicNode_1);
             }
 
             vertical_offset = vertical_offset - .21F;
@@ -82,6 +81,7 @@ public class ProtoboardObject : MonoBehaviour, LogicInterface{
         //Populate rightmost column
         for (int i = 0; i < 20; i++)
         {
+            //·· ·····  ·····  xx
             GameObject logicNode_0 = new GameObject(RIGHT_NODE + "_" + i + "_" + 0); //logic node with the name rightlogicnode_{i}_0
             logicNode_0.transform.parent = protoboard.transform; //sets the Protoboard game object as logicNode_0's parent
             logicNode_0.transform.localPosition = new Vector3(1.745F, 2.275F + vertical_offset, 0); //'localPosition' sets the position of this node RELATIVE to the protoboard
@@ -114,6 +114,7 @@ public class ProtoboardObject : MonoBehaviour, LogicInterface{
         vertical_offset = 0;
         for (int i = 0; i < 27; i++)
         {
+            //·· xxxxx ·····  ··
             GameObject logicNode_0 = new GameObject(MIDDLE_L_NODE + "_" + i + "_" + 0); //logic node with the name rightlogicnode_{i}_0
             logicNode_0.transform.parent = protoboard.transform; //sets the Protoboard game object as logicNode_0's parent
             logicNode_0.transform.localPosition = new Vector3(-1.125F, 2.69F + vertical_offset, 0); //'localPosition' sets the position of this node RELATIVE to the protoboard
@@ -147,7 +148,7 @@ public class ProtoboardObject : MonoBehaviour, LogicInterface{
 
             LogicID_Node_Dict.Add(MIDDLE_L_NODE + "_" + i, new List<GameObject>());
             List<GameObject> middle_row_list;
-            if (LogicID_Node_Dict.TryGetValue(MIDDLE_L_NODE + "_", out middle_row_list))
+            if (LogicID_Node_Dict.TryGetValue(MIDDLE_L_NODE + "_" + i, out middle_row_list))
             {
                 middle_row_list.Add(logicNode_0);
                 middle_row_list.Add(logicNode_1);
@@ -163,6 +164,7 @@ public class ProtoboardObject : MonoBehaviour, LogicInterface{
         vertical_offset = 0;
         for (int i = 0; i < 27; i++)
         {
+            //··  ·····  xxxxx  ··
             GameObject logicNode_0 = new GameObject(MIDDLE_R_NODE + "_" + i + "_" + 0); //logic node with the name rightlogicnode_{i}_0
             logicNode_0.transform.parent = protoboard.transform; //sets the Protoboard game object as logicNode_0's parent
             logicNode_0.transform.localPosition = new Vector3(1.125F, 2.69F + vertical_offset, 0); //'localPosition' sets the position of this node RELATIVE to the protoboard
@@ -195,7 +197,7 @@ public class ProtoboardObject : MonoBehaviour, LogicInterface{
 
             LogicID_Node_Dict.Add(MIDDLE_R_NODE + "_" + i, new List<GameObject>());
             List<GameObject> middle_row_list;
-            if (LogicID_Node_Dict.TryGetValue(MIDDLE_L_NODE + "_", out middle_row_list))
+            if (LogicID_Node_Dict.TryGetValue(MIDDLE_R_NODE + "_" + i, out middle_row_list))
             {
                 middle_row_list.Add(logicNode_0);
                 middle_row_list.Add(logicNode_1);
@@ -211,11 +213,39 @@ public class ProtoboardObject : MonoBehaviour, LogicInterface{
     //Interface method from LogicInterface.cs that allows the protoboard to react to any changes to its logic nodes.
     public void ReactToLogic(GameObject logicNode)
     {
+        Debug.Log("Protoboard: reacting to node interaction.");
+        LogicBehavior logicBehaviorScript = logicNode.GetComponent<LogicBehavior>();
+        string logicID = logicBehaviorScript.getLogicId();
+        int state = logicBehaviorScript.getLogicState();
+        if(state == 0)
+        {
+            Debug.Log("Logic LOW is found, Toggling to Logic HIGH");
+            state = 1;
+        }
+        else if(state == 1)
+        {
+            Debug.Log("Logic HIGH is found, Toggling to Logic LOW");
+            state = 0;
+        }
+        //Get the list of GameObjects (LogicNodes) that have the same ID as the input logicNode
+        List<GameObject> LogicNodeList;
+        if (LogicID_Node_Dict.TryGetValue(logicID, out LogicNodeList))
+        {
+            //iterate through the list of logicNode
+            foreach(GameObject node in LogicNodeList)
+            {
+                //if the itearting node is not the input logicNode, then set the node's state
+                //to the input logicNode's state
+                LogicBehavior logicScript = node.GetComponent<LogicBehavior>();
+                logicScript.setLogicState(state);
+
+            }
+        }
 
     }
 
 
- 
+
     void Update () {
 
 

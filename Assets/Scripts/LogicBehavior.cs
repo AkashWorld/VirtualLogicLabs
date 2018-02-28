@@ -19,6 +19,11 @@ public class LogicBehavior : MonoBehaviour {
 
     }
 
+    private void OnMouseUp()
+    {
+        Debug.Log("TEST Mouse action on node: " + getLogicId());
+        OwningDevice.ReactToLogic(logic_node);
+    }
 
     public void OnTriggerEnter2D(Collider2D col)
     {
@@ -27,15 +32,13 @@ public class LogicBehavior : MonoBehaviour {
         {
             Debug.Log("Changing Logic State to High");
             this.setLogicState((int)LOGIC.HIGH);
-            SpriteRenderer spriteRenderer = getLogicNode().GetComponent<SpriteRenderer>() as SpriteRenderer;
-            spriteRenderer.material.color = new Color(1, 0, 0);
+            this.setSpriteLogicColor((int)LOGIC.HIGH);
         }
         else
         {
             Debug.Log("Changing Logic State to Low");
             this.setLogicState((int)LOGIC.LOW);
-            SpriteRenderer spriteRenderer = getLogicNode().GetComponent<SpriteRenderer>() as SpriteRenderer;
-            spriteRenderer.material.color = new Color(0, 1, 0);
+            this.setSpriteLogicColor((int)LOGIC.LOW);
         }
     }
 
@@ -55,15 +58,39 @@ public class LogicBehavior : MonoBehaviour {
     }
 
 
+    public void setSpriteLogicColor(int state)
+    {
+        if(state == (int)LOGIC.HIGH)
+        {
+            Debug.Log("Setting color to green.");
+            SpriteRenderer spriteRenderer = getLogicNode().GetComponent<SpriteRenderer>() as SpriteRenderer;
+            spriteRenderer.material.color = new Color(0, 1, 0);
+        }
+        else if(state == (int)LOGIC.LOW)
+        {
+            Debug.Log("Setting color to red.");
+            SpriteRenderer spriteRenderer = getLogicNode().GetComponent<SpriteRenderer>() as SpriteRenderer;
+            spriteRenderer.material.color = new Color(1, 0, 0);
+        }
+    }
+
     //Sets logic state of this particular component. 
     //logic_id MUST be set before this method is called
-    //Accepted values are LOGIC.HIGH(int = 1) and LOGIC.LOW(int = 2)
-    int setLogicState(int state)
+    //Accepted values are LOGIC.HIGH(int = 1) and LOGIC.LOW(int = 0)
+    public int setLogicState(int state)
     {
         if((state == (int)LOGIC.HIGH || state == (int)LOGIC.LOW) && logic_id != null)
         {
-            Debug.Log("Node: " + logic_id + "set to logic state: " + state);
+            if(state == 0)
+            {
+                Debug.Log("Node: " + logic_id + " set to logic state: LOW");
+            }
+            else if(state == 1)
+            {
+                Debug.Log("Node: " + logic_id + " set to logic state: HIGH");
+            }
             this.logic_state = state;
+            setSpriteLogicColor(this.logic_state);
             return logic_state;
         }
         else
@@ -77,7 +104,9 @@ public class LogicBehavior : MonoBehaviour {
         }
         return -100; //error
     }
-    int getLogicState()
+
+
+    public int getLogicState()
     {
         return this.logic_state;
     }
