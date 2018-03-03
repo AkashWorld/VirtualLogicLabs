@@ -122,6 +122,8 @@ GameObject:
   m_Component:
   - component: {fileID: 494624857}
   - component: {fileID: 494624858}
+  - component: {fileID: 494624859}
+  - component: {fileID: 494624860}
   m_Layer: 0
   m_Name: green_wire_button
   m_TagString: Untagged
@@ -186,6 +188,61 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
+--- !u!60 &494624859
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 494624856}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1.67, y: 0.83}
+    newSize: {x: 1.67, y: 0.83}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 0.835, y: -0.105}
+      - {x: 0.835, y: 0.085}
+      - {x: 0.825, y: 0.145}
+      - {x: 0.705, y: 0.235}
+      - {x: 0.53499997, y: 0.33499998}
+      - {x: 0.39499998, y: 0.385}
+      - {x: 0.235, y: 0.415}
+      - {x: -0.205, y: 0.415}
+      - {x: -0.315, y: 0.39499998}
+      - {x: -0.545, y: 0.33499998}
+      - {x: -0.715, y: 0.255}
+      - {x: -0.835, y: 0.085}
+      - {x: -0.835, y: -0.105}
+      - {x: -0.705, y: -0.255}
+      - {x: -0.53499997, y: -0.345}
+      - {x: -0.24499999, y: -0.415}
+      - {x: 0.235, y: -0.415}
+      - {x: 0.375, y: -0.385}
+      - {x: 0.60499996, y: -0.325}
+      - {x: 0.805, y: -0.16499999}
+--- !u!114 &494624860
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 494624856}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c3eb1351495ccb43a40abce06614b33, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &501639957
 GameObject:
   m_ObjectHideFlags: 0
@@ -195,6 +252,8 @@ GameObject:
   m_Component:
   - component: {fileID: 501639958}
   - component: {fileID: 501639959}
+  - component: {fileID: 501639960}
+  - component: {fileID: 501639961}
   m_Layer: 0
   m_Name: black_wire_button
   m_TagString: Untagged
@@ -259,6 +318,61 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
+--- !u!60 &501639960
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 501639957}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1.67, y: 0.83}
+    newSize: {x: 1.67, y: 0.83}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 0.835, y: -0.105}
+      - {x: 0.835, y: 0.085}
+      - {x: 0.825, y: 0.145}
+      - {x: 0.705, y: 0.235}
+      - {x: 0.53499997, y: 0.33499998}
+      - {x: 0.39499998, y: 0.385}
+      - {x: 0.235, y: 0.415}
+      - {x: -0.205, y: 0.415}
+      - {x: -0.315, y: 0.39499998}
+      - {x: -0.545, y: 0.33499998}
+      - {x: -0.715, y: 0.255}
+      - {x: -0.835, y: 0.085}
+      - {x: -0.835, y: -0.105}
+      - {x: -0.705, y: -0.255}
+      - {x: -0.53499997, y: -0.345}
+      - {x: -0.24499999, y: -0.415}
+      - {x: 0.235, y: -0.415}
+      - {x: 0.375, y: -0.385}
+      - {x: 0.60499996, y: -0.325}
+      - {x: 0.805, y: -0.16499999}
+--- !u!114 &501639961
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 501639957}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c3eb1351495ccb43a40abce06614b33, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &521033374
 GameObject:
   m_ObjectHideFlags: 0
