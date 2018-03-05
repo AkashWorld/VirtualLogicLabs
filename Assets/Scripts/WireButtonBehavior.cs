@@ -4,67 +4,43 @@ using UnityEngine;
 
 public class WireButtonBehavior : MonoBehaviour {
 
+    public bool buttonOn = false;
+
     private void OnMouseUp()
     {
         string button_name = transform.name;
-        if (transform.childCount == 0)
+
+        if (buttonOn == true)
         {
-            if (button_name == "red_wire_button")
-            {
-                Debug.Log("Red button clicked on");
-                GameObject redWireOn = new GameObject("redWireOn");
-                redWireOn.transform.parent = this.gameObject.transform;
-            }
-            else if (button_name == "green_wire_button")
-            {
-                Debug.Log("Green button clicked on");
-                GameObject greenWireOn = new GameObject("greenWireOn");
-                greenWireOn.transform.parent = this.gameObject.transform;
-            }
-            else if (button_name == "black_wire_button")
-            {
-                Debug.Log("Black button clicked on");
-                GameObject blackWireOn = new GameObject("blackWireOn");
-                blackWireOn.transform.parent = this.gameObject.transform;
-            }
-            else
-            {
-                Debug.Log("Error in clicking button");
-            }
+            Debug.Log(button_name + " clicked off");
+            buttonOn = false;
+        }
+        else if (buttonOn == false)
+        {
+            Debug.Log(button_name + " clicked on");
+            buttonOn = true;
+        }
+        if (button_name == "red_wire_button")
+        {
+            GameObject.Find("green_wire_button").GetComponent<WireButtonBehavior>().buttonOn = false;
+            GameObject.Find("black_wire_button").GetComponent<WireButtonBehavior>().buttonOn = false;
         }
 
-        else
+        if (button_name == "green_wire_button")
         {
-            if (button_name == "red_wire_button")
-            {
-                Debug.Log("Red button clicked off");
-                foreach (Transform children in transform)
-                {
-                    Destroy(children.gameObject);
-                }
-            }
-            else if (button_name == "green_wire_button")
-            {
-                Debug.Log("Green button clicked off");
-                foreach (Transform children in transform)
-                {
-                    Destroy(children.gameObject);
-                }
-            }
-            else if (GameObject.Find("blackWireOn") != null)
-            {
-                Debug.Log("Black button clicked off");
-                foreach (Transform children in transform)
-                {
-                    Destroy(children.gameObject);
-                }
-            }
-            else
-            {
-                Debug.Log("Error in clicking button");
-            }
+            GameObject.Find("red_wire_button").GetComponent<WireButtonBehavior>().buttonOn = false;
+            GameObject.Find("black_wire_button").GetComponent<WireButtonBehavior>().buttonOn = false;
+        }
+
+        if (button_name == "black_wire_button")
+        {
+            GameObject.Find("green_wire_button").GetComponent<WireButtonBehavior>().buttonOn = false;
+            GameObject.Find("red_wire_button").GetComponent<WireButtonBehavior>().buttonOn = false;
         }
     }
+
+
+    
 
     // Use this for initialization
     void Start () {
