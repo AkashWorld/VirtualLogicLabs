@@ -8,7 +8,7 @@ public class LogicBehavior : MonoBehaviour {
     private string logic_id;
     private int logic_state;
     LogicInterface OwningDevice;
-
+    private GameObject CollisionNode;
 	// Use this for initialization
 	void Start () {
         logic_state = (int)LOGIC.INVALID;
@@ -17,6 +17,24 @@ public class LogicBehavior : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        Debug.Log("Collision detected with node: " + logic_id);
+        if (collision.gameObject.tag == "LOGIC_NODE")
+        {
+            CollisionNode = collision.gameObject;
+        }
+    }
+
+    public GameObject getCollidingNode()
+    {
+        if (CollisionNode != null)
+        {
+            return CollisionNode;
+        }
+        return null;
     }
 
     private void OnMouseUp()
@@ -29,6 +47,7 @@ public class LogicBehavior : MonoBehaviour {
     public void setLogicNode(GameObject logic_node)
     {
         this.logic_node = logic_node;
+        logic_node.tag = "LOGIC_NODE";
     }
     public GameObject getLogicNode()
     {
