@@ -68,7 +68,7 @@ public class NANDGate : MonoBehaviour, LogicInterface {
     void OnMouseUp()
     {
         Debug.Log("74LS400 Mouse Up");
-        //On release of mouse, clamp the hcip to the nodes
+        //On release of mouse, SNAP the chip to the position
         GameObject node_1;
         if (logic_dictionary.TryGetValue(LOGIC_DEVICE_ID + 0, out node_1))
         {
@@ -76,7 +76,10 @@ public class NANDGate : MonoBehaviour, LogicInterface {
             GameObject collidingNode = logicNodeScript.getCollidingNode();
             if (collidingNode != null)
             {
-                Debug.Log("Colling Node position: " + collidingNode.transform.ToString());
+                Debug.Log("Colliding Node " + collidingNode.name + " position: " + collidingNode.transform.position);
+                Vector3 collidingNodePos = collidingNode.transform.position;
+                Vector3 offsetPosition = new Vector3(collidingNodePos.x + .12f, collidingNodePos.y - .58f, collidingNodePos.z);
+                nandGameObject.transform.position = offsetPosition;
             }
         }
     }

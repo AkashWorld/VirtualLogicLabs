@@ -19,13 +19,17 @@ public class LogicBehavior : MonoBehaviour {
 
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D coll)
     {
-        Debug.Log("Collision detected with node: " + logic_id);
-        if (collision.gameObject.tag == "LOGIC_NODE")
+        if(coll.gameObject.tag == "LOGIC_NODE")
         {
-            CollisionNode = collision.gameObject;
+            CollisionNode = coll.gameObject;
         }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        CollisionNode = null;
     }
 
     public GameObject getCollidingNode()
@@ -39,7 +43,7 @@ public class LogicBehavior : MonoBehaviour {
 
     private void OnMouseUp()
     {
-        Debug.Log("TEST Mouse action on node: " + getLogicId());
+        Debug.Log("Mouse action on node: " + getLogicId());
         OwningDevice.ReactToLogic(logic_node);
     }
 
