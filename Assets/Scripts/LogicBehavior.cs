@@ -29,7 +29,10 @@ public class LogicBehavior : MonoBehaviour {
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        CollisionNode = null;
+        if (collision.gameObject == CollisionNode)
+        {
+            CollisionNode = null;
+        }
     }
 
     public GameObject getCollidingNode()

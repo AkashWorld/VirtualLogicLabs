@@ -65,29 +65,39 @@ public class NANDGate : MonoBehaviour, LogicInterface {
 
     }
 
-    void OnMouseUp()
-    {
-        Debug.Log("74LS00 Mouse Up");
-        //On release of mouse, SNAP the chip to the position
-        GameObject node_left;
-        GameObject node_right;
-        //get both top left and top right logic nodes on the chip to check if they collided with any other logic nodes
-        if (logic_dictionary.TryGetValue(LOGIC_DEVICE_ID + 0, out node_left) && logic_dictionary.TryGetValue(LOGIC_DEVICE_ID + 7, out node_right))
+ 
+        void OnMouseUp()
         {
-            LogicBehavior logicNodeScript_l = node_left.GetComponent<LogicBehavior>();
-            GameObject collidingNodeLeft = logicNodeScript_l.getCollidingNode();
-            LogicBehavior logicNodeScript_r = node_right.GetComponent<LogicBehavior>();
-            GameObject collidingNodeRight = logicNodeScript_r.getCollidingNode();
-            //if both top left and top right logic nodes have collided, snap the chip into position 
-            if (collidingNodeLeft != null && collidingNodeRight != null)
+            Debug.Log("74LS00 Mouse Up");
+
+            //Check if all nodes with the chip is colliding with another logic node;
+            foreach (KeyValuePair<string, GameObject> entry in logic_dictionary)
             {
+                GameObject logic_node = entry.Value;
+                LogicBehavior logic_behavior = logic_node.GetComponent<LogicBehavior>();
+                if(logic_behavior.getCollidingNode() == null)
+                    {
+                     Debug.Log("Snap not set.");
+                     return;
+                    }
+            }
+            //On release of mouse, SNAP the chip to the position
+            GameObject node_left;
+            //get both top left and top right logic nodes on the chip to check if they collided with any other logic nodes
+            if (logic_dictionary.TryGetValue(LOGIC_DEVICE_ID + 0, out node_left))
+            {
+                LogicBehavior logicNodeScript_l = node_left.GetComponent<LogicBehavior>();
+                GameObject collidingNodeLeft = logicNodeScript_l.getCollidingNode();
+                Debug.Log("74LS00 SNAPPED!");
                 Debug.Log("Colliding Node " + collidingNodeLeft.name + " position: " + collidingNodeLeft.transform.position);
                 Vector3 collidingNodePos = collidingNodeLeft.transform.position;
                 Vector3 offsetPosition = new Vector3(collidingNodePos.x + .245f, collidingNodePos.y - .58f, collidingNodePos.z);
                 nandGameObject.transform.position = offsetPosition;
             }
+
+
         }
-    }
+    
 
     // Update is called once per frame
     void Update () {

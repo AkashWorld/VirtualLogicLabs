@@ -70,20 +70,33 @@ public class HEXGate : MonoBehaviour, LogicInterface
     void OnMouseUp()
     {
         Debug.Log("74LS04 Mouse Up");
-        //On release of mouse, SNAP the chip to the position
-        GameObject node_1;
-        if (logic_dictionary.TryGetValue(LOGIC_DEVICE_ID + 0, out node_1))
+
+        //Check if all nodes with the chip is colliding with another logic node;
+        foreach (KeyValuePair<string, GameObject> entry in logic_dictionary)
         {
-            LogicBehavior logicNodeScript = node_1.GetComponent<LogicBehavior>();
-            GameObject collidingNode = logicNodeScript.getCollidingNode();
-            if (collidingNode != null)
+            GameObject logic_node = entry.Value;
+            LogicBehavior logic_behavior = logic_node.GetComponent<LogicBehavior>();
+            if (logic_behavior.getCollidingNode() == null)
             {
-                Debug.Log("Colliding Node " + collidingNode.name + " position: " + collidingNode.transform.position);
-                Vector3 collidingNodePos = collidingNode.transform.position;
-                Vector3 offsetPosition = new Vector3(collidingNodePos.x + .245f, collidingNodePos.y - .58f, collidingNodePos.z);
-                HEXGameObject.transform.position = offsetPosition;
+                Debug.Log("Snap not set.");
+                return;
             }
         }
+        //On release of mouse, SNAP the chip to the position
+        GameObject node_left;
+        //get both top left and top right logic nodes on the chip to check if they collided with any other logic nodes
+        if (logic_dictionary.TryGetValue(LOGIC_DEVICE_ID + 0, out node_left))
+        {
+            LogicBehavior logicNodeScript_l = node_left.GetComponent<LogicBehavior>();
+            GameObject collidingNodeLeft = logicNodeScript_l.getCollidingNode();
+            Debug.Log("74LS04 SNAPPED!");
+            Debug.Log("Colliding Node " + collidingNodeLeft.name + " position: " + collidingNodeLeft.transform.position);
+            Vector3 collidingNodePos = collidingNodeLeft.transform.position;
+            Vector3 offsetPosition = new Vector3(collidingNodePos.x + .245f, collidingNodePos.y - .58f, collidingNodePos.z);
+            HEXGameObject.transform.position = offsetPosition;
+        }
+
+
     }
 
     // Update is called once per frame
