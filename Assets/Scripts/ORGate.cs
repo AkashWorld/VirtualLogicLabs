@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NANDGate : MonoBehaviour, LogicInterface {
+public class ORGate : MonoBehaviour, LogicInterface
+{
     private Dictionary<string, GameObject> logic_dictionary = new Dictionary<string, GameObject>(); //Contains all the gameobject nodes for the 74LS400 chip.+
-    private GameObject nandGameObject;
-    private const string LOGIC_DEVICE_ID = "74LS00_NAND_NODE_";
+    private GameObject ORGameObject;
+    private const string LOGIC_DEVICE_ID = "74LS32_OR_NODE_";
     private Vector3 screenPoint;
     private Vector3 offset;
     private void setNodeProperties(GameObject logicNode, string logicNodeID)
@@ -26,32 +27,33 @@ public class NANDGate : MonoBehaviour, LogicInterface {
     }
 
     // Use this for initialization
-    void Start () {
-        nandGameObject = GameObject.Find("74LS00");
+    void Start()
+    {
+        ORGameObject = GameObject.Find("74LS32");
         //Loop that places Logic Nodes on the 74LS400 chip
         float horizontal_pos = -.205f; //set up for left side of the chip
         float vertical_pos = .58f; //top of the chip
-        for(int i = 0; i < 14; i++)
+        for (int i = 0; i < 14; i++)
         {
             GameObject logicNode = new GameObject(LOGIC_DEVICE_ID + i); //logic node with the name leftlogicnode_{i}_0
-            logicNode.transform.parent = nandGameObject.transform; //sets the Protoboard game object as logicNode_0's parent
+            logicNode.transform.parent = ORGameObject.transform; //sets the Protoboard game object as logicNode_0's parent
             logicNode.transform.localPosition = new Vector3(horizontal_pos, vertical_pos + i * (-.208f), 0); //'localPosition' sets the position of this node RELATIVE to the protoboard
             logicNode.transform.localScale = new Vector3(.10F, .10F, 0);
             setNodeProperties(logicNode, LOGIC_DEVICE_ID + i);
             logic_dictionary.Add(LOGIC_DEVICE_ID + i, logicNode);
-            if(i == 6) //when the left side is complete
+            if (i == 6) //when the left side is complete
             {
-                vertical_pos = .58f + 7*(.208f); //go back to the top
+                vertical_pos = .58f + 7 * (.208f); //go back to the top
                 horizontal_pos = horizontal_pos + .532f; //change the horizontal position to the right side
 
             }
         }
-	}
+    }
 
 
     void OnMouseDown()
     {
-        Debug.Log("74LS00 Mouse Down");
+        Debug.Log("74LS32 Mouse Down");
         screenPoint = Camera.main.WorldToScreenPoint(gameObject.transform.position);
         offset = gameObject.transform.position - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z));
 
@@ -67,32 +69,28 @@ public class NANDGate : MonoBehaviour, LogicInterface {
 
     void OnMouseUp()
     {
-        Debug.Log("74LS00 Mouse Up");
+        Debug.Log("74LS32 Mouse Up");
         //On release of mouse, SNAP the chip to the position
-        GameObject node_left;
-        GameObject node_right;
-        //get both top left and top right logic nodes on the chip to check if they collided with any other logic nodes
-        if (logic_dictionary.TryGetValue(LOGIC_DEVICE_ID + 0, out node_left) && logic_dictionary.TryGetValue(LOGIC_DEVICE_ID + 7, out node_right))
+        GameObject node_1;
+        if (logic_dictionary.TryGetValue(LOGIC_DEVICE_ID + 0, out node_1))
         {
-            LogicBehavior logicNodeScript_l = node_left.GetComponent<LogicBehavior>();
-            GameObject collidingNodeLeft = logicNodeScript_l.getCollidingNode();
-            LogicBehavior logicNodeScript_r = node_right.GetComponent<LogicBehavior>();
-            GameObject collidingNodeRight = logicNodeScript_r.getCollidingNode();
-            //if both top left and top right logic nodes have collided, snap the chip into position 
-            if (collidingNodeLeft != null && collidingNodeRight != null)
+            LogicBehavior logicNodeScript = node_1.GetComponent<LogicBehavior>();
+            GameObject collidingNode = logicNodeScript.getCollidingNode();
+            if (collidingNode != null)
             {
-                Debug.Log("Colliding Node " + collidingNodeLeft.name + " position: " + collidingNodeLeft.transform.position);
-                Vector3 collidingNodePos = collidingNodeLeft.transform.position;
+                Debug.Log("Colliding Node " + collidingNode.name + " position: " + collidingNode.transform.position);
+                Vector3 collidingNodePos = collidingNode.transform.position;
                 Vector3 offsetPosition = new Vector3(collidingNodePos.x + .245f, collidingNodePos.y - .58f, collidingNodePos.z);
-                nandGameObject.transform.position = offsetPosition;
+                ORGameObject.transform.position = offsetPosition;
             }
         }
     }
 
     // Update is called once per frame
-    void Update () {
-		
-	}
+    void Update()
+    {
+
+    }
 
     public void ReactToLogic(GameObject logicNode)
     {

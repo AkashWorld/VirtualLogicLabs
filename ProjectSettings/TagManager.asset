@@ -42,8 +42,11 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Devices
+  - name: PassiveDevices
     uniqueID: 3530049149
+    locked: 0
+  - name: ActiveDevices
+    uniqueID: 443109891
     locked: 0
   - name: Logic
     uniqueID: 440356375
