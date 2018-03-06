@@ -350,10 +350,75 @@ public class ProtoboardObject : MonoBehaviour, LogicInterface{
 
     }
 
+    private void protoboardUpdate()
+    {
+        //iterate through all 'SETS' of logic nodes
+        foreach(KeyValuePair<string, List<GameObject>> entry in LogicID_Node_Dict)
+        {
+            string logic_id = entry.Key;
+            List<GameObject> node_set = entry.Value;
+            int state = (int)LogicBehavior.LOGIC.INVALID; //global set state
+            GameObject collidingGameObject = null; //global collision checker (to check if the set has any colliding nodes)
+            //iterate through the node set and find the common denominator
+            //RULES: Ground has priority. VCC is 2nd in priority. 
+            foreach (GameObject node in node_set)
+            {
+                LogicBehavior logicScript = node.GetComponent<LogicBehavior>();
+                int node_state = logicScript.getLogicState();
+                //Logic Low gets priority in Global set state
+                if(node_state == (int)LogicBehavior.LOGIC.LOW)
+                {
+                    state = (int)LogicBehavior.LOGIC.LOW;
+                }
+                else if(node_state == (int)LogicBehavior.LOGIC.HIGH)
+                {
+                    //Only set the global set state to High if it is INVALID
+                    if(state == (int)LogicBehavior.LOGIC.INVALID)
+                    {
+                        state = (int)LogicBehavior.LOGIC.HIGH;
+                    }
+                }
 
+                GameObject colliding_node = logicScript.getCollidingNode();
+                if(colliding_node != null)
+                {
+                    collidingGameObject = colliding_node;
+                    LogicBehavior colliding_script = colliding_node.GetComponent<LogicBehavior>();
+                    int colliding_state = colliding_script.getLogicState();
+                    //Logic Low gets priority in Global set state
+                    if (colliding_state == (int)LogicBehavior.LOGIC.LOW)
+                    {
+                        state = (int)LogicBehavior.LOGIC.LOW;
+                    }
+                    else if (node_state == (int)LogicBehavior.LOGIC.HIGH)
+                    {
+                        //Only set the global set state to High if it is INVALID
+                        if (colliding_state == (int)LogicBehavior.LOGIC.INVALID)
+                        {
+                            state = (int)LogicBehavior.LOGIC.HIGH;
+                        }
+                    }
+                }
+            }
+            //apply global conditions to the entire node set
+            foreach (GameObject node in node_set)
+            {
+                LogicBehavior logicScript = node.GetComponent<LogicBehavior>();
+                //if there is no collision with the entire 'set', set the 'set' to INVALID
+                if (collidingGameObject == null)
+                {
+                    logicScript.setLogicState((int)LogicBehavior.LOGIC.INVALID);
+                }
+                else
+                {
+                    logicScript.setLogicState(state);
+                }       
+            }
+        }
+    }
 
     void Update () {
-
+       // protoboardUpdate();
 
     }
 }

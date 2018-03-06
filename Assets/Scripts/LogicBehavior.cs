@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class LogicBehavior : MonoBehaviour {
-    enum LOGIC { HIGH = 1, LOW = 0, INVALID = -1}
+    public enum LOGIC { HIGH = 1, LOW = 0, INVALID = -1}
     private GameObject logic_node;
     private string logic_id;
     private int logic_state;
