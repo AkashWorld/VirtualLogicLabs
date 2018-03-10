@@ -11,7 +11,7 @@ public class ORGate : MonoBehaviour, LogicInterface
     private Vector3 offset;
     private void setNodeProperties(GameObject logicNode, string logicNodeID)
     {
-        LogicBehavior logic_behavior = logicNode.AddComponent<LogicBehavior>() as LogicBehavior; //Adds the LogicBehavior.cs component to this gameobject to control logic behavior
+        LogicNode logic_behavior = logicNode.AddComponent<LogicNode>() as LogicNode; //Adds the LogicNode.cs component to this gameobject to control logic behavior
         logic_behavior.SetLogicId(logicNodeID); //logic id that sets all the nodes on the left column of the LEFT section of the protoboard the same id
         logic_behavior.SetLogicNode(logicNode);
         logic_behavior.SetOwningDevice(this);
@@ -74,7 +74,7 @@ public class ORGate : MonoBehaviour, LogicInterface
         foreach (KeyValuePair<string, GameObject> entry in logic_dictionary)
         {
             GameObject logic_node = entry.Value;
-            LogicBehavior logic_behavior = logic_node.GetComponent<LogicBehavior>();
+            LogicNode logic_behavior = logic_node.GetComponent<LogicNode>();
             if (logic_behavior.GetCollidingNode() == null)
             {
                 Debug.Log("Snap not set.");
@@ -86,7 +86,7 @@ public class ORGate : MonoBehaviour, LogicInterface
         //get both top left and top right logic nodes on the chip to check if they collided with any other logic nodes
         if (logic_dictionary.TryGetValue(LOGIC_DEVICE_ID + 0, out node_left))
         {
-            LogicBehavior logicNodeScript_l = node_left.GetComponent<LogicBehavior>();
+            LogicNode logicNodeScript_l = node_left.GetComponent<LogicNode>();
             GameObject collidingNodeLeft = logicNodeScript_l.GetCollidingNode();
             Debug.Log("74LS32 SNAPPED!");
             Debug.Log("Colliding Node " + collidingNodeLeft.name + " position: " + collidingNodeLeft.transform.position);

@@ -19,7 +19,7 @@ public class ProtoboardObject : MonoBehaviour, LogicInterface{
 
     private void SetNodeProperties(GameObject logicNode, string logicNodeID)
     {
-        LogicBehavior logic_behavior = logicNode.AddComponent<LogicBehavior>() as LogicBehavior; //Adds the LogicBehavior.cs component to this gameobject to control logic behavior
+        LogicNode logic_behavior = logicNode.AddComponent<LogicNode>() as LogicNode; //Adds the LogicNode.cs component to this gameobject to control logic behavior
         logic_behavior.SetLogicId(logicNodeID); //logic id that sets all the nodes on the left column of the LEFT section of the protoboard the same id
         logic_behavior.SetLogicNode(logicNode);
         logic_behavior.SetOwningDevice(this);
@@ -314,7 +314,7 @@ public class ProtoboardObject : MonoBehaviour, LogicInterface{
     //Toggles node set from INVALID -> LOW -> HIGH
     private void ToggleNodeSet(GameObject logicNode)
     {
-        LogicBehavior logicBehaviorScript = logicNode.GetComponent<LogicBehavior>();
+        LogicNode logicBehaviorScript = logicNode.GetComponent<LogicNode>();
         string logicID = logicBehaviorScript.GetLogicId();
         int state = logicBehaviorScript.GetLogicState();
         if (state == (int)LOGIC.INVALID)
@@ -341,7 +341,7 @@ public class ProtoboardObject : MonoBehaviour, LogicInterface{
             {
                 //if the itearting node is not the input logicNode, then set the node's state
                 //to the input logicNode's state
-                LogicBehavior logicScript = node.GetComponent<LogicBehavior>();
+                LogicNode logicScript = node.GetComponent<LogicNode>();
                 logicScript.SetLogicState(state);
 
             }
@@ -349,6 +349,7 @@ public class ProtoboardObject : MonoBehaviour, LogicInterface{
     }
 
     //Interface method from LogicInterface.cs that allows the protoboard to react to any changes to its logic nodes.
+    //This method is called from OnMouseUp() function, so it regulates mouse toggles
     public void ReactToLogic(GameObject logicNode)
     {
         Debug.Log("Protoboard: reacting to node interaction.");
@@ -360,7 +361,7 @@ public class ProtoboardObject : MonoBehaviour, LogicInterface{
 
     public void ReactToLogic(GameObject logicNode, int requestedState)
     {
-        LogicBehavior logicBehavior = logicNode.GetComponent<LogicBehavior>();
+        LogicNode logicBehavior = logicNode.GetComponent<LogicNode>();
         string logicID = logicBehavior.GetLogicId();
         //Get the list of GameObjects (LogicNodes) that have the same ID as the input logicNode
         List<GameObject> LogicNodeList;
@@ -371,7 +372,7 @@ public class ProtoboardObject : MonoBehaviour, LogicInterface{
             {
                 //if the itearting node is not the input logicNode, then set the node's state
                 //to the input logicNode's state
-                LogicBehavior logicScript = node.GetComponent<LogicBehavior>();
+                LogicNode logicScript = node.GetComponent<LogicNode>();
                 logicScript.SetLogicState(requestedState);
 
             }

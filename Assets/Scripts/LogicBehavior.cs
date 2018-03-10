@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LogicBehavior : MonoBehaviour {
+public class LogicNode : MonoBehaviour {
     private GameObject logic_node;
     private string logic_id;
     private int logic_state;
     LogicInterface OwningDevice;
-    private GameObject collisionNode;
+    private GameObject collidingNode;
     private bool recentStateChange = false;
 	// Use this for initialization
 	void Start () {
@@ -17,36 +17,42 @@ public class LogicBehavior : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         //check if node is colliding, and a recent state change is detected
-        if(collisionNode != null && recentStateChange == true)
+        if(collidingNode != null && recentStateChange == true)
         {
             Debug.Log("Update() in Logic Node: " + this.logic_id);
             recentStateChange = false;
-            LogicBehavior collidedBehavior = collisionNode.GetComponent<LogicBehavior>();
+            LogicNode collidedBehavior = collidingNode.GetComponent<LogicNode>();
             collidedBehavior.RequestStateChange(this.GetLogicState());
         }
     }
 
     private void OnTriggerEnter2D(Collider2D coll)
     {
+        //Only allow one collision with a Logic Node gameobject.
         if(coll.gameObject.tag == "LOGIC_NODE")
         {
-            collisionNode = coll.gameObject;
+            collidingNode = coll.gameObject;
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject == collisionNode)
+        if (collision.gameObject == collidingNode)
         {
-            collisionNode = null;
+            LogicNode collided_logic_node = collision.gameObject.GetComponent<LogicNode>();
+            if (collided_logic_node.GetLogicState() != (int)LOGIC.INVALID)
+            {
+                collided_logic_node.RequestStateChange((int)LOGIC.INVALID);
+            }
+            collidingNode = null;
         }
     }
 
     public GameObject GetCollidingNode()
     {
-        if (collisionNode != null)
+        if (collidingNode != null)
         {
-            return collisionNode;
+            return collidingNode;
         }
         return null;
     }
@@ -80,7 +86,7 @@ public class LogicBehavior : MonoBehaviour {
     }
 
     //sets the color of the circular logic node
-    public void SetSpriteLogicColor(int state)
+    private void SetSpriteLogicColor(int state)
     {
         SpriteRenderer spriteRenderer = GetLogicNode().GetComponent<SpriteRenderer>() as SpriteRenderer;
         if (state == (int)LOGIC.INVALID)

@@ -5,6 +5,7 @@ using UnityEngine;
 public class NANDGate : MonoBehaviour, LogicInterface {
     private Dictionary<string, GameObject> logic_dictionary = new Dictionary<string, GameObject>(); //Contains all the gameobject nodes for the 74LS400 chip.+
     private GameObject nandGameObject;
+    private GameObject snapIndicatorGameObj;
     private const string LOGIC_DEVICE_ID = "74LS00_NAND_NODE_";
     private Vector3 screenPoint;
     private Vector3 offset;
@@ -12,7 +13,7 @@ public class NANDGate : MonoBehaviour, LogicInterface {
 
     private void setNodeProperties(GameObject logicNode, string logicNodeID)
     {
-        LogicBehavior logic_behavior = logicNode.AddComponent<LogicBehavior>() as LogicBehavior; //Adds the LogicBehavior.cs component to this gameobject to control logic behavior
+        LogicNode logic_behavior = logicNode.AddComponent<LogicNode>() as LogicNode; //Adds the LogicNode.cs component to this gameobject to control logic behavior
         logic_behavior.SetLogicId(logicNodeID); //logic id that sets all the nodes on the left column of the LEFT section of the protoboard the same id
         logic_behavior.SetLogicNode(logicNode);
         logic_behavior.SetOwningDevice(this);
@@ -28,13 +29,14 @@ public class NANDGate : MonoBehaviour, LogicInterface {
     }
 
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         nandGameObject = GameObject.Find("74LS00");
         //Loop that places Logic Nodes on the 74LS400 chip
         float horizontal_pos = -.205f; //set up for left side of the chip
         float vertical_pos = .58f; //top of the chip
         float vertical_direct = -.208f;
-        for(int i = 0; i < 14; i++)
+        for (int i = 0; i < 14; i++)
         {
             GameObject logicNode = new GameObject(LOGIC_DEVICE_ID + i); //logic node with the name leftlogicnode_{i}_0
             logicNode.transform.parent = nandGameObject.transform; //sets the Protoboard game object as logicNode_0's parent
@@ -42,7 +44,7 @@ public class NANDGate : MonoBehaviour, LogicInterface {
             logicNode.transform.localScale = new Vector3(.10F, .10F, 0);
             setNodeProperties(logicNode, LOGIC_DEVICE_ID + i);
             logic_dictionary.Add(LOGIC_DEVICE_ID + i, logicNode);
-            if(i == 6) //when the left side is complete
+            if (i == 6) //when the left side is complete
             {
                 vertical_pos = vertical_pos + (13 * vertical_direct);
                 vertical_direct = .208f;
@@ -50,7 +52,17 @@ public class NANDGate : MonoBehaviour, LogicInterface {
 
             }
         }
-	}
+
+        //add SNAP indicator object to the chip
+        snapIndicatorGameObj = new GameObject(LOGIC_DEVICE_ID + "_SNAP_INDICATOR_");
+        snapIndicatorGameObj.transform.parent = nandGameObject.transform; //sets the Protoboard game object as logicNode_0's parent
+        snapIndicatorGameObj.transform.localPosition = new Vector3(-.0775f, .575f, 0); //'localPosition' sets the position of this node RELATIVE to the protoboard
+        snapIndicatorGameObj.transform.localScale = new Vector3(.10F, .10F, 0);
+        SpriteRenderer sprite_renderer = snapIndicatorGameObj.AddComponent<SpriteRenderer>(); //adds a test "circle" graphic
+        sprite_renderer.sprite = Resources.Load<Sprite>("logicCircle");
+        sprite_renderer.sortingLayerName = "FrontLayer";
+        sprite_renderer.material.color = new Color(1, 1, 1);
+    }
 
 
     void OnMouseDown()
@@ -67,6 +79,26 @@ public class NANDGate : MonoBehaviour, LogicInterface {
         Vector3 curPosition = Camera.main.ScreenToWorldPoint(curScreenPoint);
         transform.position = curPosition;
 
+        //Check for snapping when chip is removed from set place.
+        //Check if all nodes with the chip is colliding with another logic node;
+        SpriteRenderer spr_ren = snapIndicatorGameObj.GetComponent<SpriteRenderer>();
+        foreach (KeyValuePair<string, GameObject> entry in logic_dictionary)
+        {
+            GameObject logic_node = entry.Value;
+            LogicNode logic_behavior = logic_node.GetComponent<LogicNode>();
+            if (logic_behavior.GetCollidingNode() == null)
+            {
+                //indicator
+                spr_ren.material.color = new Color(1, 1, 1); //neutral
+                SNAPPED = false;
+                Debug.Log("Snap not set.");
+                return;
+            }
+        }
+        //if execution reached here, it means all colliding nodes are valid nodes
+        //indicate device can be active
+        spr_ren.material.color = new Color(0, 1, 0); //green
+
     }
 
 
@@ -77,8 +109,8 @@ public class NANDGate : MonoBehaviour, LogicInterface {
         if (logic_dictionary.TryGetValue(LOGIC_DEVICE_ID + 6, out logic_gnd) 
             && logic_dictionary.TryGetValue(LOGIC_DEVICE_ID + 13, out logic_vcc))
         {
-            LogicBehavior logic_behavior_gnd = logic_gnd.GetComponent<LogicBehavior>();
-            LogicBehavior logic_behavior_vcc = logic_vcc.GetComponent<LogicBehavior>();
+            LogicNode logic_behavior_gnd = logic_gnd.GetComponent<LogicNode>();
+            LogicNode logic_behavior_vcc = logic_vcc.GetComponent<LogicNode>();
             Debug.Log("GND Set to: " + logic_behavior_gnd.GetLogicState());
             Debug.Log("VCC Set to: " + logic_behavior_vcc.GetLogicState());
             if (logic_behavior_gnd.GetLogicState() == (int)LOGIC.LOW 
@@ -93,7 +125,7 @@ public class NANDGate : MonoBehaviour, LogicInterface {
     }
 
 
-    //method that handles input output with collisions
+    //Method that handles the input and output nodes based on the collisions
     private void ChipIO()
     {
         GameObject logic_0, logic_1, logic_2, logic_3, logic_4, logic_5, logic_6,
@@ -102,9 +134,9 @@ public class NANDGate : MonoBehaviour, LogicInterface {
         //GND
         if (logic_dictionary.TryGetValue(LOGIC_DEVICE_ID + 6, out logic_6))
         {
-            LogicBehavior logic_behavior = logic_6.GetComponent<LogicBehavior>();
+            LogicNode logic_behavior = logic_6.GetComponent<LogicNode>();
             GameObject collided_node = logic_behavior.GetCollidingNode();
-            LogicBehavior collided_behavior = collided_node.GetComponent<LogicBehavior>();
+            LogicNode collided_behavior = collided_node.GetComponent<LogicNode>();
             int collided_state = collided_behavior.GetLogicState();
             //GND pin collision node is not GND
             if(collided_state != (int)LOGIC.LOW)
@@ -122,9 +154,9 @@ public class NANDGate : MonoBehaviour, LogicInterface {
         //VCC
         if (logic_dictionary.TryGetValue(LOGIC_DEVICE_ID + 13, out logic_13))
         {
-            LogicBehavior logic_behavior = logic_13.GetComponent<LogicBehavior>();
+            LogicNode logic_behavior = logic_13.GetComponent<LogicNode>();
             GameObject collided_node = logic_behavior.GetCollidingNode();
-            LogicBehavior collided_behavior = collided_node.GetComponent<LogicBehavior>();
+            LogicNode collided_behavior = collided_node.GetComponent<LogicNode>();
             int collided_state = collided_behavior.GetLogicState();
             if(collided_state != (int)LOGIC.HIGH)
             {
@@ -139,9 +171,9 @@ public class NANDGate : MonoBehaviour, LogicInterface {
         //NAND INPUT 1
         if (logic_dictionary.TryGetValue(LOGIC_DEVICE_ID + 0, out logic_0))
         {
-            LogicBehavior logic_behavior = logic_0.GetComponent<LogicBehavior>();
+            LogicNode logic_behavior = logic_0.GetComponent<LogicNode>();
             GameObject collided_node = logic_behavior.GetCollidingNode();
-            LogicBehavior collided_behavior = collided_node.GetComponent<LogicBehavior>();
+            LogicNode collided_behavior = collided_node.GetComponent<LogicNode>();
             int collided_state = collided_behavior.GetLogicState();
             if(collided_state == (int)LOGIC.INVALID || !IsDeviceOn())
             {
@@ -156,9 +188,9 @@ public class NANDGate : MonoBehaviour, LogicInterface {
         //NAND INPUT 1
         if (logic_dictionary.TryGetValue(LOGIC_DEVICE_ID + 1, out logic_1))
         {
-            LogicBehavior logic_behavior = logic_1.GetComponent<LogicBehavior>();
+            LogicNode logic_behavior = logic_1.GetComponent<LogicNode>();
             GameObject collided_node = logic_behavior.GetCollidingNode();
-            LogicBehavior collided_behavior = collided_node.GetComponent<LogicBehavior>();
+            LogicNode collided_behavior = collided_node.GetComponent<LogicNode>();
             int collided_state = collided_behavior.GetLogicState();
             if (collided_state == (int)LOGIC.INVALID || !IsDeviceOn())
             {
@@ -173,9 +205,9 @@ public class NANDGate : MonoBehaviour, LogicInterface {
         //NAND INPUT 1
         if (logic_dictionary.TryGetValue(LOGIC_DEVICE_ID + 3, out logic_3))
         {
-            LogicBehavior logic_behavior = logic_3.GetComponent<LogicBehavior>();
+            LogicNode logic_behavior = logic_3.GetComponent<LogicNode>();
             GameObject collided_node = logic_behavior.GetCollidingNode();
-            LogicBehavior collided_behavior = collided_node.GetComponent<LogicBehavior>();
+            LogicNode collided_behavior = collided_node.GetComponent<LogicNode>();
             int collided_state = collided_behavior.GetLogicState();
             if (collided_state == (int)LOGIC.INVALID || !IsDeviceOn())
             {
@@ -191,9 +223,9 @@ public class NANDGate : MonoBehaviour, LogicInterface {
         //NAND INPUT 1
         if (logic_dictionary.TryGetValue(LOGIC_DEVICE_ID + 4, out logic_4))
         {
-            LogicBehavior logic_behavior = logic_4.GetComponent<LogicBehavior>();
+            LogicNode logic_behavior = logic_4.GetComponent<LogicNode>();
             GameObject collided_node = logic_behavior.GetCollidingNode();
-            LogicBehavior collided_behavior = collided_node.GetComponent<LogicBehavior>();
+            LogicNode collided_behavior = collided_node.GetComponent<LogicNode>();
             int collided_state = collided_behavior.GetLogicState();
             if (collided_state == (int)LOGIC.INVALID || !IsDeviceOn())
             {
@@ -209,13 +241,13 @@ public class NANDGate : MonoBehaviour, LogicInterface {
         //NAND ------OUTPUT------- 1
         if (logic_dictionary.TryGetValue(LOGIC_DEVICE_ID + 5, out logic_5))
         {
-            LogicBehavior logic_behavior = logic_5.GetComponent<LogicBehavior>();
+            LogicNode logic_behavior = logic_5.GetComponent<LogicNode>();
             GameObject collided_node = logic_behavior.GetCollidingNode();
-            LogicBehavior collided_behavior = collided_node.GetComponent<LogicBehavior>();
+            LogicNode collided_behavior = collided_node.GetComponent<LogicNode>();
             int collided_state = collided_behavior.GetLogicState();
-            LogicBehavior lb_0, lb_1, lb_3, lb_4; //LogicBehavior references
-            lb_0 = logic_0.GetComponent<LogicBehavior>(); lb_1 = logic_1.GetComponent<LogicBehavior>();
-            lb_3 = logic_3.GetComponent<LogicBehavior>(); lb_4 = logic_4.GetComponent<LogicBehavior>();
+            LogicNode lb_0, lb_1, lb_3, lb_4; //LogicNode references
+            lb_0 = logic_0.GetComponent<LogicNode>(); lb_1 = logic_1.GetComponent<LogicNode>();
+            lb_3 = logic_3.GetComponent<LogicNode>(); lb_4 = logic_4.GetComponent<LogicNode>();
             int low = (int)LOGIC.LOW;
             int invalid = (int)LOGIC.INVALID;
             if (IsDeviceOn())
@@ -240,9 +272,9 @@ public class NANDGate : MonoBehaviour, LogicInterface {
         //NAND INPUT 2
         if (logic_dictionary.TryGetValue(LOGIC_DEVICE_ID + 8, out logic_8))
         {
-            LogicBehavior logic_behavior = logic_8.GetComponent<LogicBehavior>();
+            LogicNode logic_behavior = logic_8.GetComponent<LogicNode>();
             GameObject collided_node = logic_behavior.GetCollidingNode();
-            LogicBehavior collided_behavior = collided_node.GetComponent<LogicBehavior>();
+            LogicNode collided_behavior = collided_node.GetComponent<LogicNode>();
             int collided_state = collided_behavior.GetLogicState();
             if (collided_state == (int)LOGIC.INVALID || !IsDeviceOn())
             {
@@ -257,9 +289,9 @@ public class NANDGate : MonoBehaviour, LogicInterface {
         //NAND INPUT 2
         if (logic_dictionary.TryGetValue(LOGIC_DEVICE_ID + 9, out logic_9))
         {
-            LogicBehavior logic_behavior = logic_9.GetComponent<LogicBehavior>();
+            LogicNode logic_behavior = logic_9.GetComponent<LogicNode>();
             GameObject collided_node = logic_behavior.GetCollidingNode();
-            LogicBehavior collided_behavior = collided_node.GetComponent<LogicBehavior>();
+            LogicNode collided_behavior = collided_node.GetComponent<LogicNode>();
             int collided_state = collided_behavior.GetLogicState();
             if (collided_state == (int)LOGIC.INVALID || !IsDeviceOn())
             {
@@ -274,9 +306,9 @@ public class NANDGate : MonoBehaviour, LogicInterface {
         //NAND INPUT 2
         if (logic_dictionary.TryGetValue(LOGIC_DEVICE_ID + 11, out logic_11))
         {
-            LogicBehavior logic_behavior = logic_11.GetComponent<LogicBehavior>();
+            LogicNode logic_behavior = logic_11.GetComponent<LogicNode>();
             GameObject collided_node = logic_behavior.GetCollidingNode();
-            LogicBehavior collided_behavior = collided_node.GetComponent<LogicBehavior>();
+            LogicNode collided_behavior = collided_node.GetComponent<LogicNode>();
             int collided_state = collided_behavior.GetLogicState();
             if (collided_state == (int)LOGIC.INVALID || !IsDeviceOn())
             {
@@ -291,9 +323,9 @@ public class NANDGate : MonoBehaviour, LogicInterface {
         //NAND INPUT 2
         if (logic_dictionary.TryGetValue(LOGIC_DEVICE_ID + 12, out logic_12))
         {
-            LogicBehavior logic_behavior = logic_12.GetComponent<LogicBehavior>();
+            LogicNode logic_behavior = logic_12.GetComponent<LogicNode>();
             GameObject collided_node = logic_behavior.GetCollidingNode();
-            LogicBehavior collided_behavior = collided_node.GetComponent<LogicBehavior>();
+            LogicNode collided_behavior = collided_node.GetComponent<LogicNode>();
             int collided_state = collided_behavior.GetLogicState();
             if (collided_state == (int)LOGIC.INVALID || !IsDeviceOn())
             {
@@ -308,12 +340,12 @@ public class NANDGate : MonoBehaviour, LogicInterface {
         //NAND ------OUTPUT----- 2
         if (logic_dictionary.TryGetValue(LOGIC_DEVICE_ID + 7, out logic_7))
         {
-            LogicBehavior logic_behavior = logic_7.GetComponent<LogicBehavior>();
+            LogicNode logic_behavior = logic_7.GetComponent<LogicNode>();
             GameObject collided_node = logic_behavior.GetCollidingNode();
-            LogicBehavior collided_behavior = collided_node.GetComponent<LogicBehavior>();
-            LogicBehavior lb_8, lb_9, lb_11, lb_12; //LogicBehavior references
-            lb_8 = logic_8.GetComponent<LogicBehavior>(); lb_9 = logic_9.GetComponent<LogicBehavior>();
-            lb_11 = logic_11.GetComponent<LogicBehavior>(); lb_12 = logic_12.GetComponent<LogicBehavior>();
+            LogicNode collided_behavior = collided_node.GetComponent<LogicNode>();
+            LogicNode lb_8, lb_9, lb_11, lb_12; //LogicNode references
+            lb_8 = logic_8.GetComponent<LogicNode>(); lb_9 = logic_9.GetComponent<LogicNode>();
+            lb_11 = logic_11.GetComponent<LogicNode>(); lb_12 = logic_12.GetComponent<LogicNode>();
             int low = (int)LOGIC.LOW;
             int invalid = (int)LOGIC.INVALID;
             if (IsDeviceOn())
@@ -337,40 +369,58 @@ public class NANDGate : MonoBehaviour, LogicInterface {
             collided_behavior.RequestStateChange(logic_behavior.GetLogicState());
         }
     }
- 
-        void OnMouseUp()
+    private void CheckIfSnapped()
+    {
+        Debug.Log("74LS00 Mouse Up");
+
+        //Check if all nodes with the chip is colliding with another logic node;
+        foreach (KeyValuePair<string, GameObject> entry in logic_dictionary)
         {
-            Debug.Log("74LS00 Mouse Up");
-
-            //Check if all nodes with the chip is colliding with another logic node;
-            foreach (KeyValuePair<string, GameObject> entry in logic_dictionary)
+            GameObject logic_node = entry.Value;
+            LogicNode logic_behavior = logic_node.GetComponent<LogicNode>();
+            if (logic_behavior.GetCollidingNode() == null)
             {
-                GameObject logic_node = entry.Value;
-                LogicBehavior logic_behavior = logic_node.GetComponent<LogicBehavior>();
-                if(logic_behavior.GetCollidingNode() == null)
-                    {
-                    SNAPPED = false;
-                    Debug.Log("Snap not set.");
-                    return;
-                    }
+                //indicator
+                SpriteRenderer spr_ren = snapIndicatorGameObj.GetComponent<SpriteRenderer>();
+                spr_ren.material.color = new Color(1, 1, 1); //neutral
+                SNAPPED = false;
+                Debug.Log("Snap not set.");
+                return;
             }
-            //On release of mouse, SNAP the chip to the position
-            GameObject node_left;
-            //get both top left and top right logic nodes on the chip to check if they collided with any other logic nodes
-            if (logic_dictionary.TryGetValue(LOGIC_DEVICE_ID + 0, out node_left))
-            {
-                LogicBehavior logicNodeScript_l = node_left.GetComponent<LogicBehavior>();
-                GameObject collidingNodeLeft = logicNodeScript_l.GetCollidingNode();
-                Debug.Log("74LS00 SNAPPED!");
-                Vector3 collidingNodePos = collidingNodeLeft.transform.position;
-                Vector3 offsetPosition = new Vector3(collidingNodePos.x + .245f, collidingNodePos.y - .58f, collidingNodePos.z);
-                nandGameObject.transform.position = offsetPosition;
-                SNAPPED = true;
-            }
-
-
         }
+        //On release of mouse, SNAP the chip to the position
+        GameObject node_left;
+        //get both top left and top right logic nodes on the chip to check if they collided with any other logic nodes
+        if (logic_dictionary.TryGetValue(LOGIC_DEVICE_ID + 0, out node_left))
+        {
+            LogicNode logicNodeScript_l = node_left.GetComponent<LogicNode>();
+            GameObject collidingNodeLeft = logicNodeScript_l.GetCollidingNode();
+            Debug.Log("74LS00 SNAPPED!");
+            Vector3 collidingNodePos = collidingNodeLeft.transform.position;
+            Vector3 offsetPosition = new Vector3(collidingNodePos.x + .245f, collidingNodePos.y - .58f, collidingNodePos.z);
+            nandGameObject.transform.position = offsetPosition;
+            //indicator
+            SpriteRenderer spr_ren = snapIndicatorGameObj.GetComponent<SpriteRenderer>();
+            spr_ren.material.color = new Color(0, 1, 0); //green
+            SNAPPED = true;
+        }
+    }
+    void OnMouseUp()
+    {
+        CheckIfSnapped();
+    }
+
+     
     
+    private void ClearChip()
+    {
+        foreach(KeyValuePair<string, GameObject> entry in logic_dictionary)
+        {
+            GameObject logicNodeGameObj = entry.Value;
+            LogicNode logic_node = logicNodeGameObj.GetComponent<LogicNode>();
+            logic_node.SetLogicState((int)LOGIC.INVALID);
+        }
+    }
 
     // Update is called once per frame
     void Update () {
@@ -379,15 +429,20 @@ public class NANDGate : MonoBehaviour, LogicInterface {
 
     public void ReactToLogic(GameObject logicNode, int requestedState)
     {
+        if(requestedState == (int)LOGIC.INVALID)
+        {
+            ClearChip();
+        }
         //Check if chip is snapped to protoboard, and then updates logic
-        if (SNAPPED)
+        else if (SNAPPED)
         {
             ChipIO();
         }
+
     }
 
     public void ReactToLogic(GameObject LogicNode)
     {
-        throw new System.NotImplementedException();
+
     }
 }
