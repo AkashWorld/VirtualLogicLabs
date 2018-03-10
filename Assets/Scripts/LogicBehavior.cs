@@ -26,6 +26,28 @@ public class LogicNode : MonoBehaviour {
         }
     }
 
+    private void OnMouseUp()
+    {
+
+        Debug.Log("Mouse action on node: " + GetLogicId());
+        OwningDevice.ReactToLogic(logic_node);
+        if (GameObject.Find("green_wire_button").GetComponent<WireButtonBehavior>().buttonOn)
+        {
+            GameObject wireTransition = new GameObject("wireTransition");
+            wireTransition.transform.parent = this.logic_node.transform;
+            WireTransitionBehavior wire_transition_behavior = wireTransition.AddComponent<WireTransitionBehavior>();
+            wire_transition_behavior.setStartPosition(this.transform.position);
+        }
+        else if (GameObject.Find("black_wire_button").GetComponent<WireButtonBehavior>().buttonOn)
+        {
+
+        }
+        else if (GameObject.Find("red_wire_button").GetComponent<WireButtonBehavior>().buttonOn)
+        {
+
+        }
+    }
+
     private void OnTriggerEnter2D(Collider2D coll)
     {
         //Only allow one collision with a Logic Node gameobject.
@@ -55,12 +77,6 @@ public class LogicNode : MonoBehaviour {
             return collidingNode;
         }
         return null;
-    }
-
-    private void OnMouseUp()
-    {
-        Debug.Log("Mouse action on node: " + GetLogicId());
-        OwningDevice.ReactToLogic(logic_node);
     }
 
     public void RequestStateChange(int RequestedState)
