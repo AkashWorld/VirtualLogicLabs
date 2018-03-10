@@ -2190,7 +2190,7 @@ GameObject:
   - component: {fileID: 1756567899}
   - component: {fileID: 1756567897}
   - component: {fileID: 1756567896}
-  - component: {fileID: 1756567900}
+  - component: {fileID: 1756567898}
   m_Layer: 0
   m_Name: 74LS04
   m_TagString: Untagged
@@ -2256,6 +2256,17 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.4349959, y: 1.4230294}
   m_EdgeRadius: 0
+--- !u!114 &1756567898
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1756567894}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ff8a880b0127ba47b9fcc88519c8898, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!212 &1756567899
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2287,8 +2298,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 443109891
-  m_SortingLayer: 4
+  m_SortingLayerID: -764918147
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: fa1677d2f4346f34181789b4a1d420e1, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -2300,17 +2311,6 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
---- !u!114 &1756567900
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1756567894}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e5d3d45b8525ba043a36ccf8e377e08b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1970344581
 GameObject:
   m_ObjectHideFlags: 0
