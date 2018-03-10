@@ -286,7 +286,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\ANDGate.cs" />
-    <Compile Include="Assets\Scripts\HEXGate.cs" />
+    <Compile Include="Assets\Scripts\INVGate.cs" />
     <Compile Include="Assets\Scripts\LogicBehavior.cs" />
     <Compile Include="Assets\Scripts\LogicInterface.cs" />
     <Compile Include="Assets\Scripts\NANDGate.cs" />

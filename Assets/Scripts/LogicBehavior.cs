@@ -50,7 +50,6 @@ public class LogicNode : MonoBehaviour {
 
     private void OnTriggerEnter2D(Collider2D coll)
     {
-        //Only allow one collision with a Logic Node gameobject.
         if(coll.gameObject.tag == "LOGIC_NODE")
         {
             collidingNode = coll.gameObject;

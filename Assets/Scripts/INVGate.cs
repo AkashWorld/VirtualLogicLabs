@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NANDGate : MonoBehaviour, LogicInterface {
+public class INVGate : MonoBehaviour, LogicInterface
+{
     private Dictionary<string, GameObject> logic_dictionary = new Dictionary<string, GameObject>(); //Contains all the gameobject nodes for the 74LS400 chip.+
     private GameObject DeviceGameObject;
     private GameObject snapIndicatorGameObj;
-    private const string LOGIC_DEVICE_ID = "74LS00_NAND_NODE_";
+    private const string LOGIC_DEVICE_ID = "74LS04_INV_NODE_";
     private Vector3 screenPoint;
     private Vector3 offset;
     private bool SNAPPED = false; //Set to true if all Logic Nodes of this device is in collision with an external node
@@ -31,7 +32,7 @@ public class NANDGate : MonoBehaviour, LogicInterface {
     // Use this for initialization
     void Start()
     {
-        DeviceGameObject = GameObject.Find("74LS00");
+        DeviceGameObject = GameObject.Find("74LS04");
         //Loop that places Logic Nodes on the 74LS400 chip
         float horizontal_pos = -.205f; //set up for left side of the chip
         float vertical_pos = .58f; //top of the chip
@@ -67,7 +68,7 @@ public class NANDGate : MonoBehaviour, LogicInterface {
 
     void OnMouseDown()
     {
-        Debug.Log("74LS00 Mouse Down");
+        Debug.Log("74LS04 Mouse Down");
         screenPoint = Camera.main.WorldToScreenPoint(gameObject.transform.position);
         offset = gameObject.transform.position - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z));
 
@@ -106,14 +107,14 @@ public class NANDGate : MonoBehaviour, LogicInterface {
     {
         GameObject logic_gnd;
         GameObject logic_vcc;
-        if (logic_dictionary.TryGetValue(LOGIC_DEVICE_ID + 6, out logic_gnd) 
+        if (logic_dictionary.TryGetValue(LOGIC_DEVICE_ID + 6, out logic_gnd)
             && logic_dictionary.TryGetValue(LOGIC_DEVICE_ID + 13, out logic_vcc))
         {
             LogicNode logic_behavior_gnd = logic_gnd.GetComponent<LogicNode>();
             LogicNode logic_behavior_vcc = logic_vcc.GetComponent<LogicNode>();
             Debug.Log("GND Set to: " + logic_behavior_gnd.GetLogicState());
             Debug.Log("VCC Set to: " + logic_behavior_vcc.GetLogicState());
-            if (logic_behavior_gnd.GetLogicState() == (int)LOGIC.LOW 
+            if (logic_behavior_gnd.GetLogicState() == (int)LOGIC.LOW
                 && logic_behavior_vcc.GetLogicState() == (int)LOGIC.HIGH)
             {
                 Debug.Log(this.DeviceGameObject.name + " is ON.");
@@ -129,7 +130,7 @@ public class NANDGate : MonoBehaviour, LogicInterface {
     private void ChipIO()
     {
         GameObject logic_0, logic_1, logic_2, logic_3, logic_4, logic_5, logic_6,
-        logic_7,logic_8, logic_9, logic_10, logic_11, logic_12, logic_13;
+        logic_7, logic_8, logic_9, logic_10, logic_11, logic_12, logic_13;
 
         //GND
         if (logic_dictionary.TryGetValue(LOGIC_DEVICE_ID + 6, out logic_6))
@@ -139,13 +140,13 @@ public class NANDGate : MonoBehaviour, LogicInterface {
             LogicNode collided_behavior = collided_node.GetComponent<LogicNode>();
             int collided_state = collided_behavior.GetLogicState();
             //GND pin collision node is not GND
-            if(collided_state != (int)LOGIC.LOW)
+            if (collided_state != (int)LOGIC.LOW)
             {
                 logic_behavior.SetLogicState((int)LOGIC.INVALID);
-                Debug.Log("NAND 74LS00 Ground Input not set to LOW");
+                Debug.Log("NAND 74LS04 Ground Input not set to LOW");
             }
             //GND pin collision node is also GND
-            else 
+            else
             {
                 logic_behavior.SetLogicState((int)LOGIC.LOW);
 
@@ -158,10 +159,10 @@ public class NANDGate : MonoBehaviour, LogicInterface {
             GameObject collided_node = logic_behavior.GetCollidingNode();
             LogicNode collided_behavior = collided_node.GetComponent<LogicNode>();
             int collided_state = collided_behavior.GetLogicState();
-            if(collided_state != (int)LOGIC.HIGH)
+            if (collided_state != (int)LOGIC.HIGH)
             {
                 logic_behavior.SetLogicState((int)LOGIC.INVALID);
-                Debug.Log("NAND 74LS00 VCC Input not set to HIGH");
+                Debug.Log("NAND 74LS04 VCC Input not set to HIGH");
             }
             else
             {
@@ -173,59 +174,41 @@ public class NANDGate : MonoBehaviour, LogicInterface {
          * pin state to the collided node's state.
          * 
          */
-        //NAND INPUT 1
+        //INV INPUT 1
         if (logic_dictionary.TryGetValue(LOGIC_DEVICE_ID + 0, out logic_0))
         {
             LogicNode logic_behavior = logic_0.GetComponent<LogicNode>();
             GameObject collided_node = logic_behavior.GetCollidingNode();
             LogicNode collided_behavior = collided_node.GetComponent<LogicNode>();
             int collided_state = collided_behavior.GetLogicState();
-            if(collided_state == (int)LOGIC.INVALID || !IsDeviceOn())
+            if (collided_state == (int)LOGIC.INVALID || !IsDeviceOn())
             {
                 logic_behavior.SetLogicState((int)LOGIC.INVALID);
-                Debug.Log("NAND 74LS400 input 0 is invalid.");
+                Debug.Log("INV 74LS04 input 0 is invalid.");
             }
             else if (this.IsDeviceOn())
             {
                 logic_behavior.SetLogicState(collided_state);
             }
         }
-        //NAND INPUT 1
-        if (logic_dictionary.TryGetValue(LOGIC_DEVICE_ID + 1, out logic_1))
+        //INV INPUT 2
+        if (logic_dictionary.TryGetValue(LOGIC_DEVICE_ID + 2, out logic_2))
         {
-            LogicNode logic_behavior = logic_1.GetComponent<LogicNode>();
+            LogicNode logic_behavior = logic_2.GetComponent<LogicNode>();
             GameObject collided_node = logic_behavior.GetCollidingNode();
             LogicNode collided_behavior = collided_node.GetComponent<LogicNode>();
             int collided_state = collided_behavior.GetLogicState();
             if (collided_state == (int)LOGIC.INVALID || !IsDeviceOn())
             {
                 logic_behavior.SetLogicState((int)LOGIC.INVALID);
-                Debug.Log("NAND 74LS400 input 1 is invalid.");
+                Debug.Log("INV 74LS04 input 2 is invalid.");
             }
             else if (this.IsDeviceOn())
             {
                 logic_behavior.SetLogicState(collided_state);
             }
         }
-        //NAND INPUT 1
-        if (logic_dictionary.TryGetValue(LOGIC_DEVICE_ID + 3, out logic_3))
-        {
-            LogicNode logic_behavior = logic_3.GetComponent<LogicNode>();
-            GameObject collided_node = logic_behavior.GetCollidingNode();
-            LogicNode collided_behavior = collided_node.GetComponent<LogicNode>();
-            int collided_state = collided_behavior.GetLogicState();
-            if (collided_state == (int)LOGIC.INVALID || !IsDeviceOn())
-            {
-                logic_behavior.SetLogicState((int)LOGIC.INVALID);
-                Debug.Log("NAND 74LS400 input 3 is invalid.");
-            }
-            else if(this.IsDeviceOn())
-            {
-                logic_behavior.SetLogicState(collided_state);
-            }
-
-        }
-        //NAND INPUT 1
+        //INV INPUT 3
         if (logic_dictionary.TryGetValue(LOGIC_DEVICE_ID + 4, out logic_4))
         {
             LogicNode logic_behavior = logic_4.GetComponent<LogicNode>();
@@ -235,46 +218,14 @@ public class NANDGate : MonoBehaviour, LogicInterface {
             if (collided_state == (int)LOGIC.INVALID || !IsDeviceOn())
             {
                 logic_behavior.SetLogicState((int)LOGIC.INVALID);
-                Debug.Log("NAND 74LS400 input 4 is invalid.");
+                Debug.Log("INV 74LS04 input 4 is invalid.");
             }
-            else if(this.IsDeviceOn())
+            else if (this.IsDeviceOn())
             {
                 logic_behavior.SetLogicState(collided_state);
             }
-
         }
-        //NAND ------OUTPUT------- 1
-        if (logic_dictionary.TryGetValue(LOGIC_DEVICE_ID + 5, out logic_5))
-        {
-            LogicNode logic_behavior = logic_5.GetComponent<LogicNode>();
-            GameObject collided_node = logic_behavior.GetCollidingNode();
-            LogicNode collided_behavior = collided_node.GetComponent<LogicNode>();
-            int collided_state = collided_behavior.GetLogicState();
-            LogicNode lnode_0, lnode_1, lnode_3, lnode_4; //LogicNode references
-            lnode_0 = logic_0.GetComponent<LogicNode>(); lnode_1 = logic_1.GetComponent<LogicNode>();
-            lnode_3 = logic_3.GetComponent<LogicNode>(); lnode_4 = logic_4.GetComponent<LogicNode>();
-            int low = (int)LOGIC.LOW;
-            int invalid = (int)LOGIC.INVALID;
-            if (IsDeviceOn())
-            {
-                if (lnode_0.GetLogicState() == low && lnode_1.GetLogicState() == low
-                && lnode_3.GetLogicState() == low && lnode_4.GetLogicState() == low)
-                {
-                    logic_behavior.SetLogicState((int)LOGIC.HIGH);
-                }
-                else if (lnode_0.GetLogicState() != invalid && lnode_1.GetLogicState() != invalid
-                && lnode_3.GetLogicState() != invalid && lnode_4.GetLogicState() != invalid)
-                {
-                    logic_behavior.SetLogicState((int)LOGIC.LOW);
-                }
-            }
-            else
-            {
-                logic_behavior.SetLogicState((int)LOGIC.INVALID);
-            }
-            collided_behavior.RequestStateChange(logic_behavior.GetLogicState());
-        }
-        //NAND INPUT 2
+        //INV INPUT 4
         if (logic_dictionary.TryGetValue(LOGIC_DEVICE_ID + 8, out logic_8))
         {
             LogicNode logic_behavior = logic_8.GetComponent<LogicNode>();
@@ -284,48 +235,31 @@ public class NANDGate : MonoBehaviour, LogicInterface {
             if (collided_state == (int)LOGIC.INVALID || !IsDeviceOn())
             {
                 logic_behavior.SetLogicState((int)LOGIC.INVALID);
-                Debug.Log("NAND 74LS400 input 8 is invalid.");
+                Debug.Log("INV 74LS04 input 8 is invalid.");
             }
             else if (this.IsDeviceOn())
             {
                 logic_behavior.SetLogicState(collided_state);
             }
         }
-        //NAND INPUT 2
-        if (logic_dictionary.TryGetValue(LOGIC_DEVICE_ID + 9, out logic_9))
+        //INV INPUT 5
+        if (logic_dictionary.TryGetValue(LOGIC_DEVICE_ID + 10, out logic_10))
         {
-            LogicNode logic_behavior = logic_9.GetComponent<LogicNode>();
+            LogicNode logic_behavior = logic_10.GetComponent<LogicNode>();
             GameObject collided_node = logic_behavior.GetCollidingNode();
             LogicNode collided_behavior = collided_node.GetComponent<LogicNode>();
             int collided_state = collided_behavior.GetLogicState();
             if (collided_state == (int)LOGIC.INVALID || !IsDeviceOn())
             {
                 logic_behavior.SetLogicState((int)LOGIC.INVALID);
-                Debug.Log("NAND 74LS400 input 9 is invalid.");
+                Debug.Log("INV 74LS04 input 10 is invalid.");
             }
             else if (this.IsDeviceOn())
             {
                 logic_behavior.SetLogicState(collided_state);
             }
         }
-        //NAND INPUT 2
-        if (logic_dictionary.TryGetValue(LOGIC_DEVICE_ID + 11, out logic_11))
-        {
-            LogicNode logic_behavior = logic_11.GetComponent<LogicNode>();
-            GameObject collided_node = logic_behavior.GetCollidingNode();
-            LogicNode collided_behavior = collided_node.GetComponent<LogicNode>();
-            int collided_state = collided_behavior.GetLogicState();
-            if (collided_state == (int)LOGIC.INVALID || !IsDeviceOn())
-            {
-                logic_behavior.SetLogicState((int)LOGIC.INVALID);
-                Debug.Log("NAND 74LS400 11 input is invalid.");
-            }
-            else if (this.IsDeviceOn())
-            {
-                logic_behavior.SetLogicState(collided_state);
-            }
-        }
-        //NAND INPUT 2
+        //INV INPUT 6
         if (logic_dictionary.TryGetValue(LOGIC_DEVICE_ID + 12, out logic_12))
         {
             LogicNode logic_behavior = logic_12.GetComponent<LogicNode>();
@@ -335,36 +269,191 @@ public class NANDGate : MonoBehaviour, LogicInterface {
             if (collided_state == (int)LOGIC.INVALID || !IsDeviceOn())
             {
                 logic_behavior.SetLogicState((int)LOGIC.INVALID);
-                Debug.Log("NAND 74LS400 input 12 is invalid.");
+                Debug.Log("INV 74LS04 input 12 is invalid.");
             }
             else if (this.IsDeviceOn())
             {
                 logic_behavior.SetLogicState(collided_state);
             }
         }
-        //NAND ------OUTPUT----- 2
+        //INV ------OUTPUT----- 1
+        if (logic_dictionary.TryGetValue(LOGIC_DEVICE_ID + 1, out logic_1))
+        {
+            LogicNode logic_behavior = logic_1.GetComponent<LogicNode>();
+            GameObject collided_node = logic_behavior.GetCollidingNode();
+            LogicNode collided_behavior = collided_node.GetComponent<LogicNode>();
+            LogicNode input_logic_node = logic_0.GetComponent<LogicNode>();
+            int high = (int)LOGIC.HIGH;
+            int low = (int)LOGIC.LOW;
+            int invalid = (int)LOGIC.INVALID;
+            if (IsDeviceOn())
+            {
+                if(input_logic_node.GetLogicState() == low)
+                {
+                    logic_behavior.SetLogicState(high);
+                }
+                else if(input_logic_node.GetLogicState() == high)
+                {
+                    logic_behavior.SetLogicState(low);
+                }
+                else
+                {
+                    logic_behavior.SetLogicState(invalid);
+                }
+            }
+            else
+            {
+                logic_behavior.SetLogicState((int)LOGIC.INVALID);
+            }
+            collided_behavior.RequestStateChange(logic_behavior.GetLogicState());
+        }
+        //INV ------OUTPUT----- 2
+        if (logic_dictionary.TryGetValue(LOGIC_DEVICE_ID + 3, out logic_3))
+        {
+            LogicNode logic_behavior = logic_3.GetComponent<LogicNode>();
+            GameObject collided_node = logic_behavior.GetCollidingNode();
+            LogicNode collided_behavior = collided_node.GetComponent<LogicNode>();
+            LogicNode input_logic_node = logic_2.GetComponent<LogicNode>();
+            int high = (int)LOGIC.HIGH;
+            int low = (int)LOGIC.LOW;
+            int invalid = (int)LOGIC.INVALID;
+            if (IsDeviceOn())
+            {
+                if (input_logic_node.GetLogicState() == low)
+                {
+                    logic_behavior.SetLogicState(high);
+                }
+                else if (input_logic_node.GetLogicState() == high)
+                {
+                    logic_behavior.SetLogicState(low);
+                }
+                else
+                {
+                    logic_behavior.SetLogicState(invalid);
+                }
+            }
+            else
+            {
+                logic_behavior.SetLogicState((int)LOGIC.INVALID);
+            }
+            collided_behavior.RequestStateChange(logic_behavior.GetLogicState());
+        }
+        //INV ------OUTPUT----- 3
+        if (logic_dictionary.TryGetValue(LOGIC_DEVICE_ID + 5, out logic_5))
+        {
+            LogicNode logic_behavior = logic_5.GetComponent<LogicNode>();
+            GameObject collided_node = logic_behavior.GetCollidingNode();
+            LogicNode collided_behavior = collided_node.GetComponent<LogicNode>();
+            LogicNode input_logic_node = logic_4.GetComponent<LogicNode>();
+            int high = (int)LOGIC.HIGH;
+            int low = (int)LOGIC.LOW;
+            int invalid = (int)LOGIC.INVALID;
+            if (IsDeviceOn())
+            {
+                if (input_logic_node.GetLogicState() == low)
+                {
+                    logic_behavior.SetLogicState(high);
+                }
+                else if (input_logic_node.GetLogicState() == high)
+                {
+                    logic_behavior.SetLogicState(low);
+                }
+                else
+                {
+                    logic_behavior.SetLogicState(invalid);
+                }
+            }
+            else
+            {
+                logic_behavior.SetLogicState((int)LOGIC.INVALID);
+            }
+            collided_behavior.RequestStateChange(logic_behavior.GetLogicState());
+        }
+        //INV ------OUTPUT----- 4
         if (logic_dictionary.TryGetValue(LOGIC_DEVICE_ID + 7, out logic_7))
         {
             LogicNode logic_behavior = logic_7.GetComponent<LogicNode>();
             GameObject collided_node = logic_behavior.GetCollidingNode();
             LogicNode collided_behavior = collided_node.GetComponent<LogicNode>();
-            LogicNode lnode_8, lnode_9, lnode_11, lnode_12; //LogicNode references
-            lnode_8 = logic_8.GetComponent<LogicNode>(); lnode_9 = logic_9.GetComponent<LogicNode>();
-            lnode_11 = logic_11.GetComponent<LogicNode>(); lnode_12 = logic_12.GetComponent<LogicNode>();
+            LogicNode input_logic_node = logic_8.GetComponent<LogicNode>();
+            int high = (int)LOGIC.HIGH;
             int low = (int)LOGIC.LOW;
             int invalid = (int)LOGIC.INVALID;
             if (IsDeviceOn())
             {
-                if (lnode_8.GetLogicState() == low && lnode_9.GetLogicState() == low
-                && lnode_11.GetLogicState() == low && lnode_12.GetLogicState() == low)
+                if (input_logic_node.GetLogicState() == low)
                 {
-                    logic_behavior.SetLogicState((int)LOGIC.HIGH);
-                    
+                    logic_behavior.SetLogicState(high);
                 }
-                else if (lnode_8.GetLogicState() != invalid && lnode_9.GetLogicState() != invalid
-                && lnode_11.GetLogicState() != invalid && lnode_12.GetLogicState() != invalid)
+                else if (input_logic_node.GetLogicState() == high)
                 {
-                    logic_behavior.SetLogicState((int)LOGIC.LOW);
+                    logic_behavior.SetLogicState(low);
+                }
+                else
+                {
+                    logic_behavior.SetLogicState(invalid);
+                }
+            }
+            else
+            {
+                logic_behavior.SetLogicState((int)LOGIC.INVALID);
+            }
+            collided_behavior.RequestStateChange(logic_behavior.GetLogicState());
+        }
+        //INV ------OUTPUT----- 5
+        if (logic_dictionary.TryGetValue(LOGIC_DEVICE_ID + 9, out logic_9))
+        {
+            LogicNode logic_behavior = logic_9.GetComponent<LogicNode>();
+            GameObject collided_node = logic_behavior.GetCollidingNode();
+            LogicNode collided_behavior = collided_node.GetComponent<LogicNode>();
+            LogicNode input_logic_node = logic_10.GetComponent<LogicNode>();
+            int high = (int)LOGIC.HIGH;
+            int low = (int)LOGIC.LOW;
+            int invalid = (int)LOGIC.INVALID;
+            if (IsDeviceOn())
+            {
+                if (input_logic_node.GetLogicState() == low)
+                {
+                    logic_behavior.SetLogicState(high);
+                }
+                else if (input_logic_node.GetLogicState() == high)
+                {
+                    logic_behavior.SetLogicState(low);
+                }
+                else
+                {
+                    logic_behavior.SetLogicState(invalid);
+                }
+            }
+            else
+            {
+                logic_behavior.SetLogicState((int)LOGIC.INVALID);
+            }
+            collided_behavior.RequestStateChange(logic_behavior.GetLogicState());
+        }
+        //INV ------OUTPUT----- 6
+        if (logic_dictionary.TryGetValue(LOGIC_DEVICE_ID + 11, out logic_11))
+        {
+            LogicNode logic_behavior = logic_11.GetComponent<LogicNode>();
+            GameObject collided_node = logic_behavior.GetCollidingNode();
+            LogicNode collided_behavior = collided_node.GetComponent<LogicNode>();
+            LogicNode input_logic_node = logic_12.GetComponent<LogicNode>();
+            int high = (int)LOGIC.HIGH;
+            int low = (int)LOGIC.LOW;
+            int invalid = (int)LOGIC.INVALID;
+            if (IsDeviceOn())
+            {
+                if (input_logic_node.GetLogicState() == low)
+                {
+                    logic_behavior.SetLogicState(high);
+                }
+                else if (input_logic_node.GetLogicState() == high)
+                {
+                    logic_behavior.SetLogicState(low);
+                }
+                else
+                {
+                    logic_behavior.SetLogicState(invalid);
                 }
             }
             else
@@ -376,7 +465,6 @@ public class NANDGate : MonoBehaviour, LogicInterface {
     }
     private void CheckIfSnapped()
     {
-        Debug.Log("74LS00 Mouse Up");
 
         //Check if all nodes with the chip is colliding with another logic node;
         foreach (KeyValuePair<string, GameObject> entry in logic_dictionary)
@@ -389,7 +477,7 @@ public class NANDGate : MonoBehaviour, LogicInterface {
                 SpriteRenderer spr_ren = snapIndicatorGameObj.GetComponent<SpriteRenderer>();
                 spr_ren.material.color = new Color(1, 1, 1); //neutral
                 SNAPPED = false;
-                Debug.Log("Snap not set.");
+                Debug.Log("NOT SNAPPED.");
                 return;
             }
         }
@@ -400,7 +488,7 @@ public class NANDGate : MonoBehaviour, LogicInterface {
         {
             LogicNode logicNodeScript_l = node_left.GetComponent<LogicNode>();
             GameObject collidingNodeLeft = logicNodeScript_l.GetCollidingNode();
-            Debug.Log("74LS00 SNAPPED!");
+            Debug.Log("74LS04 SNAPPED!");
             Vector3 collidingNodePos = collidingNodeLeft.transform.position;
             Vector3 offsetPosition = new Vector3(collidingNodePos.x + .245f, collidingNodePos.y - .58f, collidingNodePos.z);
             DeviceGameObject.transform.position = offsetPosition;
@@ -415,11 +503,11 @@ public class NANDGate : MonoBehaviour, LogicInterface {
         CheckIfSnapped();
     }
 
-     
-    
+
+
     private void ClearChip()
     {
-        foreach(KeyValuePair<string, GameObject> entry in logic_dictionary)
+        foreach (KeyValuePair<string, GameObject> entry in logic_dictionary)
         {
             GameObject logicNodeGameObj = entry.Value;
             LogicNode logic_node = logicNodeGameObj.GetComponent<LogicNode>();
@@ -428,9 +516,10 @@ public class NANDGate : MonoBehaviour, LogicInterface {
     }
 
     // Update is called once per frame
-    void Update () {
+    void Update()
+    {
 
-	}
+    }
 
     public void ReactToLogic(GameObject logicNode, int requestedState)
     {
@@ -443,7 +532,6 @@ public class NANDGate : MonoBehaviour, LogicInterface {
         {
             ChipIO();
         }
-
     }
 
     public void ReactToLogic(GameObject LogicNode)
