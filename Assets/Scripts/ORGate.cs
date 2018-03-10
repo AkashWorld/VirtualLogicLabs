@@ -12,9 +12,9 @@ public class ORGate : MonoBehaviour, LogicInterface
     private void setNodeProperties(GameObject logicNode, string logicNodeID)
     {
         LogicBehavior logic_behavior = logicNode.AddComponent<LogicBehavior>() as LogicBehavior; //Adds the LogicBehavior.cs component to this gameobject to control logic behavior
-        logic_behavior.setLogicId(logicNodeID); //logic id that sets all the nodes on the left column of the LEFT section of the protoboard the same id
-        logic_behavior.setLogicNode(logicNode);
-        logic_behavior.setOwningDevice(this);
+        logic_behavior.SetLogicId(logicNodeID); //logic id that sets all the nodes on the left column of the LEFT section of the protoboard the same id
+        logic_behavior.SetLogicNode(logicNode);
+        logic_behavior.SetOwningDevice(this);
         SpriteRenderer sprite_renderer = logicNode.AddComponent<SpriteRenderer>(); //adds a test "circle" graphic
         sprite_renderer.sprite = Resources.Load<Sprite>("logicCircle");
         sprite_renderer.sortingLayerName = "Logic";
@@ -75,7 +75,7 @@ public class ORGate : MonoBehaviour, LogicInterface
         {
             GameObject logic_node = entry.Value;
             LogicBehavior logic_behavior = logic_node.GetComponent<LogicBehavior>();
-            if (logic_behavior.getCollidingNode() == null)
+            if (logic_behavior.GetCollidingNode() == null)
             {
                 Debug.Log("Snap not set.");
                 return;
@@ -87,7 +87,7 @@ public class ORGate : MonoBehaviour, LogicInterface
         if (logic_dictionary.TryGetValue(LOGIC_DEVICE_ID + 0, out node_left))
         {
             LogicBehavior logicNodeScript_l = node_left.GetComponent<LogicBehavior>();
-            GameObject collidingNodeLeft = logicNodeScript_l.getCollidingNode();
+            GameObject collidingNodeLeft = logicNodeScript_l.GetCollidingNode();
             Debug.Log("74LS32 SNAPPED!");
             Debug.Log("Colliding Node " + collidingNodeLeft.name + " position: " + collidingNodeLeft.transform.position);
             Vector3 collidingNodePos = collidingNodeLeft.transform.position;
@@ -104,8 +104,12 @@ public class ORGate : MonoBehaviour, LogicInterface
 
     }
 
-    public void ReactToLogic(GameObject logicNode)
+    public void ReactToLogic(GameObject logicNode, int source)
     {
 
+    }
+
+    public void ReactToLogic(GameObject LogicNode)
+    {
     }
 }

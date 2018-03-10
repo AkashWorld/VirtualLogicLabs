@@ -13,9 +13,9 @@ public class PowerSupplyScript : MonoBehaviour, LogicInterface {
     private void setNodeProperties(GameObject logicNode, string logicNodeID)
     {
         LogicBehavior logic_behavior = logicNode.AddComponent<LogicBehavior>() as LogicBehavior; //Adds the LogicBehavior.cs component to this gameobject to control logic behavior
-        logic_behavior.setLogicId(logicNodeID); //logic id that sets all the nodes on the left column of the LEFT section of the protoboard the same id
-        logic_behavior.setLogicNode(logicNode);
-        logic_behavior.setOwningDevice(this);
+        logic_behavior.SetLogicId(logicNodeID); //logic id that sets all the nodes on the left column of the LEFT section of the protoboard the same id
+        logic_behavior.SetLogicNode(logicNode);
+        logic_behavior.SetOwningDevice(this);
         SpriteRenderer sprite_renderer = logicNode.AddComponent<SpriteRenderer>(); //adds a test "circle" graphic
         sprite_renderer.sprite = Resources.Load<Sprite>("logicCircle");
         sprite_renderer.sortingLayerName = "Logic";
@@ -37,7 +37,7 @@ public class PowerSupplyScript : MonoBehaviour, LogicInterface {
         vccNode.transform.localScale = new Vector3(.3F, .3F, 0);
         setNodeProperties(vccNode, vccKey);
         LogicBehavior vccBehavior = vccNode.GetComponent<LogicBehavior>();
-        vccBehavior.setLogicState((int)LOGIC.HIGH);
+        vccBehavior.SetLogicState((int)LOGIC.HIGH);
 
         gndNode = new GameObject(gndKey); //logic node with the name leftlogicnode_{i}_0
         gndNode.transform.parent = powerSupply.transform; //sets the Protoboard game object as logicNode_0's parent
@@ -45,7 +45,7 @@ public class PowerSupplyScript : MonoBehaviour, LogicInterface {
         gndNode.transform.localScale = new Vector3(.3F, .3f, 0);
         setNodeProperties(gndNode, gndKey);
         LogicBehavior gndBehavior = gndNode.GetComponent<LogicBehavior>();
-        gndBehavior.setLogicState((int)LOGIC.LOW);
+        gndBehavior.SetLogicState((int)LOGIC.LOW);
 
 
     }
@@ -55,8 +55,13 @@ public class PowerSupplyScript : MonoBehaviour, LogicInterface {
 		
 	}
 
-    public void ReactToLogic(GameObject callingNode)
+    public void ReactToLogic(GameObject callingNode, int source)
     {
+        throw new System.NotImplementedException();
+    }
 
+    public void ReactToLogic(GameObject LogicNode)
+    {
+        throw new System.NotImplementedException();
     }
 }

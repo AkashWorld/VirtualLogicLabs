@@ -7,7 +7,6 @@ public class ProtoboardObject : MonoBehaviour, LogicInterface{
      * Left/Right column: 20x2
      * Middle Left/Right column: 27x5
      **/
-    enum LOGIC { HIGH = 1, LOW = 0, INVALID = -1 }
     GameObject protoboard;
     const string LEFT_NODE = "leftlogicnode";
     const string RIGHT_NODE = "rightlogicnode";
@@ -16,14 +15,14 @@ public class ProtoboardObject : MonoBehaviour, LogicInterface{
     const string MIDDLE_LL_NODE = "m_farleftnode";
     const string MIDDLE_RR_NODE = "m_farrightnode";
     Dictionary<string, List<GameObject>> LogicID_Node_Dict; //Dictionary containing lists of matching Logic IDs
+    Stack<GameObject> CollisionStack;
 
-
-    private void setNodeProperties(GameObject logicNode, string logicNodeID)
+    private void SetNodeProperties(GameObject logicNode, string logicNodeID)
     {
         LogicBehavior logic_behavior = logicNode.AddComponent<LogicBehavior>() as LogicBehavior; //Adds the LogicBehavior.cs component to this gameobject to control logic behavior
-        logic_behavior.setLogicId(logicNodeID); //logic id that sets all the nodes on the left column of the LEFT section of the protoboard the same id
-        logic_behavior.setLogicNode(logicNode);
-        logic_behavior.setOwningDevice(this);
+        logic_behavior.SetLogicId(logicNodeID); //logic id that sets all the nodes on the left column of the LEFT section of the protoboard the same id
+        logic_behavior.SetLogicNode(logicNode);
+        logic_behavior.SetOwningDevice(this);
         SpriteRenderer sprite_renderer = logicNode.AddComponent<SpriteRenderer>(); //adds a test "circle" graphic
         sprite_renderer.sprite = Resources.Load<Sprite>("logicCircle");
         sprite_renderer.sortingLayerName = "Logic";
@@ -39,6 +38,7 @@ public class ProtoboardObject : MonoBehaviour, LogicInterface{
 	// Use this for initialization
 	void Start () {
         protoboard = GameObject.Find("Protoboard");
+        CollisionStack = new Stack<GameObject>();
         LogicID_Node_Dict = new Dictionary<string, List<GameObject>>(); //a dictionary (HASH TABLE) of the logic ID and GameObject pairs
         float vertical_offset = 0; //this variable dictate the offset in the Y axis of the protoboard when populating the logic nodes
 
@@ -52,7 +52,7 @@ public class ProtoboardObject : MonoBehaviour, LogicInterface{
             logicNode_0.transform.parent = protoboard.transform; //sets the Protoboard game object as logicNode_0's parent
             logicNode_0.transform.localPosition = new Vector3(-3.41F, 2.275F + vertical_offset, 0); //'localPosition' sets the position of this node RELATIVE to the protoboard
             logicNode_0.transform.localScale = new Vector3(.10F, .10F, 0);
-            setNodeProperties(logicNode_0, LEFT_NODE + "_LEFT");
+            SetNodeProperties(logicNode_0, LEFT_NODE + "_LEFT");
             List<GameObject> leftnodeleftlist;
             if(LogicID_Node_Dict.TryGetValue(LEFT_NODE + "_LEFT", out leftnodeleftlist)) {
                 leftnodeleftlist.Add(logicNode_0);
@@ -63,7 +63,7 @@ public class ProtoboardObject : MonoBehaviour, LogicInterface{
             logicNode_1.transform.parent = protoboard.transform; //sets the Protoboard game object as logicNode_1's parent
             logicNode_1.transform.localPosition = new Vector3(-3.195F, 2.275F + vertical_offset, 0); //'localPosition' sets the position of this node RELATIVE to the protoboard
             logicNode_1.transform.localScale = new Vector3(.10F, .10F, 0);
-            setNodeProperties(logicNode_1, LEFT_NODE + "_RIGHT");
+            SetNodeProperties(logicNode_1, LEFT_NODE + "_RIGHT");
             List<GameObject> leftnoderightlist;
             if (LogicID_Node_Dict.TryGetValue(LEFT_NODE + "_RIGHT", out leftnoderightlist))
             {
@@ -89,7 +89,7 @@ public class ProtoboardObject : MonoBehaviour, LogicInterface{
             logicNode_0.transform.parent = protoboard.transform; //sets the Protoboard game object as logicNode_0's parent
             logicNode_0.transform.localPosition = new Vector3(3.195F, 2.275F + vertical_offset, 0); //'localPosition' sets the position of this node RELATIVE to the protoboard
             logicNode_0.transform.localScale = new Vector3(.10F, .10F, 0);
-            setNodeProperties(logicNode_0, RIGHT_NODE + "_LEFT");
+            SetNodeProperties(logicNode_0, RIGHT_NODE + "_LEFT");
             List<GameObject> rightnodeleftlist;
             if (LogicID_Node_Dict.TryGetValue(RIGHT_NODE + "_LEFT", out rightnodeleftlist))
             {
@@ -100,7 +100,7 @@ public class ProtoboardObject : MonoBehaviour, LogicInterface{
             logicNode_1.transform.parent = protoboard.transform; //sets the Protoboard game object as logicNode_1's parent
             logicNode_1.transform.localPosition = new Vector3(3.41F, 2.275F + vertical_offset, 0); //'localPosition' sets the position of this node RELATIVE to the protoboard
             logicNode_1.transform.localScale = new Vector3(.10F, .10F, 0);
-            setNodeProperties(logicNode_1, RIGHT_NODE + "_RIGHT");
+            SetNodeProperties(logicNode_1, RIGHT_NODE + "_RIGHT");
             List<GameObject> rightnoderightlist;
             if (LogicID_Node_Dict.TryGetValue(RIGHT_NODE + "_RIGHT", out rightnoderightlist))
             {
@@ -122,32 +122,32 @@ public class ProtoboardObject : MonoBehaviour, LogicInterface{
             logicNode_0.transform.parent = protoboard.transform; //sets the Protoboard game object as logicNode_0's parent
             logicNode_0.transform.localPosition = new Vector3(-1.125F, 2.69F + vertical_offset, 0); //'localPosition' sets the position of this node RELATIVE to the protoboard
             logicNode_0.transform.localScale = new Vector3(.10F, .10F, 0);
-            setNodeProperties(logicNode_0, MIDDLE_L_NODE + "_" + i); 
+            SetNodeProperties(logicNode_0, MIDDLE_L_NODE + "_" + i); 
 
 
             GameObject logicNode_1 = new GameObject(MIDDLE_L_NODE + "_" + i + "_" + 1); //logic node with the name rightlogicnode_{i}_1
             logicNode_1.transform.parent = protoboard.transform; //sets the Protoboard game object as logicNode_1's parent
             logicNode_1.transform.localPosition = new Vector3(-.92F, 2.69F + vertical_offset, 0); //'localPosition' sets the position of this node RELATIVE to the protoboard
             logicNode_1.transform.localScale = new Vector3(.10F, .10F, 0);
-            setNodeProperties(logicNode_1, MIDDLE_L_NODE + "_" + i); 
+            SetNodeProperties(logicNode_1, MIDDLE_L_NODE + "_" + i); 
 
             GameObject logicNode_2 = new GameObject(MIDDLE_L_NODE + "_" + i + "_" + 2); //logic node with the name rightlogicnode_{i}_2
             logicNode_2.transform.parent = protoboard.transform; //sets the Protoboard game object as logicNode_1's parent
             logicNode_2.transform.localPosition = new Vector3(-.715F, 2.69F + vertical_offset, 0); //'localPosition' sets the position of this node RELATIVE to the protoboard
             logicNode_2.transform.localScale = new Vector3(.10F, .10F, 0);
-            setNodeProperties(logicNode_2, MIDDLE_L_NODE + "_" + i); 
+            SetNodeProperties(logicNode_2, MIDDLE_L_NODE + "_" + i); 
 
             GameObject logicNode_3 = new GameObject(MIDDLE_L_NODE + "_" + i + "_" + 3); //logic node with the name rightlogicnode_{i}_3
             logicNode_3.transform.parent = protoboard.transform; //sets the Protoboard game object as logicNode_1's parent
             logicNode_3.transform.localPosition = new Vector3(-.51F, 2.69F + vertical_offset, 0); //'localPosition' sets the position of this node RELATIVE to the protoboard
             logicNode_3.transform.localScale = new Vector3(.10F, .10F, 0);
-            setNodeProperties(logicNode_3, MIDDLE_L_NODE + "_" + i); 
+            SetNodeProperties(logicNode_3, MIDDLE_L_NODE + "_" + i); 
 
             GameObject logicNode_4 = new GameObject(MIDDLE_L_NODE + "_" + i + "_" + 4); //logic node with the name rightlogicnode_{i}_4
             logicNode_4.transform.parent = protoboard.transform; //sets the Protoboard game object as logicNode_1's parent
             logicNode_4.transform.localPosition = new Vector3(-.305F, 2.69F + vertical_offset, 0); //'localPosition' sets the position of this node RELATIVE to the protoboard
             logicNode_4.transform.localScale = new Vector3(.10F, .10F, 0);
-            setNodeProperties(logicNode_4, MIDDLE_L_NODE + "_" + i);
+            SetNodeProperties(logicNode_4, MIDDLE_L_NODE + "_" + i);
 
             LogicID_Node_Dict.Add(MIDDLE_L_NODE + "_" + i, new List<GameObject>());
             List<GameObject> middle_row_list;
@@ -172,31 +172,31 @@ public class ProtoboardObject : MonoBehaviour, LogicInterface{
             logicNode_0.transform.parent = protoboard.transform; //sets the Protoboard game object as logicNode_0's parent
             logicNode_0.transform.localPosition = new Vector3(1.125F, 2.69F + vertical_offset, 0); //'localPosition' sets the position of this node RELATIVE to the protoboard
             logicNode_0.transform.localScale = new Vector3(.10F, .10F, 0);
-            setNodeProperties(logicNode_0, MIDDLE_R_NODE + "_" + i); 
+            SetNodeProperties(logicNode_0, MIDDLE_R_NODE + "_" + i); 
 
             GameObject logicNode_1 = new GameObject(MIDDLE_R_NODE + "_" + i + "_" + 1); //logic node with the name rightlogicnode_{i}_1
             logicNode_1.transform.parent = protoboard.transform; //sets the Protoboard game object as logicNode_1's parent
             logicNode_1.transform.localPosition = new Vector3(.92F, 2.69F + vertical_offset, 0); //'localPosition' sets the position of this node RELATIVE to the protoboard
             logicNode_1.transform.localScale = new Vector3(.10F, .10F, 0);
-            setNodeProperties(logicNode_1, MIDDLE_R_NODE + "_" + i); 
+            SetNodeProperties(logicNode_1, MIDDLE_R_NODE + "_" + i); 
 
             GameObject logicNode_2 = new GameObject(MIDDLE_R_NODE + "_" + i + "_" + 2); //logic node with the name rightlogicnode_{i}_2
             logicNode_2.transform.parent = protoboard.transform; //sets the Protoboard game object as logicNode_1's parent
             logicNode_2.transform.localPosition = new Vector3(.715F, 2.69F + vertical_offset, 0); //'localPosition' sets the position of this node RELATIVE to the protoboard
             logicNode_2.transform.localScale = new Vector3(.10F, .10F, 0);
-            setNodeProperties(logicNode_2, MIDDLE_R_NODE + "_" + i); 
+            SetNodeProperties(logicNode_2, MIDDLE_R_NODE + "_" + i); 
 
             GameObject logicNode_3 = new GameObject(MIDDLE_R_NODE + "_" + i + "_" + 3); //logic node with the name rightlogicnode_{i}_3
             logicNode_3.transform.parent = protoboard.transform; //sets the Protoboard game object as logicNode_1's parent
             logicNode_3.transform.localPosition = new Vector3(.51F, 2.69F + vertical_offset, 0); //'localPosition' sets the position of this node RELATIVE to the protoboard
             logicNode_3.transform.localScale = new Vector3(.10F, .10F, 0);
-            setNodeProperties(logicNode_3, MIDDLE_R_NODE + "_" + i);
+            SetNodeProperties(logicNode_3, MIDDLE_R_NODE + "_" + i);
 
             GameObject logicNode_4 = new GameObject(MIDDLE_R_NODE + "_" + i + "_" + 4); //logic node with the name rightlogicnode_{i}_4
             logicNode_4.transform.parent = protoboard.transform; //sets the Protoboard game object as logicNode_1's parent
             logicNode_4.transform.localPosition = new Vector3(.305F, 2.69F + vertical_offset, 0); //'localPosition' sets the position of this node RELATIVE to the protoboard
             logicNode_4.transform.localScale = new Vector3(.10F, .10F, 0);
-            setNodeProperties(logicNode_4, MIDDLE_R_NODE + "_" + i);
+            SetNodeProperties(logicNode_4, MIDDLE_R_NODE + "_" + i);
 
             LogicID_Node_Dict.Add(MIDDLE_R_NODE + "_" + i, new List<GameObject>());
             List<GameObject> middle_row_list;
@@ -222,31 +222,31 @@ public class ProtoboardObject : MonoBehaviour, LogicInterface{
             logicNode_0.transform.parent = protoboard.transform; //sets the Protoboard game object as logicNode_0's parent
             logicNode_0.transform.localPosition = new Vector3(2.58f, 2.69F + vertical_offset, 0); //'localPosition' sets the position of this node RELATIVE to the protoboard
             logicNode_0.transform.localScale = new Vector3(.10F, .10F, 0);
-            setNodeProperties(logicNode_0, MIDDLE_RR_NODE + "_" + i);
+            SetNodeProperties(logicNode_0, MIDDLE_RR_NODE + "_" + i);
 
             GameObject logicNode_1 = new GameObject(MIDDLE_RR_NODE + "_" + i + "_" + 1); //logic node with the name rightlogicnode_{i}_1
             logicNode_1.transform.parent = protoboard.transform; //sets the Protoboard game object as logicNode_1's parent
             logicNode_1.transform.localPosition = new Vector3(2.375F, 2.69F + vertical_offset, 0); //'localPosition' sets the position of this node RELATIVE to the protoboard
             logicNode_1.transform.localScale = new Vector3(.10F, .10F, 0);
-            setNodeProperties(logicNode_1, MIDDLE_RR_NODE + "_" + i);
+            SetNodeProperties(logicNode_1, MIDDLE_RR_NODE + "_" + i);
 
             GameObject logicNode_2 = new GameObject(MIDDLE_RR_NODE + "_" + i + "_" + 2); //logic node with the name rightlogicnode_{i}_2
             logicNode_2.transform.parent = protoboard.transform; //sets the Protoboard game object as logicNode_1's parent
             logicNode_2.transform.localPosition = new Vector3(2.17F, 2.69F + vertical_offset, 0); //'localPosition' sets the position of this node RELATIVE to the protoboard
             logicNode_2.transform.localScale = new Vector3(.10F, .10F, 0);
-            setNodeProperties(logicNode_2, MIDDLE_RR_NODE + "_" + i);
+            SetNodeProperties(logicNode_2, MIDDLE_RR_NODE + "_" + i);
 
             GameObject logicNode_3 = new GameObject(MIDDLE_RR_NODE + "_" + i + "_" + 3); //logic node with the name rightlogicnode_{i}_3
             logicNode_3.transform.parent = protoboard.transform; //sets the Protoboard game object as logicNode_1's parent
             logicNode_3.transform.localPosition = new Vector3(1.965F, 2.69F + vertical_offset, 0); //'localPosition' sets the position of this node RELATIVE to the protoboard
             logicNode_3.transform.localScale = new Vector3(.10F, .10F, 0);
-            setNodeProperties(logicNode_3, MIDDLE_RR_NODE + "_" + i);
+            SetNodeProperties(logicNode_3, MIDDLE_RR_NODE + "_" + i);
 
             GameObject logicNode_4 = new GameObject(MIDDLE_RR_NODE + "_" + i + "_" + 4); //logic node with the name rightlogicnode_{i}_4
             logicNode_4.transform.parent = protoboard.transform; //sets the Protoboard game object as logicNode_1's parent
             logicNode_4.transform.localPosition = new Vector3(1.76F, 2.69F + vertical_offset, 0); //'localPosition' sets the position of this node RELATIVE to the protoboard
             logicNode_4.transform.localScale = new Vector3(.10F, .10F, 0);
-            setNodeProperties(logicNode_4, MIDDLE_RR_NODE + "_" + i);
+            SetNodeProperties(logicNode_4, MIDDLE_RR_NODE + "_" + i);
 
             LogicID_Node_Dict.Add(MIDDLE_RR_NODE + "_" + i, new List<GameObject>());
             List<GameObject> middle_row_list;
@@ -270,31 +270,31 @@ public class ProtoboardObject : MonoBehaviour, LogicInterface{
             logicNode_0.transform.parent = protoboard.transform; //sets the Protoboard game object as logicNode_0's parent
             logicNode_0.transform.localPosition = new Vector3(-2.58f, 2.69F + vertical_offset, 0); //'localPosition' sets the position of this node RELATIVE to the protoboard
             logicNode_0.transform.localScale = new Vector3(.10F, .10F, 0);
-            setNodeProperties(logicNode_0, MIDDLE_LL_NODE + "_" + i);
+            SetNodeProperties(logicNode_0, MIDDLE_LL_NODE + "_" + i);
 
             GameObject logicNode_1 = new GameObject(MIDDLE_LL_NODE + "_" + i + "_" + 1); //logic node with the name rightlogicnode_{i}_1
             logicNode_1.transform.parent = protoboard.transform; //sets the Protoboard game object as logicNode_1's parent
             logicNode_1.transform.localPosition = new Vector3(-2.375F, 2.69F + vertical_offset, 0); //'localPosition' sets the position of this node RELATIVE to the protoboard
             logicNode_1.transform.localScale = new Vector3(.10F, .10F, 0);
-            setNodeProperties(logicNode_1, MIDDLE_LL_NODE + "_" + i);
+            SetNodeProperties(logicNode_1, MIDDLE_LL_NODE + "_" + i);
 
             GameObject logicNode_2 = new GameObject(MIDDLE_LL_NODE + "_" + i + "_" + 2); //logic node with the name rightlogicnode_{i}_2
             logicNode_2.transform.parent = protoboard.transform; //sets the Protoboard game object as logicNode_1's parent
             logicNode_2.transform.localPosition = new Vector3(-2.17F, 2.69F + vertical_offset, 0); //'localPosition' sets the position of this node RELATIVE to the protoboard
             logicNode_2.transform.localScale = new Vector3(.10F, .10F, 0);
-            setNodeProperties(logicNode_2, MIDDLE_LL_NODE + "_" + i);
+            SetNodeProperties(logicNode_2, MIDDLE_LL_NODE + "_" + i);
 
             GameObject logicNode_3 = new GameObject(MIDDLE_LL_NODE + "_" + i + "_" + 3); //logic node with the name rightlogicnode_{i}_3
             logicNode_3.transform.parent = protoboard.transform; //sets the Protoboard game object as logicNode_1's parent
             logicNode_3.transform.localPosition = new Vector3(-1.965F, 2.69F + vertical_offset, 0); //'localPosition' sets the position of this node RELATIVE to the protoboard
             logicNode_3.transform.localScale = new Vector3(.10F, .10F, 0);
-            setNodeProperties(logicNode_3, MIDDLE_LL_NODE + "_" + i);
+            SetNodeProperties(logicNode_3, MIDDLE_LL_NODE + "_" + i);
 
             GameObject logicNode_4 = new GameObject(MIDDLE_LL_NODE + "_" + i + "_" + 4); //logic node with the name rightlogicnode_{i}_4
             logicNode_4.transform.parent = protoboard.transform; //sets the Protoboard game object as logicNode_1's parent
             logicNode_4.transform.localPosition = new Vector3(-1.76F, 2.69F + vertical_offset, 0); //'localPosition' sets the position of this node RELATIVE to the protoboard
             logicNode_4.transform.localScale = new Vector3(.10F, .10F, 0);
-            setNodeProperties(logicNode_4, MIDDLE_LL_NODE + "_" + i);
+            SetNodeProperties(logicNode_4, MIDDLE_LL_NODE + "_" + i);
 
             LogicID_Node_Dict.Add(MIDDLE_LL_NODE + "_" + i, new List<GameObject>());
             List<GameObject> middle_row_list;
@@ -311,24 +311,23 @@ public class ProtoboardObject : MonoBehaviour, LogicInterface{
         }
     }
 
-    //Interface method from LogicInterface.cs that allows the protoboard to react to any changes to its logic nodes.
-    public void ReactToLogic(GameObject logicNode)
+    //Toggles node set from INVALID -> LOW -> HIGH
+    private void ToggleNodeSet(GameObject logicNode)
     {
-        Debug.Log("Protoboard: reacting to node interaction.");
         LogicBehavior logicBehaviorScript = logicNode.GetComponent<LogicBehavior>();
-        string logicID = logicBehaviorScript.getLogicId();
-        int state = logicBehaviorScript.getLogicState();
-        if(state == (int)LOGIC.INVALID)
+        string logicID = logicBehaviorScript.GetLogicId();
+        int state = logicBehaviorScript.GetLogicState();
+        if (state == (int)LOGIC.INVALID)
         {
             Debug.Log("Logic INVALID is found, toggling to Logic Low");
             state = (int)LOGIC.LOW;
         }
-        else if(state == (int)LOGIC.LOW)
+        else if (state == (int)LOGIC.LOW)
         {
             Debug.Log("Logic LOW is found, Toggling to Logic HIGH");
             state = (int)LOGIC.HIGH;
         }
-        else if(state == (int)LOGIC.HIGH)
+        else if (state == (int)LOGIC.HIGH)
         {
             Debug.Log("Logic HIGH is found, Toggling to Logic LOW");
             state = (int)LOGIC.INVALID;
@@ -338,87 +337,49 @@ public class ProtoboardObject : MonoBehaviour, LogicInterface{
         if (LogicID_Node_Dict.TryGetValue(logicID, out LogicNodeList))
         {
             //iterate through the list of logicNode
-            foreach(GameObject node in LogicNodeList)
+            foreach (GameObject node in LogicNodeList)
             {
                 //if the itearting node is not the input logicNode, then set the node's state
                 //to the input logicNode's state
                 LogicBehavior logicScript = node.GetComponent<LogicBehavior>();
-                logicScript.setLogicState(state);
+                logicScript.SetLogicState(state);
 
             }
         }
-
     }
 
-    private void protoboardUpdate()
+    //Interface method from LogicInterface.cs that allows the protoboard to react to any changes to its logic nodes.
+    public void ReactToLogic(GameObject logicNode)
     {
-        //iterate through all 'SETS' of logic nodes
-        foreach(KeyValuePair<string, List<GameObject>> entry in LogicID_Node_Dict)
-        {
-            string logic_id = entry.Key;
-            List<GameObject> node_set = entry.Value;
-            int state = (int)LogicBehavior.LOGIC.INVALID; //global set state
-            GameObject collidingGameObject = null; //global collision checker (to check if the set has any colliding nodes)
-            //iterate through the node set and find the common denominator
-            //RULES: Ground has priority. VCC is 2nd in priority. 
-            foreach (GameObject node in node_set)
-            {
-                LogicBehavior logicScript = node.GetComponent<LogicBehavior>();
-                int node_state = logicScript.getLogicState();
-                //Logic Low gets priority in Global set state
-                if(node_state == (int)LogicBehavior.LOGIC.LOW)
-                {
-                    state = (int)LogicBehavior.LOGIC.LOW;
-                }
-                else if(node_state == (int)LogicBehavior.LOGIC.HIGH)
-                {
-                    //Only set the global set state to High if it is INVALID
-                    if(state == (int)LogicBehavior.LOGIC.INVALID)
-                    {
-                        state = (int)LogicBehavior.LOGIC.HIGH;
-                    }
-                }
+        Debug.Log("Protoboard: reacting to node interaction.");
+        /**
+         * MouseClick behavior
+         */
+        ToggleNodeSet(logicNode);
+    }
 
-                GameObject colliding_node = logicScript.getCollidingNode();
-                if(colliding_node != null)
-                {
-                    collidingGameObject = colliding_node;
-                    LogicBehavior colliding_script = colliding_node.GetComponent<LogicBehavior>();
-                    int colliding_state = colliding_script.getLogicState();
-                    //Logic Low gets priority in Global set state
-                    if (colliding_state == (int)LogicBehavior.LOGIC.LOW)
-                    {
-                        state = (int)LogicBehavior.LOGIC.LOW;
-                    }
-                    else if (node_state == (int)LogicBehavior.LOGIC.HIGH)
-                    {
-                        //Only set the global set state to High if it is INVALID
-                        if (colliding_state == (int)LogicBehavior.LOGIC.INVALID)
-                        {
-                            state = (int)LogicBehavior.LOGIC.HIGH;
-                        }
-                    }
-                }
-            }
-            //apply global conditions to the entire node set
-            foreach (GameObject node in node_set)
+    public void ReactToLogic(GameObject logicNode, int requestedState)
+    {
+        LogicBehavior logicBehavior = logicNode.GetComponent<LogicBehavior>();
+        string logicID = logicBehavior.GetLogicId();
+        //Get the list of GameObjects (LogicNodes) that have the same ID as the input logicNode
+        List<GameObject> LogicNodeList;
+        if (LogicID_Node_Dict.TryGetValue(logicID, out LogicNodeList))
+        {
+            //iterate through the list of logicNode
+            foreach (GameObject node in LogicNodeList)
             {
+                //if the itearting node is not the input logicNode, then set the node's state
+                //to the input logicNode's state
                 LogicBehavior logicScript = node.GetComponent<LogicBehavior>();
-                //if there is no collision with the entire 'set', set the 'set' to INVALID
-                if (collidingGameObject == null)
-                {
-                    logicScript.setLogicState((int)LogicBehavior.LOGIC.INVALID);
-                }
-                else
-                {
-                    logicScript.setLogicState(state);
-                }       
+                logicScript.SetLogicState(requestedState);
+
             }
         }
     }
 
+    
     void Update () {
-       // protoboardUpdate();
 
     }
 }

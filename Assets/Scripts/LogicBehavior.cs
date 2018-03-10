@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class LogicBehavior : MonoBehaviour {
-    public enum LOGIC { HIGH = 1, LOW = 0, INVALID = -1}
     private GameObject logic_node;
     private string logic_id;
     private int logic_state;
     LogicInterface OwningDevice;
-    private GameObject CollisionNode;
+    private GameObject collisionNode;
+    private bool recentStateChange = false;
 	// Use this for initialization
 	void Start () {
         logic_state = (int)LOGIC.INVALID;
@@ -16,61 +16,73 @@ public class LogicBehavior : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-
+        //check if node is colliding, and a recent state change is detected
+        if(collisionNode != null && recentStateChange == true)
+        {
+            Debug.Log("Update() in Logic Node: " + this.logic_id);
+            recentStateChange = false;
+            LogicBehavior collidedBehavior = collisionNode.GetComponent<LogicBehavior>();
+            collidedBehavior.RequestStateChange(this.GetLogicState());
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D coll)
     {
         if(coll.gameObject.tag == "LOGIC_NODE")
         {
-            CollisionNode = coll.gameObject;
+            collisionNode = coll.gameObject;
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject == CollisionNode)
+        if (collision.gameObject == collisionNode)
         {
-            CollisionNode = null;
+            collisionNode = null;
         }
     }
 
-    public GameObject getCollidingNode()
+    public GameObject GetCollidingNode()
     {
-        if (CollisionNode != null)
+        if (collisionNode != null)
         {
-            return CollisionNode;
+            return collisionNode;
         }
         return null;
     }
 
     private void OnMouseUp()
     {
-        Debug.Log("Mouse action on node: " + getLogicId());
+        Debug.Log("Mouse action on node: " + GetLogicId());
         OwningDevice.ReactToLogic(logic_node);
     }
 
+    public void RequestStateChange(int RequestedState)
+    {
+        this.OwningDevice.ReactToLogic(this.logic_node, RequestedState);
+    }
 
-    public void setLogicNode(GameObject logic_node)
+    public void SetLogicNode(GameObject logic_node)
     {
         this.logic_node = logic_node;
         logic_node.tag = "LOGIC_NODE";
     }
-    public GameObject getLogicNode()
+
+    public GameObject GetLogicNode()
     {
         return this.logic_node;
     }
 
 
-    public void setOwningDevice(LogicInterface deviceInterface)
+    public void SetOwningDevice(LogicInterface deviceInterface)
     {
         this.OwningDevice = deviceInterface;
     }
 
-
-    public void setSpriteLogicColor(int state)
+    //sets the color of the circular logic node
+    public void SetSpriteLogicColor(int state)
     {
-        SpriteRenderer spriteRenderer = getLogicNode().GetComponent<SpriteRenderer>() as SpriteRenderer;
+        SpriteRenderer spriteRenderer = GetLogicNode().GetComponent<SpriteRenderer>() as SpriteRenderer;
         if (state == (int)LOGIC.INVALID)
         {
             Debug.Log("Setting Color to White");
@@ -92,44 +104,50 @@ public class LogicBehavior : MonoBehaviour {
     //Sets logic state of this particular component. 
     //logic_id MUST be set before this method is called
     //Accepted values are LOGIC.HIGH(int = 1) and LOGIC.LOW(int = 0)
-    public int setLogicState(int state)
+    public void SetLogicState(int requesetedState)
     {
-        if((state == (int)LOGIC.HIGH || state == (int)LOGIC.LOW || state == (int)LOGIC.INVALID) && logic_id != null)
+        int currentState = this.GetLogicState();
+        //if change is detected in state
+        if (currentState != requesetedState)
         {
-            if(state == 0)
+            //check if value of the requested state is valid
+            if ((requesetedState == (int)LOGIC.HIGH || requesetedState == (int)LOGIC.LOW 
+                || requesetedState == (int)LOGIC.INVALID) && logic_id != null)
             {
-                Debug.Log("Node: " + logic_id + " set to logic state: LOW");
+                //debug statements
+                if (requesetedState == (int)LOGIC.LOW)
+                {
+                    Debug.Log("Node: " + logic_id + " set to logic state: LOW");
+                }
+                else if (requesetedState == (int)LOGIC.HIGH)
+                {
+                    Debug.Log("Node: " + logic_id + " set to logic state: HIGH");
+                }
+                this.logic_state = requesetedState;
+                this.recentStateChange = true;
+                SetSpriteLogicColor(this.logic_state);
             }
-            else if(state == 1)
+            else
             {
-                Debug.Log("Node: " + logic_id + " set to logic state: HIGH");
+                Debug.Log("Error setting logic state.");
+                if (logic_id == null)
+                {
+                    Debug.Log("Logic ID is not set!");
+                }
+                Debug.Log("State change requested to: " + requesetedState);
             }
-            this.logic_state = state;
-            setSpriteLogicColor(this.logic_state);
-            return logic_state;
         }
-        else
-        {
-            Debug.Log("Error setting logic state.");
-            if(logic_id == null)
-            {
-                Debug.Log("Logic ID is not set!");
-            }
-            Debug.Log("State change requested to: " + state);
-        }
-        return -100; //error
+        return; 
     }
-
-
-    public int getLogicState()
+    public int GetLogicState()
     {
         return this.logic_state;
     }
-    public void setLogicId(string logic_id)
+    public void SetLogicId(string logic_id)
     {
         this.logic_id = logic_id;
     }
-    public string getLogicId()
+    public string GetLogicId()
     {
         return this.logic_id;
     }
