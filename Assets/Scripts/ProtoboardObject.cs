@@ -367,14 +367,34 @@ public class ProtoboardObject : MonoBehaviour, LogicInterface{
         List<GameObject> LogicNodeList;
         if (LogicID_Node_Dict.TryGetValue(logicID, out LogicNodeList))
         {
-            //iterate through the list of logicNode
+            int priorityState = (int)LOGIC.INVALID;
+            //iterate through the list of logicNode and find the state that needs to be set for the entire set
             foreach (GameObject node in LogicNodeList)
             {
-                //if the itearting node is not the input logicNode, then set the node's state
-                //to the input logicNode's state
                 LogicNode logicScript = node.GetComponent<LogicNode>();
-                logicScript.SetLogicState(requestedState);
-
+                GameObject collidedNode = logicScript.GetCollidingNode();
+                if(collidedNode != null)
+                {
+                    LogicNode collidingScript = collidedNode.GetComponent<LogicNode>();
+                    //HIGH Logic State is only allowed to be the set's state if the set's state is INVALID
+                    //or HIGH already
+                    if(collidingScript.GetLogicState() == (int)LOGIC.HIGH 
+                        && priorityState == (int)LOGIC.INVALID)
+                    {
+                        priorityState = (int)LOGIC.HIGH;
+                    }
+                    //LOW always gets priortiy
+                    else if(collidingScript.GetLogicState() == (int)LOGIC.LOW)
+                    {
+                        priorityState = (int)LOGIC.LOW;
+                    }
+                }
+            }
+            Debug.Log("Setting Logic Set " + logicID + " to state " + priorityState);
+            foreach (GameObject node in LogicNodeList)
+            {
+                LogicNode logicScript = node.GetComponent<LogicNode>();
+                logicScript.SetLogicState(priorityState);
             }
         }
     }

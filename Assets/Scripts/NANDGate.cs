@@ -101,7 +101,7 @@ public class NANDGate : MonoBehaviour, LogicInterface {
 
     }
 
-
+    //The device is on if gnd and vcc have the correct logical inputs
     private bool IsDeviceOn()
     {
         GameObject logic_gnd;
@@ -168,6 +168,11 @@ public class NANDGate : MonoBehaviour, LogicInterface {
                 logic_behavior.SetLogicState((int)LOGIC.HIGH);
             }
         }
+        /**
+         * INPUTs find the collided nodes of the input pins and sets the input's
+         * pin state to the collided node's state.
+         * 
+         */
         //NAND INPUT 1
         if (logic_dictionary.TryGetValue(LOGIC_DEVICE_ID + 0, out logic_0))
         {
