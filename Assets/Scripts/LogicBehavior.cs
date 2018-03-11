@@ -63,6 +63,7 @@ public class LogicNode : MonoBehaviour {
             LogicNode collided_logic_node = collision.gameObject.GetComponent<LogicNode>();
             if (collided_logic_node.GetLogicState() != (int)LOGIC.INVALID)
             {
+                Debug.Log("Requesting state change to INVALID in Node " + collided_logic_node.GetLogicId());
                 collided_logic_node.RequestStateChange((int)LOGIC.INVALID);
             }
             collidingNode = null;

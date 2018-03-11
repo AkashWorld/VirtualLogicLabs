@@ -390,7 +390,7 @@ public class ProtoboardObject : MonoBehaviour, LogicInterface{
                     }
                 }
             }
-            Debug.Log("Setting Logic Set " + logicID + " to state " + priorityState);
+            Debug.Log("PROTOBOARD Setting Logic Set " + logicID + " to state " + priorityState);
             foreach (GameObject node in LogicNodeList)
             {
                 LogicNode logicScript = node.GetComponent<LogicNode>();
