@@ -267,6 +267,10 @@ public class NANDGate : MonoBehaviour, LogicInterface {
                 {
                     logic_behavior.SetLogicState((int)LOGIC.LOW);
                 }
+                else
+                {
+                    logic_behavior.SetLogicState((int)LOGIC.INVALID);
+                }
             }
             else
             {
@@ -365,6 +369,10 @@ public class NANDGate : MonoBehaviour, LogicInterface {
                 && lnode_11.GetLogicState() != invalid && lnode_12.GetLogicState() != invalid)
                 {
                     logic_behavior.SetLogicState((int)LOGIC.LOW);
+                }
+                else
+                {
+                    logic_behavior.SetLogicState((int)LOGIC.INVALID);
                 }
             }
             else
