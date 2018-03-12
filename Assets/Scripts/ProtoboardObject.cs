@@ -24,20 +24,19 @@ public class ProtoboardObject : MonoBehaviour, LogicInterface{
         logic_behavior.SetLogicNode(logicNode);
         logic_behavior.SetOwningDevice(this);
         SpriteRenderer sprite_renderer = logicNode.AddComponent<SpriteRenderer>(); //adds a test "circle" graphic
-        sprite_renderer.sprite = Resources.Load<Sprite>("logicCircle");
+        sprite_renderer.sprite = Resources.Load<Sprite>("Sprites/logicCircle");
         sprite_renderer.sortingLayerName = "Logic";
         BoxCollider2D box_collider = logicNode.AddComponent<BoxCollider2D>();
         box_collider.size = new Vector2(1f,1f);
         box_collider.isTrigger = true;
         Rigidbody2D rigidbody = logicNode.AddComponent<Rigidbody2D>();
         rigidbody.isKinematic = true;
-    
     }
 
 
 	// Use this for initialization
 	void Start () {
-        protoboard = GameObject.Find("Protoboard");
+        protoboard = this.gameObject;
         CollisionStack = new Stack<GameObject>();
         LogicID_Node_Dict = new Dictionary<string, List<GameObject>>(); //a dictionary (HASH TABLE) of the logic ID and GameObject pairs
         float vertical_offset = 0; //this variable dictate the offset in the Y axis of the protoboard when populating the logic nodes
@@ -359,6 +358,8 @@ public class ProtoboardObject : MonoBehaviour, LogicInterface{
         ToggleNodeSet(logicNode);
     }
 
+
+    //TODO FIX THE ALGORITHM
     public void ReactToLogic(GameObject logicNode, int requestedState)
     {
         LogicNode logicBehavior = logicNode.GetComponent<LogicNode>();

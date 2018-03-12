@@ -286,6 +286,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\ANDGate.cs" />
+    <Compile Include="Assets\Scripts\Equipment.cs" />
     <Compile Include="Assets\Scripts\INVGate.cs" />
     <Compile Include="Assets\Scripts\LEDScript.cs" />
     <Compile Include="Assets\Scripts\LogicBehavior.cs" />

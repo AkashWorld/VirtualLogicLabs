@@ -19,7 +19,7 @@ public class ORGate : MonoBehaviour, LogicInterface
         logic_behavior.SetLogicNode(logicNode);
         logic_behavior.SetOwningDevice(this);
         SpriteRenderer sprite_renderer = logicNode.AddComponent<SpriteRenderer>(); //adds a test "circle" graphic
-        sprite_renderer.sprite = Resources.Load<Sprite>("logicCircle");
+        sprite_renderer.sprite = Resources.Load<Sprite>("Sprites/logicCircle");
         sprite_renderer.sortingLayerName = "Logic";
         BoxCollider2D box_collider = logicNode.AddComponent<BoxCollider2D>();
         box_collider.size = new Vector2(1f, 1f);
@@ -32,7 +32,7 @@ public class ORGate : MonoBehaviour, LogicInterface
     // Use this for initialization
     void Start()
     {
-        DeviceGameObject = GameObject.Find("74LS32");
+        DeviceGameObject = this.gameObject;
         //Loop that places Logic Nodes on the 74LS400 chip
         float horizontal_pos = -.205f; //set up for left side of the chip
         float vertical_pos = .58f; //top of the chip
@@ -60,7 +60,7 @@ public class ORGate : MonoBehaviour, LogicInterface
         snapIndicatorGameObj.transform.localPosition = new Vector3(-.0775f, .575f, 0); //'localPosition' sets the position of this node RELATIVE to the protoboard
         snapIndicatorGameObj.transform.localScale = new Vector3(.10F, .10F, 0);
         SpriteRenderer sprite_renderer = snapIndicatorGameObj.AddComponent<SpriteRenderer>(); //adds a test "circle" graphic
-        sprite_renderer.sprite = Resources.Load<Sprite>("logicCircle");
+        sprite_renderer.sprite = Resources.Load<Sprite>("Sprites/logicCircle");
         sprite_renderer.sortingLayerName = "FrontLayer";
         sprite_renderer.material.color = new Color(1, 1, 1);
     }

@@ -18,7 +18,7 @@ public class LEDScript : MonoBehaviour, LogicInterface{
         logic_behavior.SetLogicNode(logicNode);
         logic_behavior.SetOwningDevice(this);
         SpriteRenderer sprite_renderer = logicNode.AddComponent<SpriteRenderer>(); //adds a test "circle" graphic
-        sprite_renderer.sprite = Resources.Load<Sprite>("logicCircle");
+        sprite_renderer.sprite = Resources.Load<Sprite>("Sprites/logicCircle");
         sprite_renderer.sortingLayerName = "Logic";
         BoxCollider2D box_collider = logicNode.AddComponent<BoxCollider2D>();
         box_collider.size = new Vector2(1f, 1f);
@@ -129,11 +129,11 @@ public class LEDScript : MonoBehaviour, LogicInterface{
         SpriteRenderer LEDSpriteRen = this.gameObject.GetComponent<SpriteRenderer>();
         if (logicGND.GetLogicState() == (int)LOGIC.LOW && logicVCC.GetLogicState() == (int)LOGIC.HIGH)
         {
-            LEDSpriteRen.sprite = Resources.Load<Sprite>("LEDon");
+            LEDSpriteRen.sprite = Resources.Load<Sprite>("Sprites/LEDon");
         }
         else
         {
-            LEDSpriteRen.sprite = Resources.Load<Sprite>("LEDoff");
+            LEDSpriteRen.sprite = Resources.Load<Sprite>("Sprites/LEDoff");
         }
     }
 }

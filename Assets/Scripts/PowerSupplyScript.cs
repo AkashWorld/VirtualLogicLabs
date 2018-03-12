@@ -9,6 +9,8 @@ public class PowerSupplyScript : MonoBehaviour, LogicInterface {
     GameObject powerSupply;
     public readonly string gndKey = "GROUNDNODE_KEY";
     public readonly string vccKey = "VCCNODE_KEY";
+    private Vector3 screenPoint;
+    private Vector3 offset;
 
     private void setNodeProperties(GameObject logicNode, string logicNodeID)
     {
@@ -17,7 +19,7 @@ public class PowerSupplyScript : MonoBehaviour, LogicInterface {
         logic_behavior.SetLogicNode(logicNode);
         logic_behavior.SetOwningDevice(this);
         SpriteRenderer sprite_renderer = logicNode.AddComponent<SpriteRenderer>(); //adds a test "circle" graphic
-        sprite_renderer.sprite = Resources.Load<Sprite>("logicCircle");
+        sprite_renderer.sprite = Resources.Load<Sprite>("Sprites/logicCircle");
         sprite_renderer.sortingLayerName = "Logic";
         BoxCollider2D box_collider = logicNode.AddComponent<BoxCollider2D>();
         box_collider.size = new Vector2(1f, 1f);
@@ -29,7 +31,7 @@ public class PowerSupplyScript : MonoBehaviour, LogicInterface {
 
     // Use this for initialization
     void Start () {
-        powerSupply = GameObject.Find("PowerSupply");
+        powerSupply = this.gameObject;
 
         vccNode = new GameObject(vccKey); //logic node with the name leftlogicnode_{i}_0
         vccNode.transform.parent = powerSupply.transform; //sets the Protoboard game object as logicNode_0's parent
@@ -63,5 +65,19 @@ public class PowerSupplyScript : MonoBehaviour, LogicInterface {
     public void ReactToLogic(GameObject LogicNode)
     {
         throw new System.NotImplementedException();
+    }
+    void OnMouseDown()
+    {
+        Debug.Log("Power Supply Mouse Down");
+        screenPoint = Camera.main.WorldToScreenPoint(gameObject.transform.position);
+        offset = gameObject.transform.position - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z));
+
+    }
+
+    void OnMouseDrag()
+    {
+        Vector3 curScreenPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z);
+        Vector3 curPosition = Camera.main.ScreenToWorldPoint(curScreenPoint);
+        transform.position = curPosition;
     }
 }
