@@ -15,18 +15,28 @@ public class WireTransitionBehavior : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-
-
         LineRenderer line = this.gameObject.AddComponent<LineRenderer>();
         line.material = new Material(Shader.Find("Particles/Alpha Blended Premultiply"));
         line.startWidth = (float)0.1;
         line.endWidth = (float)0.1;
         line.sortingLayerName = "ActiveDevices";
-        line.startColor = new Color(0, 1, 0);
-        line.endColor = new Color(0, 1, 0);
+        if (GameObject.Find("green_wire_button").GetComponent<WireButtonBehavior>().buttonOn)
+        {
+            line.startColor = new Color(0, 1, 0);
+            line.endColor = new Color(0, 1, 0);
+        }
+        if (GameObject.Find("red_wire_button").GetComponent<WireButtonBehavior>().buttonOn)
+        {
+            line.startColor = new Color(1, 0, 0);
+            line.endColor = new Color(1, 0, 0);
+        }
+        if (GameObject.Find("black_wire_button").GetComponent<WireButtonBehavior>().buttonOn)
+        {
+            line.startColor = new Color(0, 0, 0);
+            line.endColor = new Color(0, 0, 0);
+        }
         line.SetPosition(0, startPosition);
         line.SetPosition(1, new Vector3(0, 0, 0));
-
     }
 
     // Update is called once per frame
