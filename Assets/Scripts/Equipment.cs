@@ -60,13 +60,16 @@ public class Equipment : MonoBehaviour {
                 newPrefab = Resources.Load<GameObject>("Prefabs/LEDChip");
                 break;
             case "Power Supply":
-                newPrefab = Resources.Load<GameObject>("Prefabs/Power Supply");
+                newPrefab = Resources.Load<GameObject>("Prefabs/PowerSupply");
                 break;
             case "Wire": //TODO
                 break; 
 
         }
-        equipment = Instantiate<GameObject>(newPrefab);
+        if (newPrefab != null)
+        {
+            equipment = Instantiate<GameObject>(newPrefab);
+        }
         if (equipment == null)
         {
             return;
