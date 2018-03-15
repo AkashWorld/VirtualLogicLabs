@@ -126,26 +126,26 @@ public class LogicNode : MonoBehaviour {
     //Sets logic state of this particular component. 
     //logic_id MUST be set before this method is called
     //Accepted values are LOGIC.HIGH(int = 1) and LOGIC.LOW(int = 0)
-    public void SetLogicState(int requesetedState)
+    public void SetLogicState(int requestedState)
     {
         int currentState = this.GetLogicState();
         //if change is detected in state
-        if (currentState != requesetedState)
+        if (currentState != requestedState)
         {
             //check if value of the requested state is valid
-            if ((requesetedState == (int)LOGIC.HIGH || requesetedState == (int)LOGIC.LOW 
-                || requesetedState == (int)LOGIC.INVALID) && logic_id != null)
+            if ((requestedState == (int)LOGIC.HIGH || requestedState == (int)LOGIC.LOW 
+                || requestedState == (int)LOGIC.INVALID) && logic_id != null)
             {
                 //debug statements
-                if (requesetedState == (int)LOGIC.LOW)
+                if (requestedState == (int)LOGIC.LOW)
                 {
                     Debug.Log("Node: " + logic_id + " set to logic state: LOW");
                 }
-                else if (requesetedState == (int)LOGIC.HIGH)
+                else if (requestedState == (int)LOGIC.HIGH)
                 {
                     Debug.Log("Node: " + logic_id + " set to logic state: HIGH");
                 }
-                this.logic_state = requesetedState;
+                this.logic_state = requestedState;
                 this.recentStateChange = true;
                 SetSpriteLogicColor(this.logic_state);
             }
@@ -156,7 +156,7 @@ public class LogicNode : MonoBehaviour {
                 {
                     Debug.Log("Logic ID is not set!");
                 }
-                Debug.Log("State change requested to: " + requesetedState);
+                Debug.Log("State change requested to: " + requestedState);
             }
         }
         return; 

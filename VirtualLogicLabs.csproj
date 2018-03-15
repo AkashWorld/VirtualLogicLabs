@@ -14,6 +14,7 @@
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
     <CompilerResponseFile></CompilerResponseFile>
+    <UnityProjectGenerator>VSTU</UnityProjectGenerator>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows64:19</UnityBuildTarget>
     <UnityVersion>2017.3.1f1</UnityVersion>
@@ -296,6 +297,7 @@
     <Compile Include="Assets\Scripts\PowerSupplyScript.cs" />
     <Compile Include="Assets\Scripts\ProtoboardObject.cs" />
     <Compile Include="Assets\Scripts\SquareboxObject.cs" />
+    <Compile Include="Assets\Scripts\Switch.cs" />
     <Compile Include="Assets\Scripts\WireButtonBehavior.cs" />
     <Compile Include="Assets\Scripts\WireTransition Behavior.cs" />
   </ItemGroup>
