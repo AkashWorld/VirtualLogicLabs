@@ -28,23 +28,45 @@ public class LogicNode : MonoBehaviour {
 
     private void OnMouseUp()
     {
-
-        Debug.Log("Mouse action on node: " + GetLogicId());
-        OwningDevice.ReactToLogic(logic_node);
-        if (GameObject.Find("green_wire_button").GetComponent<WireButtonBehavior>().buttonOn)
+        if (GameObject.Find("wireTransition") == false)
         {
-            GameObject wireTransition = new GameObject("wireTransition");
-            wireTransition.transform.parent = this.logic_node.transform;
-            WireTransitionBehavior wire_transition_behavior = wireTransition.AddComponent<WireTransitionBehavior>();
-            wire_transition_behavior.setStartPosition(this.transform.position);
+            Debug.Log("Mouse action on node: " + GetLogicId());
+            OwningDevice.ReactToLogic(logic_node);
+            if (GameObject.Find("green_wire_button").GetComponent<WireButtonBehavior>().buttonOn || GameObject.Find("black_wire_button").GetComponent<WireButtonBehavior>().buttonOn || GameObject.Find("red_wire_button").GetComponent<WireButtonBehavior>().buttonOn)
+            {
+                GameObject wireTransition = new GameObject("wireTransition");
+                wireTransition.transform.parent = this.logic_node.transform;
+                WireTransitionBehavior wire_transition_behavior = wireTransition.AddComponent<WireTransitionBehavior>();
+                wire_transition_behavior.setStartPosition(this.transform.position);
+            }
         }
-        else if (GameObject.Find("black_wire_button").GetComponent<WireButtonBehavior>().buttonOn)
+        else
         {
-
-        }
-        else if (GameObject.Find("red_wire_button").GetComponent<WireButtonBehavior>().buttonOn)
-        {
-
+            GameObject wire = new GameObject("wire");
+            LineRenderer line = this.gameObject.AddComponent<LineRenderer>();
+            line.material = new Material(Shader.Find("Particles/Alpha Blended Premultiply"));
+            line.startWidth = (float)0.1;
+            line.endWidth = (float)0.1;
+            line.sortingLayerName = "ActiveDevices";
+            if (GameObject.Find("green_wire_button").GetComponent<WireButtonBehavior>().buttonOn)
+            {
+                line.startColor = new Color(0, 1, 0);
+                line.endColor = new Color(0, 1, 0);
+            }
+            if (GameObject.Find("red_wire_button").GetComponent<WireButtonBehavior>().buttonOn)
+            {
+                line.startColor = new Color(1, 0, 0);
+                line.endColor = new Color(1, 0, 0);
+            }
+            if (GameObject.Find("black_wire_button").GetComponent<WireButtonBehavior>().buttonOn)
+            {
+                line.startColor = new Color(0, 0, 0);
+                line.endColor = new Color(0, 0, 0);
+            }
+            LineRenderer lines = GameObject.Find("wireTransition").GetComponent<LineRenderer>();
+            line.SetPosition(0, lines.GetPosition(0));
+            line.SetPosition(1, this.transform.position);
+            Destroy(GameObject.Find("wireTransition"));
         }
     }
 
