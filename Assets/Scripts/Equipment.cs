@@ -7,12 +7,16 @@ public class Equipment : MonoBehaviour {
 
     public Dropdown dropDown;
     public List<string> equipmentNames;
+    GameObject mainCamera;
+    int resetValue;
 	// Use this for initialization
 	public void Start () {
+        mainCamera = GameObject.Find("Main Camera");
         equipmentNames = new List<string>();
+        equipmentNames.Add("None Selected");
         equipmentNames.Add("74LS00"); equipmentNames.Add("74LS04");
         equipmentNames.Add("74LS08"); equipmentNames.Add("74LS32"); equipmentNames.Add("LED");
-        equipmentNames.Add("Power Supply"); equipmentNames.Add("Wire");
+        equipmentNames.Add("Wire");
         dropDown.ClearOptions();
         List<Dropdown.OptionData> equipmentListDD = new List<Dropdown.OptionData>();
         foreach(string equipName in equipmentNames)
@@ -59,10 +63,10 @@ public class Equipment : MonoBehaviour {
             case "LED":
                 newPrefab = Resources.Load<GameObject>("Prefabs/LEDChip");
                 break;
-            case "Power Supply":
-                newPrefab = Resources.Load<GameObject>("Prefabs/PowerSupply");
-                break;
             case "Wire": //TODO
+                GameObject wire = new GameObject("Wire");
+                wire.AddComponent<Wire>();
+                wire.transform.parent = mainCamera.transform;
                 break; 
 
         }
@@ -74,9 +78,9 @@ public class Equipment : MonoBehaviour {
         {
             return;
         }
-        GameObject mainCamera = GameObject.Find("Main Camera");
         equipment.transform.parent = mainCamera.transform;
         equipment.transform.localPosition = new Vector3(0, 0, 10);
+        dropDown.value = 0;
     }
     
 	// Update is called once per frame

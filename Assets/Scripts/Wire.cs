@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Experimental.UIElements;
 
 public class Wire : MonoBehaviour, LogicInterface {
     private GameObject startNode, endNode;
@@ -11,23 +12,8 @@ public class Wire : MonoBehaviour, LogicInterface {
     private LineRenderer WireLine = null;
     private Color currentColor = Color.red;
     private int currentState;
-    private void SetNodeProperties(GameObject logicNode, string logicNodeID)
-    {
-        logicNode.transform.localScale = new Vector3(.10F, .10F, 0);
-        LogicNode logic_behavior = logicNode.AddComponent<LogicNode>() as LogicNode; //Adds the LogicNode.cs component to this gameobject to control logic behavior
-        logic_behavior.SetLogicId(logicNodeID); //logic id that sets all the nodes on the left column of the LEFT section of the protoboard the same id
-        logic_behavior.SetLogicNode(logicNode);
-        logic_behavior.SetOwningDevice(this);
-        SpriteRenderer sprite_renderer = logicNode.AddComponent<SpriteRenderer>(); //adds a test "circle" graphic
-        sprite_renderer.sprite = Resources.Load<Sprite>("Sprites/logicCircle");
-        sprite_renderer.sortingLayerName = "Logic";
-        BoxCollider2D box_collider = logicNode.AddComponent<BoxCollider2D>();
-        box_collider.size = new Vector2(1f, 1f);
-        box_collider.isTrigger = true;
-        Rigidbody2D rigidbody = logicNode.AddComponent<Rigidbody2D>();
-        rigidbody.isKinematic = true;
+    private GameObject placingText;
 
-    }
     // Use this for initialization
     void Start () {
         currentState = (int)LOGIC.INVALID;
@@ -36,11 +22,20 @@ public class Wire : MonoBehaviour, LogicInterface {
 
         startNode = new GameObject(LOGIC_DEVICE_ID + "START"); //logic node with the name leftlogicnode_{i}_0
         startNode.transform.parent = DeviceGameObject.transform; //sets the Protoboard game object as logicNode_0's parent
-
+        startNode.transform.localScale = new Vector3(.10F, .10F, 0);
+        startNode.AddComponent<LogicNode>();
 
         endNode = new GameObject(LOGIC_DEVICE_ID + "END"); //logic node with the name leftlogicnode_{i}_0
         endNode.transform.parent = DeviceGameObject.transform; //sets the Protoboard game object as logicNode_0's parent
+        endNode.transform.localScale = new Vector3(.10F, .10F, 0);
+        endNode.AddComponent<LogicNode>();
 
+        placingText = new GameObject("PlacingText");
+        placingText.transform.parent = this.gameObject.transform;
+        SpriteRenderer textSprRend = placingText.AddComponent<SpriteRenderer>();
+        textSprRend.sprite = Resources.Load<Sprite>("Sprites/PlacingWire");
+        textSprRend.sortingLayerName = "FrontLayer";
+        placingText.transform.position = new Vector3(-7.5f, -4.7f, 10);
         activelyBeingPlaced = true;
 
     }
@@ -86,11 +81,11 @@ public class Wire : MonoBehaviour, LogicInterface {
 	
     private void SetLogicNodePositions()
     {
+
         startNode.transform.position = new Vector3(wireInflectionObjects[0].transform.position.x, wireInflectionObjects[0].transform.position.y, 10);
-        SetNodeProperties(startNode, startNode.name);
         endNode.transform.position = new Vector3(wireInflectionObjects[wireInflectionObjects.Count - 1].transform.position.x, 
             wireInflectionObjects[wireInflectionObjects.Count - 1].transform.position.y, 10);
-        SetNodeProperties(endNode, endNode.name);
+
     }
 
 
@@ -191,7 +186,9 @@ public class Wire : MonoBehaviour, LogicInterface {
 
                     //End wire sequence
                     activelyBeingPlaced = false;
+                    Destroy(placingText);
                     SetLogicNodePositions();
+                    
                 }
 
 
@@ -218,6 +215,7 @@ public class Wire : MonoBehaviour, LogicInterface {
             return;
         }
         Debug.Log("WIRE: Reacting To Logic on Node: " + LogicNode.name);
+        Debug.Log("WIRE: Attempting to request state change to: " + requestedState);
         LogicNode otherEnd = null; //the other end from the node that this is being called; 
         LogicNode currentEnd = null; //the currentNode that this is being called from
         LogicNode startNodeLogic = startNode.GetComponent<LogicNode>();
@@ -234,15 +232,23 @@ public class Wire : MonoBehaviour, LogicInterface {
         }
         LogicNode collidingNodeCurrent = currentEnd.GetCollidingNode().GetComponent<LogicNode>(); //Node colliding with the other end of the wire
         LogicNode collidingNodeEnd = otherEnd.GetCollidingNode().GetComponent<LogicNode>(); //Node colliding with the other end of the wire
-        int collidedState = collidingNodeEnd.GetLogicState();
-        if(requestedState == (int)LOGIC.LOW)
+        currentEnd.SetLogicState(requestedState);
+        otherEnd.SetLogicState(requestedState);
+        collidingNodeEnd.RequestStateChange(requestedState); //request other device to change to logic
+        if (collidingNodeEnd.GetLogicState() != requestedState) //other device node cannot change
         {
-            currentState = (int)LOGIC.LOW;
-            currentEnd.SetLogicState((int)LOGIC.LOW);
-            otherEnd.SetLogicState((int)LOGIC.LOW);
-            collidingNodeCurrent.RequestStateChange((int)LOGIC.LOW);
-            collidingNodeEnd.RequestStateChange((int)LOGIC.LOW);
+            requestedState = collidingNodeEnd.GetLogicState();
+            currentEnd.SetLogicState(requestedState);
+            otherEnd.SetLogicState(requestedState);
+            //collidingNodeCurrent.RequestStateChange(requestedState); //request current device to calibrate to other device's logic
         }
+        else //requested state change is successful
+        {
+            currentEnd.SetLogicState(requestedState);
+            otherEnd.SetLogicState(requestedState);
+        }
+ 
+        
         
     }
 }

@@ -11,23 +11,6 @@ public class LEDScript : MonoBehaviour, LogicInterface{
     private bool SNAPPED = false; //Set to true if all Logic Nodes of this device is in collision with an external node
     private GameObject LEDNodeVCC, LEDNodeGnd;
 
-    private void setNodeProperties(GameObject logicNode, string logicNodeID)
-    {
-        LogicNode logic_behavior = logicNode.AddComponent<LogicNode>() as LogicNode; //Adds the LogicNode.cs component to this gameobject to control logic behavior
-        logic_behavior.SetLogicId(logicNodeID); //logic id that sets all the nodes on the left column of the LEFT section of the protoboard the same id
-        logic_behavior.SetLogicNode(logicNode);
-        logic_behavior.SetOwningDevice(this);
-        SpriteRenderer sprite_renderer = logicNode.AddComponent<SpriteRenderer>(); //adds a test "circle" graphic
-        sprite_renderer.sprite = Resources.Load<Sprite>("Sprites/logicCircle");
-        sprite_renderer.sortingLayerName = "Logic";
-        BoxCollider2D box_collider = logicNode.AddComponent<BoxCollider2D>();
-        box_collider.size = new Vector2(1f, 1f);
-        box_collider.isTrigger = true;
-        Rigidbody2D rigidbody = logicNode.AddComponent<Rigidbody2D>();
-        rigidbody.isKinematic = true;
-
-    }
-
 
     // Use this for initialization
     void Start () {
@@ -37,14 +20,14 @@ public class LEDScript : MonoBehaviour, LogicInterface{
         LEDNodeVCC.transform.parent = DeviceGameObject.transform; //sets the Protoboard game object as logicNode_0's parent
         LEDNodeVCC.transform.localPosition = new Vector3(-1.8f, -.05f, 0); //'localPosition' sets the position of this node RELATIVE to the protoboard
         LEDNodeVCC.transform.localScale = new Vector3(.10F, .10F, 0);
-        setNodeProperties(LEDNodeVCC, LOGIC_DEVICE_ID + "VCC");
+        LEDNodeVCC.AddComponent<LogicNode>();
 
 
         LEDNodeGnd = new GameObject(LOGIC_DEVICE_ID + "GND"); //logic node with the name leftlogicnode_{i}_0
         LEDNodeGnd.transform.parent = DeviceGameObject.transform; //sets the Protoboard game object as logicNode_0's parent
         LEDNodeGnd.transform.localPosition = new Vector3(-1.2f, .165f, 0); //'localPosition' sets the position of this node RELATIVE to the protoboard
         LEDNodeGnd.transform.localScale = new Vector3(.10F, .10F, 0);
-        setNodeProperties(LEDNodeGnd, LOGIC_DEVICE_ID + "GND");
+        LEDNodeGnd.AddComponent<LogicNode>();
 
     }
 

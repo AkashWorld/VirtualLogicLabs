@@ -288,6 +288,7 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\ANDGate.cs" />
     <Compile Include="Assets\Scripts\Equipment.cs" />
+    <Compile Include="Assets\Scripts\InputChecker.cs" />
     <Compile Include="Assets\Scripts\INVGate.cs" />
     <Compile Include="Assets\Scripts\LEDScript.cs" />
     <Compile Include="Assets\Scripts\LogicBehavior.cs" />
@@ -298,8 +299,8 @@
     <Compile Include="Assets\Scripts\ProtoboardObject.cs" />
     <Compile Include="Assets\Scripts\SquareboxObject.cs" />
     <Compile Include="Assets\Scripts\Switch.cs" />
-    <Compile Include="Assets\Scripts\WireButtonBehavior.cs" />
-    <Compile Include="Assets\Scripts\WireTransition Behavior.cs" />
+    <Compile Include="Assets\Scripts\Wire.cs" />
+    <Compile Include="Assets\Scripts\WireInflection.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />

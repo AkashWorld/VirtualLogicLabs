@@ -13,22 +13,6 @@ public class Switch : MonoBehaviour, LogicInterface {
     private bool SwitchOn = false;
 
 
-	private void setNodeProperties(GameObject logicNode, string logicNodeID)
-	{
-		LogicNode logic_behavior = logicNode.AddComponent<LogicNode>() as LogicNode; //Adds the LogicNode.cs component to this gameobject to control logic behavior
-		logic_behavior.SetLogicId(logicNodeID); //logic id that sets all the nodes on the left column of the LEFT section of the protoboard the same id
-		logic_behavior.SetLogicNode(logicNode);
-		logic_behavior.SetOwningDevice(this);
-		SpriteRenderer sprite_renderer = logicNode.AddComponent<SpriteRenderer>(); //adds a test "circle" graphic
-		sprite_renderer.sprite = Resources.Load<Sprite>("Sprites/logicCircle");
-		sprite_renderer.sortingLayerName = "Logic";
-		BoxCollider2D box_collider = logicNode.AddComponent<BoxCollider2D>();
-		box_collider.size = new Vector2(1f, 1f);
-		box_collider.isTrigger = true;
-		Rigidbody2D rigidbody = logicNode.AddComponent<Rigidbody2D>();
-		rigidbody.isKinematic = true;
-
-	}
 
 
 	// Use this for initialization
@@ -39,14 +23,14 @@ public class Switch : MonoBehaviour, LogicInterface {
         middleNode.transform.parent = DeviceGameObject.transform; //sets the Protoboard game object as logicNode_0's parent
         middleNode.transform.localPosition = new Vector3(.009f, -.01f, 0); //'localPosition' sets the position of this node RELATIVE to the protoboard
         middleNode.transform.localScale = new Vector3(.10F, .10F, 0);
-        setNodeProperties(middleNode, LOGIC_DEVICE_ID + "MIDDLE");
+        middleNode.AddComponent<LogicNode>();
 
 
         bottomNode = new GameObject(LOGIC_DEVICE_ID + "BOTTOM"); //logic node with the name leftlogicnode_{i}_0
         bottomNode.transform.parent = DeviceGameObject.transform; //sets the Protoboard game object as logicNode_0's parent
         bottomNode.transform.localPosition = new Vector3(.009f, -0.2225f, 0); //'localPosition' sets the position of this node RELATIVE to the protoboard
         bottomNode.transform.localScale = new Vector3(.10F, .10F, 0);
-        setNodeProperties(bottomNode, LOGIC_DEVICE_ID + "BOTTOM");
+        bottomNode.AddComponent<LogicNode>();
     }
 
 
