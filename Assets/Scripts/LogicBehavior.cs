@@ -31,7 +31,7 @@ public class LogicNode : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         //check if node is colliding, and a recent state change is detected
-        if((collidingNode != null && recentStateChange == true) || (collidingNode != null && recentCollisionEnter == true))
+        if((collidingNode != null) && (recentStateChange  || recentCollisionEnter))
         {
             Debug.Log("Update() in Logic Node: " + this.gameObject.name);
             LogicNode collidedBehavior = collidingNode.GetComponent<LogicNode>();
@@ -62,19 +62,21 @@ public class LogicNode : MonoBehaviour {
             collidingNode = coll.gameObject;
             recentCollisionEnter = true;
         }
+
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.gameObject == collidingNode)
         {
+            collidingNode = null;
             LogicNode collided_logic_node = collision.gameObject.GetComponent<LogicNode>();
+            Debug.Log("Collision EXIT between node [" + this.gameObject.name + "] and [" + collision.gameObject.name + "]");
             if (collided_logic_node.GetLogicState() != (int)LOGIC.INVALID)
             {
-                Debug.Log("Requesting state change to INVALID in Node " + collided_logic_node.gameObject.name);
                 collided_logic_node.RequestStateChange((int)LOGIC.INVALID);
+                this.RequestStateChange((int)LOGIC.INVALID);
             }
-            collidingNode = null;
         }
     }
 

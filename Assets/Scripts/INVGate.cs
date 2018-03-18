@@ -96,10 +96,12 @@ public class INVGate : MonoBehaviour, LogicInterface
         {
             LogicNode logic_behavior_gnd = logic_gnd.GetComponent<LogicNode>();
             LogicNode logic_behavior_vcc = logic_vcc.GetComponent<LogicNode>();
-            Debug.Log("GND Set to: " + logic_behavior_gnd.GetLogicState());
-            Debug.Log("VCC Set to: " + logic_behavior_vcc.GetLogicState());
-            if (logic_behavior_gnd.GetLogicState() == (int)LOGIC.LOW
-                && logic_behavior_vcc.GetLogicState() == (int)LOGIC.HIGH)
+            LogicNode gndCollision = logic_behavior_gnd.GetCollidingNode().GetComponent<LogicNode>();
+            LogicNode vccCollision = logic_behavior_vcc.GetCollidingNode().GetComponent<LogicNode>();
+            Debug.Log("GND Set to: " + gndCollision.GetLogicState() + " for Device " + this.gameObject.name);
+            Debug.Log("VCC Set to: " + vccCollision.GetLogicState() + " for Device " + this.gameObject.name);
+            if (gndCollision.GetLogicState() == (int)LOGIC.LOW
+                && vccCollision.GetLogicState() == (int)LOGIC.HIGH)
             {
                 Debug.Log(this.DeviceGameObject.name + " is ON.");
                 return true;
@@ -129,12 +131,7 @@ public class INVGate : MonoBehaviour, LogicInterface
                 logic_behavior.SetLogicState((int)LOGIC.INVALID);
                 Debug.Log("NAND 74LS04 Ground Input not set to LOW");
             }
-            //GND pin collision node is also GND
-            else
-            {
-                logic_behavior.SetLogicState((int)LOGIC.LOW);
 
-            }
         }
         //VCC
         if (logic_dictionary.TryGetValue(LOGIC_DEVICE_ID + 13, out logic_13))
@@ -147,10 +144,6 @@ public class INVGate : MonoBehaviour, LogicInterface
             {
                 logic_behavior.SetLogicState((int)LOGIC.INVALID);
                 Debug.Log("NAND 74LS04 VCC Input not set to HIGH");
-            }
-            else
-            {
-                logic_behavior.SetLogicState((int)LOGIC.HIGH);
             }
         }
         /**
@@ -170,10 +163,6 @@ public class INVGate : MonoBehaviour, LogicInterface
                 logic_behavior.SetLogicState((int)LOGIC.INVALID);
                 Debug.Log("INV 74LS04 input 0 is invalid.");
             }
-            else if (this.IsDeviceOn())
-            {
-                logic_behavior.SetLogicState(collided_state);
-            }
         }
         //INV INPUT 2
         if (logic_dictionary.TryGetValue(LOGIC_DEVICE_ID + 2, out logic_2))
@@ -186,10 +175,6 @@ public class INVGate : MonoBehaviour, LogicInterface
             {
                 logic_behavior.SetLogicState((int)LOGIC.INVALID);
                 Debug.Log("INV 74LS04 input 2 is invalid.");
-            }
-            else if (this.IsDeviceOn())
-            {
-                logic_behavior.SetLogicState(collided_state);
             }
         }
         //INV INPUT 3
@@ -204,10 +189,6 @@ public class INVGate : MonoBehaviour, LogicInterface
                 logic_behavior.SetLogicState((int)LOGIC.INVALID);
                 Debug.Log("INV 74LS04 input 4 is invalid.");
             }
-            else if (this.IsDeviceOn())
-            {
-                logic_behavior.SetLogicState(collided_state);
-            }
         }
         //INV INPUT 4
         if (logic_dictionary.TryGetValue(LOGIC_DEVICE_ID + 8, out logic_8))
@@ -220,10 +201,6 @@ public class INVGate : MonoBehaviour, LogicInterface
             {
                 logic_behavior.SetLogicState((int)LOGIC.INVALID);
                 Debug.Log("INV 74LS04 input 8 is invalid.");
-            }
-            else if (this.IsDeviceOn())
-            {
-                logic_behavior.SetLogicState(collided_state);
             }
         }
         //INV INPUT 5
@@ -238,10 +215,6 @@ public class INVGate : MonoBehaviour, LogicInterface
                 logic_behavior.SetLogicState((int)LOGIC.INVALID);
                 Debug.Log("INV 74LS04 input 10 is invalid.");
             }
-            else if (this.IsDeviceOn())
-            {
-                logic_behavior.SetLogicState(collided_state);
-            }
         }
         //INV INPUT 6
         if (logic_dictionary.TryGetValue(LOGIC_DEVICE_ID + 12, out logic_12))
@@ -254,10 +227,6 @@ public class INVGate : MonoBehaviour, LogicInterface
             {
                 logic_behavior.SetLogicState((int)LOGIC.INVALID);
                 Debug.Log("INV 74LS04 input 12 is invalid.");
-            }
-            else if (this.IsDeviceOn())
-            {
-                logic_behavior.SetLogicState(collided_state);
             }
         }
         //INV ------OUTPUT----- 1
@@ -272,11 +241,11 @@ public class INVGate : MonoBehaviour, LogicInterface
             int invalid = (int)LOGIC.INVALID;
             if (IsDeviceOn())
             {
-                if(input_logic_node.GetLogicState() == low)
+                if(input_logic_node.GetCollidingNode().GetComponent<LogicNode>().GetLogicState() == low)
                 {
                     logic_behavior.SetLogicState(high);
                 }
-                else if(input_logic_node.GetLogicState() == high)
+                else if(input_logic_node.GetCollidingNode().GetComponent<LogicNode>().GetLogicState() == high)
                 {
                     logic_behavior.SetLogicState(low);
                 }
@@ -303,11 +272,11 @@ public class INVGate : MonoBehaviour, LogicInterface
             int invalid = (int)LOGIC.INVALID;
             if (IsDeviceOn())
             {
-                if (input_logic_node.GetLogicState() == low)
+                if (input_logic_node.GetCollidingNode().GetComponent<LogicNode>().GetLogicState() == low)
                 {
                     logic_behavior.SetLogicState(high);
                 }
-                else if (input_logic_node.GetLogicState() == high)
+                else if (input_logic_node.GetCollidingNode().GetComponent<LogicNode>().GetLogicState() == high)
                 {
                     logic_behavior.SetLogicState(low);
                 }
@@ -334,11 +303,11 @@ public class INVGate : MonoBehaviour, LogicInterface
             int invalid = (int)LOGIC.INVALID;
             if (IsDeviceOn())
             {
-                if (input_logic_node.GetLogicState() == low)
+                if (input_logic_node.GetCollidingNode().GetComponent<LogicNode>().GetLogicState() == low)
                 {
                     logic_behavior.SetLogicState(high);
                 }
-                else if (input_logic_node.GetLogicState() == high)
+                else if (input_logic_node.GetCollidingNode().GetComponent<LogicNode>().GetLogicState() == high)
                 {
                     logic_behavior.SetLogicState(low);
                 }
@@ -365,11 +334,11 @@ public class INVGate : MonoBehaviour, LogicInterface
             int invalid = (int)LOGIC.INVALID;
             if (IsDeviceOn())
             {
-                if (input_logic_node.GetLogicState() == low)
+                if (input_logic_node.GetCollidingNode().GetComponent<LogicNode>().GetLogicState() == low)
                 {
                     logic_behavior.SetLogicState(high);
                 }
-                else if (input_logic_node.GetLogicState() == high)
+                else if (input_logic_node.GetCollidingNode().GetComponent<LogicNode>().GetLogicState() == high)
                 {
                     logic_behavior.SetLogicState(low);
                 }
@@ -396,11 +365,11 @@ public class INVGate : MonoBehaviour, LogicInterface
             int invalid = (int)LOGIC.INVALID;
             if (IsDeviceOn())
             {
-                if (input_logic_node.GetLogicState() == low)
+                if (input_logic_node.GetCollidingNode().GetComponent<LogicNode>().GetLogicState() == low)
                 {
                     logic_behavior.SetLogicState(high);
                 }
-                else if (input_logic_node.GetLogicState() == high)
+                else if (input_logic_node.GetCollidingNode().GetComponent<LogicNode>().GetLogicState() == high)
                 {
                     logic_behavior.SetLogicState(low);
                 }
@@ -427,11 +396,11 @@ public class INVGate : MonoBehaviour, LogicInterface
             int invalid = (int)LOGIC.INVALID;
             if (IsDeviceOn())
             {
-                if (input_logic_node.GetLogicState() == low)
+                if (input_logic_node.GetCollidingNode().GetComponent<LogicNode>().GetLogicState() == low)
                 {
                     logic_behavior.SetLogicState(high);
                 }
-                else if (input_logic_node.GetLogicState() == high)
+                else if (input_logic_node.GetCollidingNode().GetComponent<LogicNode>().GetLogicState() == high)
                 {
                     logic_behavior.SetLogicState(low);
                 }

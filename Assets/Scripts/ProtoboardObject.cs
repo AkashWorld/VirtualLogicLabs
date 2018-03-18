@@ -344,9 +344,9 @@ public class ProtoboardObject : MonoBehaviour, LogicInterface{
     }
 
 
-    //TODO FIX THE ALGORITHM
     public void ReactToLogic(GameObject logicNode, int requestedState)
     {
+        Debug.Log("Protoboard node reacting: " + logicNode.gameObject.name);
         LogicNode logicBehavior = logicNode.GetComponent<LogicNode>();
         string logicID = logicBehavior.gameObject.name;
         //Get the list of GameObjects (LogicNodes) that have the same ID as the input logicNode
@@ -374,6 +374,9 @@ public class ProtoboardObject : MonoBehaviour, LogicInterface{
                     {
                         priorityState = (int)LOGIC.LOW;
                     }
+                    Debug.Log("Priority state found to be " + priorityState + " from Collided node "
+                        + collidedNode.gameObject.name + " in Protoboard Node " + logicNode.gameObject.name 
+                        + " from device " + collidedNode.gameObject.transform.parent.gameObject.name);
                 }
             }
             Debug.Log("PROTOBOARD Setting Logic Set " + logicID + " to state " + priorityState);

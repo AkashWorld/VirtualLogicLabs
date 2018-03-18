@@ -85,7 +85,6 @@ public class Wire : MonoBehaviour, LogicInterface {
         startNode.transform.position = new Vector3(wireInflectionObjects[0].transform.position.x, wireInflectionObjects[0].transform.position.y, 10);
         endNode.transform.position = new Vector3(wireInflectionObjects[wireInflectionObjects.Count - 1].transform.position.x, 
             wireInflectionObjects[wireInflectionObjects.Count - 1].transform.position.y, 10);
-
     }
 
 
@@ -107,6 +106,7 @@ public class Wire : MonoBehaviour, LogicInterface {
                     {
                         Debug.Log("Wire: Clicked on logic node!");
                         isClickedLogicNode = true;
+                        this.gameObject.name += " " + hit.collider.gameObject.name;
                     }
                 }
                 Vector3 mouseWorldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -188,20 +188,27 @@ public class Wire : MonoBehaviour, LogicInterface {
                     activelyBeingPlaced = false;
                     Destroy(placingText);
                     SetLogicNodePositions();
-                    
+                    this.gameObject.name += "]";
                 }
 
 
 
 
             }
+            //Communicate to collided objects that the wire is being destroyed, then destroy the wire
             else if (Input.GetMouseButtonDown(1))
             {
+                LogicNode startLogic = startNode.GetComponent<LogicNode>(); startLogic.SetLogicState((int)LOGIC.INVALID);
+                LogicNode endLogic = endNode.GetComponent<LogicNode>(); endLogic.SetLogicState((int)LOGIC.INVALID);
                 Destroy(this.gameObject);
             }
         }
 	}
 
+    void OnDestroy()
+    {
+        Debug.Log("DESTROYING " + this.gameObject.name);
+    }
 
     public void ReactToLogic(GameObject LogicNode)
     {
@@ -214,41 +221,39 @@ public class Wire : MonoBehaviour, LogicInterface {
         {
             return;
         }
-        Debug.Log("WIRE: Reacting To Logic on Node: " + LogicNode.name);
-        Debug.Log("WIRE: Attempting to request state change to: " + requestedState);
-        LogicNode otherEnd = null; //the other end from the node that this is being called; 
-        LogicNode currentEnd = null; //the currentNode that this is being called from
-        LogicNode startNodeLogic = startNode.GetComponent<LogicNode>();
-        LogicNode endNodeLogic = endNode.GetComponent<LogicNode>();
-        if(LogicNode == startNode)
+        LogicNode startLogic = startNode.GetComponent<LogicNode>();
+        LogicNode endLogic = endNode.GetComponent<LogicNode>();
+        GameObject startCollision = startLogic.GetCollidingNode(); GameObject endCollision = endLogic.GetCollidingNode();
+        if(startCollision == null || endCollision == null)
         {
-            currentEnd = startNodeLogic;
-            otherEnd = endNodeLogic;
+            Debug.Log(this.gameObject.name + " ends found to have no collisions, returning.");
+            return;
         }
-        else if(LogicNode == endNode)
+        LogicNode startCollisionLogic = startCollision.GetComponent<LogicNode>();
+        LogicNode endCollisionLogic = endCollision.GetComponent<LogicNode>();
+        int priorityState = (int)LOGIC.INVALID;
+        int startCollState = startCollisionLogic.GetLogicState();
+        int endCollState = endCollisionLogic.GetLogicState();
+        if(startCollState == (int)LOGIC.LOW || endCollState == (int)LOGIC.LOW)
         {
-            currentEnd = endNodeLogic;
-            otherEnd = startNodeLogic;
+            priorityState = (int)LOGIC.LOW;
         }
-        LogicNode collidingNodeCurrent = currentEnd.GetCollidingNode().GetComponent<LogicNode>(); //Node colliding with the other end of the wire
-        LogicNode collidingNodeEnd = otherEnd.GetCollidingNode().GetComponent<LogicNode>(); //Node colliding with the other end of the wire
-        currentEnd.SetLogicState(requestedState);
-        otherEnd.SetLogicState(requestedState);
-        collidingNodeEnd.RequestStateChange(requestedState); //request other device to change to logic
-        if (collidingNodeEnd.GetLogicState() != requestedState) //other device node cannot change
+        else if(startCollState == (int)LOGIC.HIGH || endCollState == (int)LOGIC.HIGH)
         {
-            requestedState = collidingNodeEnd.GetLogicState();
-            currentEnd.SetLogicState(requestedState);
-            otherEnd.SetLogicState(requestedState);
-            //collidingNodeCurrent.RequestStateChange(requestedState); //request current device to calibrate to other device's logic
+            priorityState = (int)LOGIC.HIGH;
         }
-        else //requested state change is successful
+        Debug.Log(this.gameObject.name +  " priority state found to be: " + priorityState);
+        startLogic.SetLogicState(priorityState);
+        endLogic.SetLogicState(priorityState);
+        if (startCollState != priorityState)
         {
-            currentEnd.SetLogicState(requestedState);
-            otherEnd.SetLogicState(requestedState);
+            Debug.Log(this.gameObject.name + " Requesting node " + startCollisionLogic.gameObject.name + " to change to " + priorityState);
+            startCollisionLogic.RequestStateChange(priorityState);
         }
- 
-        
-        
+        if (endCollState != priorityState)
+        {
+            Debug.Log(this.gameObject.name +  " Requesting node " + endCollisionLogic.gameObject.name + " to change to " + priorityState);
+            endCollisionLogic.RequestStateChange(priorityState);
+        }
     }
 }

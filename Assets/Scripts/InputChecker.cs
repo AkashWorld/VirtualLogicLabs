@@ -13,7 +13,7 @@ public class InputChecker : MonoBehaviour {
 	void Update () {
         if (Input.GetKeyDown(KeyCode.W)) //start wiring sequence
         {
-            GameObject wire = new GameObject("Wire");
+            GameObject wire = new GameObject("[Wire");
             wire.AddComponent<Wire>();
             wire.transform.parent = Camera.main.transform;
         }

@@ -29,15 +29,15 @@ public class PowerSupplyScript : MonoBehaviour, LogicInterface {
         gndNode.transform.localScale = new Vector3(.3F, .3f, 0);
         gndNode.AddComponent<LogicNode>();
 
-        vccNode.GetComponent<LogicNode>().SetLogicState((int)LOGIC.HIGH);
-        gndNode.GetComponent<LogicNode>().SetLogicState((int)LOGIC.LOW);
+
 
     }
 
     // Update is called once per frame
     void Update () {
-		
-	}
+        vccNode.GetComponent<LogicNode>().SetLogicState((int)LOGIC.HIGH);
+        gndNode.GetComponent<LogicNode>().SetLogicState((int)LOGIC.LOW);
+    }
 
     public void ReactToLogic(GameObject callingNode, int source)
     {

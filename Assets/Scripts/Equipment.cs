@@ -64,7 +64,7 @@ public class Equipment : MonoBehaviour {
                 newPrefab = Resources.Load<GameObject>("Prefabs/LEDChip");
                 break;
             case "Wire": //TODO
-                GameObject wire = new GameObject("Wire");
+                GameObject wire = new GameObject("[Wire");
                 wire.AddComponent<Wire>();
                 wire.transform.parent = mainCamera.transform;
                 break; 
