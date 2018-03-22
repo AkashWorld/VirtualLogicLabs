@@ -296,6 +296,7 @@
     <Compile Include="Assets\Scripts\ProtoboardObject.cs" />
     <Compile Include="Assets\Scripts\SquareboxObject.cs" />
     <Compile Include="Assets\Scripts\Switch.cs" />
+    <Compile Include="Assets\Scripts\TrashBehavior.cs" />
     <Compile Include="Assets\Scripts\Wire.cs" />
     <Compile Include="Assets\Scripts\WireInflection.cs" />
   </ItemGroup>

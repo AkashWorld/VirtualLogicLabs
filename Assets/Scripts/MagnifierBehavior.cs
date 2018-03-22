@@ -7,7 +7,6 @@ public class MagnifierBehavior : MonoBehaviour {
     private Vector3 screenPoint;
     private Vector3 offset;
 
-
     // Use this for initialization
     void Start () {
 		
@@ -23,15 +22,17 @@ public class MagnifierBehavior : MonoBehaviour {
         Debug.Log("Mouse action on magnifying glass");
         if (col.gameObject.name == "74LS00")
         {
-            SpriteRenderer sprite = GameObject.Find("rm0001--1-").GetComponent<SpriteRenderer>();
-            sprite.enabled = false;  
+            SpriteRenderer sprite = GameObject.Find("download").GetComponent<SpriteRenderer>();
+            sprite.enabled = true;
+            SpriteRenderer sprite1 = GameObject.Find("InstructionBase").GetComponent<SpriteRenderer>();
+            sprite1.enabled = true;
+
         }
         if (col.gameObject.name == "74LS04")
         {
-            SpriteRenderer sprite = GameObject.Find("rm0001--1-").GetComponent<SpriteRenderer>();
-            sprite.enabled = true;
+
         }
-        if (col.gameObject.name == "74LS00")
+        if (col.gameObject.name == "74LS08")
         {
 
         }
@@ -50,13 +51,14 @@ public class MagnifierBehavior : MonoBehaviour {
     {
         if (col.gameObject.name == "74LS00")
         {
-            SpriteRenderer sprite = GameObject.Find("rm0001--1-").GetComponent<SpriteRenderer>();
+            SpriteRenderer sprite = GameObject.Find("download").GetComponent<SpriteRenderer>();
             sprite.enabled = false;
+            SpriteRenderer sprite1 = GameObject.Find("InstructionBase").GetComponent<SpriteRenderer>();
+            sprite1.enabled = false;
         }
         if (col.gameObject.name == "74LS04")
         {
-            SpriteRenderer sprite = GameObject.Find("rm0001--1-").GetComponent<SpriteRenderer>();
-            sprite.enabled = false;
+
         }
         if (col.gameObject.name == "74LS00")
         {
