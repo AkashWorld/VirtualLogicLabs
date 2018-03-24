@@ -6,7 +6,8 @@ public class MagnifierBehavior : MonoBehaviour {
 
     private Vector3 screenPoint;
     private Vector3 offset;
-
+    GameObject prevGameobject = null;
+    SpriteRenderer prevSprite = null; 
     // Use this for initialization
     void Start () {
 		
@@ -17,77 +18,112 @@ public class MagnifierBehavior : MonoBehaviour {
 		
 	}
 
-    void OnTriggerEnter2D(Collider2D col)
+
+    IEnumerator OnTriggerEnter2D(Collider2D col)
     {
+
+        float alpha = 0;
+        SpriteRenderer sprite = null;
+        GameObject infoObject = null;
+        if (col.gameObject.GetComponent<LogicNode>()) yield break;
+        infoObject = col.gameObject;
+        Collider2D magnifierCollider = this.gameObject.GetComponent<Collider2D>();
+        Collider2D infoObjectCollider = infoObject.GetComponent<Collider2D>();
+
         Debug.Log("Mouse action on magnifying glass");
-        if (col.gameObject.name == "74LS00")
+        if (infoObject.GetComponent<NANDGate>())
         {
-            SpriteRenderer sprite = GameObject.Find("download").GetComponent<SpriteRenderer>();
-            sprite.enabled = true;
-            SpriteRenderer sprite1 = GameObject.Find("InstructionBase").GetComponent<SpriteRenderer>();
-            sprite1.enabled = true;
-
+            sprite = GameObject.Find("74LS00Info").GetComponent<SpriteRenderer>();
         }
-        if (col.gameObject.name == "74LS04")
+        else if (infoObject.GetComponent<INVGate>())
         {
-
+            sprite = GameObject.Find("74LS04Info").GetComponent<SpriteRenderer>();
         }
-        if (col.gameObject.name == "74LS08")
+        else if (infoObject.GetComponent<ANDGate>())
         {
-
+            sprite = GameObject.Find("74LS08Info").GetComponent<SpriteRenderer>();
         }
-        if (col.gameObject.name == "74LS00")
+        else if (infoObject.GetComponent<ORGate>())
         {
-
+            sprite = GameObject.Find("74LS32Info").GetComponent<SpriteRenderer>();
         }
-        if (col.gameObject.name == "74LS00")
+        else
         {
-
+            Debug.Log("Error in magnifier collision");
+            yield break;
         }
-
+        alpha = sprite.color.a;
+        prevGameobject = infoObject;
+        prevSprite = sprite; 
+        while (alpha < 1)
+        {
+            sprite.color = new Color(1, 1, 1, alpha);
+            yield return new WaitForSeconds(0.00001F);
+            alpha += (float)0.01;
+            if(magnifierCollider.IsTouching(infoObjectCollider) == false)
+            {
+                OnTriggerEnter2D(infoObjectCollider);
+                yield break; 
+            }
+        }
+        sprite.color = new Color(1, 1, 1, 1);
     }
 
-    void OnTriggerExit2D(Collider2D col)
+    IEnumerator OnTriggerExit2D(Collider2D col)
     {
-        if (col.gameObject.name == "74LS00")
+        float alpha;
+        SpriteRenderer sprite = null;
+        GameObject infoObject = null;
+        if (col.gameObject.GetComponent<LogicNode>()) yield break;
+        infoObject = col.gameObject;
+        Debug.Log("Mouse action on magnifying glass");
+        if (infoObject.GetComponent<NANDGate>())
         {
-            SpriteRenderer sprite = GameObject.Find("download").GetComponent<SpriteRenderer>();
-            sprite.enabled = false;
-            SpriteRenderer sprite1 = GameObject.Find("InstructionBase").GetComponent<SpriteRenderer>();
-            sprite1.enabled = false;
+            sprite = GameObject.Find("74LS00Info").GetComponent<SpriteRenderer>();
         }
-        if (col.gameObject.name == "74LS04")
+        else if (infoObject.GetComponent<INVGate>())
+        {
+            sprite = GameObject.Find("74LS04Info").GetComponent<SpriteRenderer>();
+        }
+        else if (infoObject.GetComponent<ANDGate>())
+        {
+            sprite = GameObject.Find("74LS08Info").GetComponent<SpriteRenderer>();
+        }
+        else if (infoObject.GetComponent<ORGate>())
+        {
+            sprite = GameObject.Find("74LS32Info").GetComponent<SpriteRenderer>();
+        }
+        else
+        {
+            Debug.Log("Error in magnifier collision");
+            yield break;
+        }
+        alpha = sprite.color.a;
+        while(alpha > 0)
         {
 
-        }
-        if (col.gameObject.name == "74LS00")
-        {
-
-        }
-        if (col.gameObject.name == "74LS00")
-        {
-
-        }
-        if (col.gameObject.name == "74LS00")
-        {
+            sprite.color = new Color(1, 1, 1, alpha);
+            yield return new WaitForSeconds(0.001F);
+            alpha -= (float)0.01;
 
         }
 
+        sprite.color = new Color(1, 1, 1, 0);
     }
 
     void OnMouseDown()
-    {
-        Debug.Log("Magnifying Glass ButtonDown");
-        screenPoint = Camera.main.WorldToScreenPoint(gameObject.transform.position);
-        offset = gameObject.transform.position - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z));
-    }
+        {
+            Debug.Log("Magnifying Glass ButtonDown");
+            screenPoint = Camera.main.WorldToScreenPoint(gameObject.transform.position);
+            offset = gameObject.transform.position - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z));
+        }
 
-    void OnMouseDrag()
-    {
-        Vector3 curScreenPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z);
-        Vector3 curPosition = Camera.main.ScreenToWorldPoint(curScreenPoint);
-        transform.position = curPosition;
-    }
+        void OnMouseDrag()
+        {
+            Vector3 curScreenPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z);
+            Vector3 curPosition = Camera.main.ScreenToWorldPoint(curScreenPoint);
+            transform.position = curPosition;
+        }
 
 }
 

@@ -15,7 +15,7 @@ public class TrashBehavior : MonoBehaviour {
             if (col.gameObject.GetComponent<LogicNode>()) hoverObject = col.gameObject.transform.parent.gameObject;
             else hoverObject = col.gameObject;
             SpriteRenderer sprite = this.GetComponent<SpriteRenderer>();
-            sprite.color = new Color(255, 255, 0); 
+            sprite.color = new Color(1F, 1F, 0F); 
         }
     }
 
@@ -27,7 +27,7 @@ public class TrashBehavior : MonoBehaviour {
             Debug.Log("Stop hovering over trash");
             hoverObject = null;
             SpriteRenderer sprite = this.GetComponent<SpriteRenderer>();
-            sprite.color = new Color(255, 255, 255);
+            sprite.color = new Color(1F, 1F, 1F);
         }
         
     }
