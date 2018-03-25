@@ -515,4 +515,187 @@ public class ANDGate : MonoBehaviour, LogicInterface
     {
 
     }
+
+    public void TurnOffRelatedNodes(GameObject LogicNode)
+    {
+        GameObject logic_0, logic_1, logic_2, logic_3, logic_4, logic_5, logic_6,
+        logic_7, logic_8, logic_9, logic_10, logic_11, logic_12, logic_13;
+
+        //GND
+        if (logic_dictionary.TryGetValue(LOGIC_DEVICE_ID + 6, out logic_6))
+        {
+            LogicNode logic_behavior = logic_6.GetComponent<LogicNode>();
+            GameObject collided_node = logic_behavior.GetCollidingNode();
+            LogicNode collided_behavior = collided_node.GetComponent<LogicNode>();
+            logic_behavior.SetLogicStateWithoutNotification((int)LOGIC.INVALID);
+            if (collided_node != null && logic_behavior.gameObject != LogicNode)
+            {
+                collided_behavior.RequestResetDevice();
+            }
+        }
+        //VCC
+        if (logic_dictionary.TryGetValue(LOGIC_DEVICE_ID + 13, out logic_13))
+        {
+            LogicNode logic_behavior = logic_13.GetComponent<LogicNode>();
+            GameObject collided_node = logic_behavior.GetCollidingNode();
+            LogicNode collided_behavior = collided_node.GetComponent<LogicNode>();
+            logic_behavior.SetLogicStateWithoutNotification((int)LOGIC.INVALID);
+            if (collided_node != null && logic_behavior.gameObject != LogicNode)
+            {
+                collided_behavior.RequestResetDevice();
+            }
+        }
+        /**
+         * INPUTs find the collided nodes of the input pins and sets the input's
+         * pin state to the collided node's state.
+         * 
+         */
+        //AND INPUT 1
+        if (logic_dictionary.TryGetValue(LOGIC_DEVICE_ID + 0, out logic_0))
+        {
+            LogicNode logic_behavior = logic_0.GetComponent<LogicNode>();
+            GameObject collided_node = logic_behavior.GetCollidingNode();
+            LogicNode collided_behavior = collided_node.GetComponent<LogicNode>();
+            logic_behavior.SetLogicStateWithoutNotification((int)LOGIC.INVALID);
+            if (collided_node != null && logic_behavior.gameObject != LogicNode)
+            {
+                collided_behavior.RequestResetDevice();
+            }
+        }
+        //AND INPUT 1
+        if (logic_dictionary.TryGetValue(LOGIC_DEVICE_ID + 1, out logic_1))
+        {
+            LogicNode logic_behavior = logic_1.GetComponent<LogicNode>();
+            GameObject collided_node = logic_behavior.GetCollidingNode();
+            LogicNode collided_behavior = collided_node.GetComponent<LogicNode>();
+            logic_behavior.SetLogicStateWithoutNotification((int)LOGIC.INVALID);
+            if (collided_node != null && logic_behavior.gameObject != LogicNode)
+            {
+                collided_behavior.RequestResetDevice();
+            }
+        }
+        //AND ------OUTPUT------- 1
+        if (logic_dictionary.TryGetValue(LOGIC_DEVICE_ID + 2, out logic_2))
+        {
+            LogicNode logic_behavior = logic_2.GetComponent<LogicNode>();
+            GameObject collided_node = logic_behavior.GetCollidingNode();
+            LogicNode collided_behavior = collided_node.GetComponent<LogicNode>();
+            logic_behavior.SetLogicStateWithoutNotification((int)LOGIC.INVALID);
+            if (collided_node != null && logic_behavior.gameObject != LogicNode)
+            {
+                collided_behavior.RequestResetDevice();
+            }
+        }
+
+        //AND INPUT 2
+        if (logic_dictionary.TryGetValue(LOGIC_DEVICE_ID + 3, out logic_3))
+        {
+            LogicNode logic_behavior = logic_3.GetComponent<LogicNode>();
+            GameObject collided_node = logic_behavior.GetCollidingNode();
+            LogicNode collided_behavior = collided_node.GetComponent<LogicNode>();
+            logic_behavior.SetLogicStateWithoutNotification((int)LOGIC.INVALID);
+            if (collided_node != null && logic_behavior.gameObject != LogicNode)
+            {
+                collided_behavior.RequestResetDevice();
+            }
+        }
+        //AND INPUT 2
+        if (logic_dictionary.TryGetValue(LOGIC_DEVICE_ID + 4, out logic_4))
+        {
+            LogicNode logic_behavior = logic_4.GetComponent<LogicNode>();
+            GameObject collided_node = logic_behavior.GetCollidingNode();
+            LogicNode collided_behavior = collided_node.GetComponent<LogicNode>();
+            logic_behavior.SetLogicStateWithoutNotification((int)LOGIC.INVALID);
+            if (collided_node != null && logic_behavior.gameObject != LogicNode)
+            {
+                collided_behavior.RequestResetDevice();
+            }
+        }
+        //AND ------OUTPUT------- 2
+        if (logic_dictionary.TryGetValue(LOGIC_DEVICE_ID + 5, out logic_5))
+        {
+            LogicNode logic_behavior = logic_5.GetComponent<LogicNode>();
+            GameObject collided_node = logic_behavior.GetCollidingNode();
+            LogicNode collided_behavior = collided_node.GetComponent<LogicNode>();
+            logic_behavior.SetLogicStateWithoutNotification((int)LOGIC.INVALID);
+            if (collided_node != null && logic_behavior.gameObject != LogicNode)
+            {
+                collided_behavior.RequestResetDevice();
+            }
+        }
+
+        //AND INPUT 2
+        if (logic_dictionary.TryGetValue(LOGIC_DEVICE_ID + 9, out logic_9))
+        {
+            LogicNode logic_behavior = logic_9.GetComponent<LogicNode>();
+            GameObject collided_node = logic_behavior.GetCollidingNode();
+            LogicNode collided_behavior = collided_node.GetComponent<LogicNode>();
+            logic_behavior.SetLogicStateWithoutNotification((int)LOGIC.INVALID);
+            if (collided_node != null && logic_behavior.gameObject != LogicNode)
+            {
+                collided_behavior.RequestResetDevice();
+            }
+        }
+        //AND INPUT 2
+        if (logic_dictionary.TryGetValue(LOGIC_DEVICE_ID + 8, out logic_8))
+        {
+            LogicNode logic_behavior = logic_8.GetComponent<LogicNode>();
+            GameObject collided_node = logic_behavior.GetCollidingNode();
+            LogicNode collided_behavior = collided_node.GetComponent<LogicNode>();
+            logic_behavior.SetLogicStateWithoutNotification((int)LOGIC.INVALID);
+            if (collided_node != null && logic_behavior.gameObject != LogicNode)
+            {
+                collided_behavior.RequestResetDevice();
+            }
+        }
+        //AND ------OUTPUT------- 2
+        if (logic_dictionary.TryGetValue(LOGIC_DEVICE_ID + 7, out logic_7))
+        {
+            LogicNode logic_behavior = logic_7.GetComponent<LogicNode>();
+            GameObject collided_node = logic_behavior.GetCollidingNode();
+            LogicNode collided_behavior = collided_node.GetComponent<LogicNode>();
+            logic_behavior.SetLogicStateWithoutNotification((int)LOGIC.INVALID);
+            if (collided_node != null && logic_behavior.gameObject != LogicNode)
+            {
+                collided_behavior.RequestResetDevice();
+            }
+        }
+
+        //AND INPUT 2
+        if (logic_dictionary.TryGetValue(LOGIC_DEVICE_ID + 12, out logic_12))
+        {
+            LogicNode logic_behavior = logic_12.GetComponent<LogicNode>();
+            GameObject collided_node = logic_behavior.GetCollidingNode();
+            LogicNode collided_behavior = collided_node.GetComponent<LogicNode>();
+            logic_behavior.SetLogicStateWithoutNotification((int)LOGIC.INVALID);
+            if (collided_node != null && logic_behavior.gameObject != LogicNode)
+            {
+                collided_behavior.RequestResetDevice();
+            }
+        }
+        //AND INPUT 2
+        if (logic_dictionary.TryGetValue(LOGIC_DEVICE_ID + 11, out logic_11))
+        {
+            LogicNode logic_behavior = logic_11.GetComponent<LogicNode>();
+            GameObject collided_node = logic_behavior.GetCollidingNode();
+            LogicNode collided_behavior = collided_node.GetComponent<LogicNode>();
+            logic_behavior.SetLogicStateWithoutNotification((int)LOGIC.INVALID);
+            if (collided_node != null && logic_behavior.gameObject != LogicNode)
+            {
+                collided_behavior.RequestResetDevice();
+            }
+        }
+        //AND ------OUTPUT------- 2
+        if (logic_dictionary.TryGetValue(LOGIC_DEVICE_ID + 10, out logic_10))
+        {
+            LogicNode logic_behavior = logic_10.GetComponent<LogicNode>();
+            GameObject collided_node = logic_behavior.GetCollidingNode();
+            LogicNode collided_behavior = collided_node.GetComponent<LogicNode>();
+            logic_behavior.SetLogicStateWithoutNotification((int)LOGIC.INVALID);
+            if (collided_node != null && logic_behavior.gameObject != LogicNode)
+            {
+                collided_behavior.RequestResetDevice();
+            }
+        }
+    }
 }

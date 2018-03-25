@@ -9,6 +9,7 @@ public class LogicNode : MonoBehaviour {
     private GameObject collidingNode;
     private bool recentStateChange = false;
     private bool recentCollisionEnter = false;
+    private bool recentCollisionExit = false;
 	// Use this for initialization
 	void Start () {
         
@@ -39,6 +40,11 @@ public class LogicNode : MonoBehaviour {
             recentStateChange = false;
             recentCollisionEnter = false;
         }
+        if(recentCollisionExit)
+        {
+            this.RequestResetDevice();
+            this.recentCollisionExit = false;
+        }
     }
 
     private void OnMouseOver()
@@ -59,8 +65,8 @@ public class LogicNode : MonoBehaviour {
         if(coll.gameObject.tag == "LOGIC_NODE")
         {
             Debug.Log("Collision detected between node [" + this.gameObject.name + "] and [" + coll.gameObject.name + "]");
-            collidingNode = coll.gameObject;
-            recentCollisionEnter = true;
+            this.collidingNode = coll.gameObject;
+            this.recentCollisionEnter = true;
         }
 
     }
@@ -69,16 +75,23 @@ public class LogicNode : MonoBehaviour {
     {
         if (collision.gameObject == collidingNode)
         {
-            collidingNode = null;
+            this.collidingNode = null;
             LogicNode collided_logic_node = collision.gameObject.GetComponent<LogicNode>();
             Debug.Log("Collision EXIT between node [" + this.gameObject.name + "] and [" + collision.gameObject.name + "]");
             if (collided_logic_node.GetLogicState() != (int)LOGIC.INVALID)
             {
                 collided_logic_node.RequestStateChange((int)LOGIC.INVALID);
                 this.RequestStateChange((int)LOGIC.INVALID);
+                this.recentCollisionExit = true;
             }
         }
     }
+
+    public void RequestResetDevice()
+    {
+        this.OwningDevice.TurnOffRelatedNodes(this.gameObject);
+    }
+
 
     public GameObject GetCollidingNode()
     {
@@ -136,6 +149,29 @@ public class LogicNode : MonoBehaviour {
             spriteRenderer.material.color = new Color(1, 0, 0);
         }
     }
+
+
+    public void SetLogicStateWithoutNotification(int requestedState)
+    {
+        //if change is detected in state
+        if (this.logic_state != requestedState)
+        {
+            //check if value of the requested state is valid
+            if ((requestedState == (int)LOGIC.HIGH || requestedState == (int)LOGIC.LOW
+                || requestedState == (int)LOGIC.INVALID))
+            {
+                Debug.Log("Setting Logic State of Node " + this.gameObject.name + " to " + requestedState);
+                this.logic_state = requestedState;
+                SetSpriteLogicColor();
+            }
+            else
+            {
+                Debug.Log("Error setting logic state. Invalid requested recieved.");
+            }
+        }
+        return;
+    }
+
 
     //Sets logic state of this particular component. 
     //logic_id MUST be set before this method is called

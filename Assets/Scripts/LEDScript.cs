@@ -119,4 +119,9 @@ public class LEDScript : MonoBehaviour, LogicInterface{
             LEDSpriteRen.sprite = Resources.Load<Sprite>("Sprites/LEDoff");
         }
     }
+
+    public void TurnOffRelatedNodes(GameObject LogicNode)
+    {
+        
+    }
 }

@@ -48,20 +48,11 @@ public class PowerSupplyScript : MonoBehaviour, LogicInterface {
     {
 
     }
-    /*
-    void OnMouseDown()
+
+    public void TurnOffRelatedNodes(GameObject LogicNode)
     {
-        Debug.Log("Power Supply Mouse Down");
-        screenPoint = Camera.main.WorldToScreenPoint(gameObject.transform.position);
-        offset = gameObject.transform.position - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z));
+        if(LogicNode == vccNode) { vccNode.GetComponent<LogicNode>().SetLogicStateWithoutNotification((int)(LOGIC.INVALID)); }
+        else if (LogicNode == gndNode) { gndNode.GetComponent<LogicNode>().SetLogicStateWithoutNotification((int)(LOGIC.INVALID)); }
 
     }
-
-    void OnMouseDrag()
-    {
-        Vector3 curScreenPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z);
-        Vector3 curPosition = Camera.main.ScreenToWorldPoint(curScreenPoint);
-        transform.position = curPosition;
-    }
-    */
 }

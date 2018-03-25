@@ -256,4 +256,28 @@ public class Wire : MonoBehaviour, LogicInterface {
             endCollisionLogic.RequestStateChange(priorityState);
         }
     }
+
+    public void TurnOffRelatedNodes(GameObject LogicNode)
+    {
+        LogicNode startLogic = startNode.GetComponent<LogicNode>();
+        LogicNode endLogic = endNode.GetComponent<LogicNode>();
+        startLogic.SetLogicStateWithoutNotification((int)LOGIC.INVALID);
+        endLogic.SetLogicStateWithoutNotification((int)LOGIC.INVALID);
+        if(startNode == LogicNode)
+        {
+            GameObject collNode = endLogic.GetCollidingNode();
+            if (collNode != null)
+            {
+                collNode.GetComponent<LogicNode>().RequestResetDevice();
+            }
+        }
+        else if(endNode == LogicNode)
+        {
+            GameObject collNode = startLogic.GetCollidingNode();
+            if (collNode != null)
+            {
+                collNode.GetComponent<LogicNode>().RequestResetDevice();
+            }
+        }
+    }
 }

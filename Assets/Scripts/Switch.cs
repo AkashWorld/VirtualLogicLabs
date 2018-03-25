@@ -124,5 +124,8 @@ public class Switch : MonoBehaviour, LogicInterface {
         }
     }
 
-
+    public void TurnOffRelatedNodes(GameObject LogicNode)
+    {
+        throw new System.NotImplementedException();
+    }
 }

@@ -333,6 +333,10 @@ public class ProtoboardObject : MonoBehaviour, LogicInterface{
         }
     }
 
+
+ 
+
+
     //Interface method from LogicInterface.cs that allows the protoboard to react to any changes to its logic nodes.
     //This method is called from OnMouseUp() function, so it regulates mouse toggles
     public void ReactToLogic(GameObject logicNode)
@@ -391,5 +395,35 @@ public class ProtoboardObject : MonoBehaviour, LogicInterface{
     
     void Update () {
 
+    }
+
+    /**
+     * Turn off all related nodes.
+     */ 
+    public void TurnOffRelatedNodes(GameObject LogicNode)
+    {
+        LogicNode logicBehaviorScript = LogicNode.GetComponent<LogicNode>();
+        string logicID = logicBehaviorScript.gameObject.name;
+        //Get the list of GameObjects (LogicNodes) that have the same ID as the input logicNode
+        List<GameObject> LogicNodeList;
+        if (LogicID_Node_Dict.TryGetValue(logicID, out LogicNodeList))
+        {
+            //iterate through the list of logicNode
+            foreach (GameObject node in LogicNodeList)
+            {
+                //if the itearting node is not the input logicNode, then set the node's state
+                //to the input logicNode's state
+                LogicNode logicScript = node.GetComponent<LogicNode>();
+                logicScript.SetLogicStateWithoutNotification((int)LOGIC.INVALID);
+                if (logicScript.gameObject != LogicNode)
+                {
+                    GameObject collNode = logicScript.GetCollidingNode();
+                    if (collNode != null)
+                    {
+                        collNode.GetComponent<LogicNode>().RequestResetDevice();
+                    }
+                }
+            }
+        }
     }
 }
