@@ -10,6 +10,7 @@ public class LogicNode : MonoBehaviour {
     private bool recentStateChange = false;
     private bool recentCollisionEnter = false;
     private bool recentCollisionExit = false;
+
 	// Use this for initialization
 	void Start () {
         
@@ -31,7 +32,7 @@ public class LogicNode : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (recentCollisionExit)
+        if (recentCollisionExit) /*Recent exit of collision was detected, so reset the entire logic chain*/
         {
             this.RequestResetDevice();
             this.recentCollisionExit = false;
@@ -200,6 +201,10 @@ public class LogicNode : MonoBehaviour {
         }
         return; 
     }
+
+
+
+
     public int GetLogicState()
     {
         return this.logic_state;

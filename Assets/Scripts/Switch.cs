@@ -12,6 +12,7 @@ public class Switch : MonoBehaviour, LogicInterface {
     private GameObject middleNode; //output
     private GameObject bottomNode; //input
     private bool SwitchUp = false;
+    private bool deviceReset = false;
 
 
 
@@ -87,21 +88,20 @@ public class Switch : MonoBehaviour, LogicInterface {
         {
             if (SNAPPED && SwitchUp == false)
             {
+                this.TurnOffRelatedNodes(this.gameObject);
                 SpriteRenderer spr_ren = DeviceGameObject.GetComponent<SpriteRenderer>();
                 spr_ren.sprite = Resources.Load<Sprite>("Sprites/SwitchUP");
                 SwitchUp = true;
-                this.ReactToLogic(topNode, topNode.GetComponent<LogicNode>().GetLogicState());
             }
             else if (SNAPPED)
             {
+                this.TurnOffRelatedNodes(this.gameObject);
                 SpriteRenderer spr_ren = DeviceGameObject.GetComponent<SpriteRenderer>();
                 spr_ren.sprite = Resources.Load<Sprite>("Sprites/SwitchDOWN");
                 SwitchUp = false;
-                this.ReactToLogic(bottomNode, bottomNode.GetComponent<LogicNode>().GetLogicState());
             }
             else
             {
-                SpriteRenderer spr_ren = DeviceGameObject.GetComponent<SpriteRenderer>();
                 this.ClearIO();
             }
         }
@@ -156,6 +156,34 @@ public class Switch : MonoBehaviour, LogicInterface {
 
     public void TurnOffRelatedNodes(GameObject LogicNode)
     {
-        this.ClearIO();
+
+        if (SNAPPED)
+        {
+            if (LogicNode == topNode)
+            {
+                bottomNode.GetComponent<LogicNode>().GetCollidingNode().GetComponent<LogicNode>().RequestResetDevice();
+                middleNode.GetComponent<LogicNode>().GetCollidingNode().GetComponent<LogicNode>().RequestResetDevice();
+            }
+            else if (LogicNode == middleNode)
+            {
+                topNode.GetComponent<LogicNode>().GetCollidingNode().GetComponent<LogicNode>().RequestResetDevice();
+                middleNode.GetComponent<LogicNode>().GetCollidingNode().GetComponent<LogicNode>().RequestResetDevice();
+            }
+            else if (LogicNode == bottomNode)
+            {
+                bottomNode.GetComponent<LogicNode>().GetCollidingNode().GetComponent<LogicNode>().RequestResetDevice();
+                middleNode.GetComponent<LogicNode>().GetCollidingNode().GetComponent<LogicNode>().RequestResetDevice();
+            }
+            else if(this.gameObject == LogicNode)
+            {
+                topNode.GetComponent<LogicNode>().GetCollidingNode().GetComponent<LogicNode>().RequestResetDevice();
+                bottomNode.GetComponent<LogicNode>().GetCollidingNode().GetComponent<LogicNode>().RequestResetDevice();
+                middleNode.GetComponent<LogicNode>().GetCollidingNode().GetComponent<LogicNode>().RequestResetDevice();
+            }
+        }
+        topNode.GetComponent<LogicNode>().SetLogicStateWithoutNotification((int)LOGIC.INVALID);
+        middleNode.GetComponent<LogicNode>().SetLogicStateWithoutNotification((int)LOGIC.INVALID);
+        bottomNode.GetComponent<LogicNode>().SetLogicStateWithoutNotification((int)LOGIC.INVALID);
+
     }
 }

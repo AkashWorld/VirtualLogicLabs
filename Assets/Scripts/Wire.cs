@@ -13,6 +13,7 @@ public class Wire : MonoBehaviour, LogicInterface {
     private Color currentColor = Color.red;
     private int currentState;
     private GameObject placingText;
+    private bool deviceReset = false;
 
     // Use this for initialization
     void Start () {
@@ -221,6 +222,7 @@ public class Wire : MonoBehaviour, LogicInterface {
         {
             return;
         }
+        deviceReset = false;
         LogicNode startLogic = startNode.GetComponent<LogicNode>();
         LogicNode endLogic = endNode.GetComponent<LogicNode>();
         GameObject startCollision = startLogic.GetCollidingNode(); GameObject endCollision = endLogic.GetCollidingNode();
@@ -280,5 +282,6 @@ public class Wire : MonoBehaviour, LogicInterface {
                 collNode.GetComponent<LogicNode>().RequestResetDevice();
             }
         }
+        deviceReset = true;
     }
 }

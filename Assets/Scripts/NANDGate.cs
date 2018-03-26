@@ -538,7 +538,8 @@ public class NANDGate : MonoBehaviour, LogicInterface {
             if (LogicNode != logicNodeGameObj)
             {
                 LogicNode logic_node = logicNodeGameObj.GetComponent<LogicNode>();
-                logic_node.SetLogicState((int)LOGIC.INVALID);
+                logic_node.SetLogicStateWithoutNotification((int)LOGIC.INVALID);
+                logic_node.GetCollidingNode().GetComponent<LogicNode>().RequestResetDevice();
             }
         }
     }
