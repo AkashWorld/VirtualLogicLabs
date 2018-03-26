@@ -402,6 +402,7 @@ public class ProtoboardObject : MonoBehaviour, LogicInterface{
      */ 
     public void TurnOffRelatedNodes(GameObject LogicNode)
     {
+        Debug.Log("RESET on device " + this.gameObject.name + " , The requesting node is: " + LogicNode.gameObject.name);
         LogicNode logicBehaviorScript = LogicNode.GetComponent<LogicNode>();
         string logicID = logicBehaviorScript.gameObject.name;
         //Get the list of GameObjects (LogicNodes) that have the same ID as the input logicNode

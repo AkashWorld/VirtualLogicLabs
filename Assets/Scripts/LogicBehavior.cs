@@ -31,19 +31,19 @@ public class LogicNode : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        if (recentCollisionExit)
+        {
+            this.RequestResetDevice();
+            this.recentCollisionExit = false;
+        }
         //check if node is colliding, and a recent state change is detected
-        if((collidingNode != null) && (recentStateChange  || recentCollisionEnter))
+        if ((collidingNode != null) && (recentStateChange  || recentCollisionEnter))
         {
             Debug.Log("Update() in Logic Node: " + this.gameObject.name);
             LogicNode collidedBehavior = collidingNode.GetComponent<LogicNode>();
             collidedBehavior.RequestStateChange(this.GetLogicState());
             recentStateChange = false;
             recentCollisionEnter = false;
-        }
-        if(recentCollisionExit)
-        {
-            this.RequestResetDevice();
-            this.recentCollisionExit = false;
         }
     }
 
@@ -150,7 +150,10 @@ public class LogicNode : MonoBehaviour {
         }
     }
 
-
+    //Sets logic state of this particular component. 
+    //logic_id MUST be set before this method is called
+    //Accepted values are LOGIC.HIGH(int = 10) and LOGIC.LOW(int = -10)
+    //DOES NOT set '{RecentStateChange}' that gets checked in the update() method
     public void SetLogicStateWithoutNotification(int requestedState)
     {
         //if change is detected in state
@@ -175,7 +178,7 @@ public class LogicNode : MonoBehaviour {
 
     //Sets logic state of this particular component. 
     //logic_id MUST be set before this method is called
-    //Accepted values are LOGIC.HIGH(int = 1) and LOGIC.LOW(int = 0)
+    //Accepted values are LOGIC.HIGH(int = 10) and LOGIC.LOW(int = -10)
     public void SetLogicState(int requestedState)
     {
         //if change is detected in state

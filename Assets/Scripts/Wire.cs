@@ -263,6 +263,7 @@ public class Wire : MonoBehaviour, LogicInterface {
         LogicNode endLogic = endNode.GetComponent<LogicNode>();
         startLogic.SetLogicStateWithoutNotification((int)LOGIC.INVALID);
         endLogic.SetLogicStateWithoutNotification((int)LOGIC.INVALID);
+        Debug.Log("RESET on device " + this.gameObject.name + " , The requesting node is: " + LogicNode.gameObject);
         if(startNode == LogicNode)
         {
             GameObject collNode = endLogic.GetCollidingNode();
