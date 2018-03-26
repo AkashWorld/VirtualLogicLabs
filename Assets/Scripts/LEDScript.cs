@@ -10,7 +10,7 @@ public class LEDScript : MonoBehaviour, LogicInterface{
     private Vector3 offset;
     private bool SNAPPED = false; //Set to true if all Logic Nodes of this device is in collision with an external node
     private GameObject LEDNodeVCC, LEDNodeGnd;
-
+    Sprite LEDOn; Sprite LEDOff;
 
     // Use this for initialization
     void Start () {
@@ -29,6 +29,8 @@ public class LEDScript : MonoBehaviour, LogicInterface{
         LEDNodeGnd.transform.localScale = new Vector3(.10F, .10F, 0);
         LEDNodeGnd.AddComponent<LogicNode>();
 
+        LEDOn = Resources.Load<Sprite>("Sprites/LEDon");
+        LEDOff = Resources.Load<Sprite>("Sprites/LEDoff");
     }
 
 
@@ -111,11 +113,11 @@ public class LEDScript : MonoBehaviour, LogicInterface{
         SpriteRenderer LEDSpriteRen = this.gameObject.GetComponent<SpriteRenderer>();
         if (GNDCollidingNode.GetLogicState() == (int)LOGIC.LOW && VCCCollidingNode.GetLogicState() == (int)LOGIC.HIGH)
         {
-            LEDSpriteRen.sprite = Resources.Load<Sprite>("Sprites/LEDon");
+            LEDSpriteRen.sprite = LEDOn;
         }
         else
         {
-            LEDSpriteRen.sprite = Resources.Load<Sprite>("Sprites/LEDoff");
+            LEDSpriteRen.sprite = LEDOff;
         }
     }
 

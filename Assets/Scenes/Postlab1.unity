@@ -930,8 +930,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 85.5, y: -151}
-  m_SizeDelta: {x: 134.3, y: 35.6}
+  m_AnchoredPosition: {x: 85.5, y: -154.9}
+  m_SizeDelta: {x: 134.3, y: 27.8}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &232242765
 MonoBehaviour:
@@ -1232,7 +1232,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 7.102438
+  orthographic size: 6.084723
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -2143,8 +2143,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -168, y: -121}
-  m_SizeDelta: {x: 248.8, y: 157.5}
+  m_AnchoredPosition: {x: -155.4, y: -119.55}
+  m_SizeDelta: {x: 274, y: 160.41}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &702319020
 MonoBehaviour:
@@ -2178,9 +2178,8 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Fill in the K-map for the following logical function:
-
-    AB + CD'
+  m_Text: "Fill in the K-map for the following logical function:\nF\r(\rA\r,\rB\r,\rC\r)
+    =\rA\r\xB7\rB\r\xB7\rC\r\u2032\r+\rA\r\xB7\rB\r+\rB\r\xB7\rC"
 --- !u!222 &702319021
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3216,8 +3215,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 222.1, y: -151}
-  m_SizeDelta: {x: 126.5, y: 35.6}
+  m_AnchoredPosition: {x: 202.9, y: -154.9}
+  m_SizeDelta: {x: 100.5, y: 27.8}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1083249628
 MonoBehaviour:
@@ -3283,7 +3282,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.82586205, b: 0.25735295, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -3408,14 +3407,13 @@ RectTransform:
   - {fileID: 1083249627}
   - {fileID: 232242764}
   - {fileID: 702319019}
-  - {fileID: 1560650572}
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1019, y: 432}
+  m_AnchoredPosition: {x: 0.04, y: 0.061}
+  m_SizeDelta: {x: 875.408, y: 375.201}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1123763408
 GameObject:
@@ -4383,79 +4381,6 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1538258429}
---- !u!1 &1560650571
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 1560650572}
-  - component: {fileID: 1560650573}
-  m_Layer: 0
-  m_Name: BackgroundDhruvik
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1560650572
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1560650571}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.4, y: -1.9, z: 0}
-  m_LocalScale: {x: 255.32317, y: 227.39369, z: 27.10337}
-  m_Children: []
-  m_Father: {fileID: 1118817575}
-  m_RootOrder: 19
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &1560650573
-SpriteRenderer:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1560650571}
-  m_Enabled: 1
-  m_CastShadows: 0
-  m_ReceiveShadows: 0
-  m_DynamicOccludee: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
-  m_SelectedEditorRenderState: 0
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: -1
-  m_Sprite: {fileID: 21300000, guid: d851de9f531a9ae42ac66b8c8beea588, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
-  m_FlipY: 0
-  m_DrawMode: 0
-  m_Size: {x: 2.75, y: 1.83}
-  m_AdaptiveModeThreshold: 0.5
-  m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
-  m_MaskInteraction: 0
 --- !u!1 &1685144528
 GameObject:
   m_ObjectHideFlags: 0

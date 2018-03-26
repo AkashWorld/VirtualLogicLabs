@@ -49,22 +49,22 @@ public class Equipment : MonoBehaviour {
         switch (equipmentName)
         {
             case "74LS00":
-                newPrefab = Resources.Load<GameObject>("Prefabs/NANDChip");
+                newPrefab = Resources.Load<GameObject>("Prefabs/Lab/NANDChip");
                 break;
             case "74LS04":
-                newPrefab = Resources.Load<GameObject>("Prefabs/INVChip");
+                newPrefab = Resources.Load<GameObject>("Prefabs/Lab/INVChip");
                 break;
             case "74LS08":
-                newPrefab = Resources.Load<GameObject>("Prefabs/ANDChip");
+                newPrefab = Resources.Load<GameObject>("Prefabs/Lab/ANDChip");
                 break;
             case "74LS32":
-                newPrefab = Resources.Load<GameObject>("Prefabs/ORChip");
+                newPrefab = Resources.Load<GameObject>("Prefabs/Lab/ORChip");
                 break;
             case "LED":
-                newPrefab = Resources.Load<GameObject>("Prefabs/LEDChip");
+                newPrefab = Resources.Load<GameObject>("Prefabs/Lab/LEDChip");
                 break;
             case "SPDT":
-                newPrefab = Resources.Load<GameObject>("Prefabs/Switch");
+                newPrefab = Resources.Load<GameObject>("Prefabs/Lab/Switch");
                 break;
             case "Wire": //TODO
                 GameObject wire = new GameObject("[Wire");
