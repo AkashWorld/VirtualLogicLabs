@@ -48,11 +48,4 @@ public class PowerSupplyScript : MonoBehaviour, LogicInterface {
     {
 
     }
-
-    public void TurnOffRelatedNodes(GameObject LogicNode)
-    {
-        Debug.Log("RESET on device " + this.gameObject.name + " , The requesting node is: " + LogicNode.gameObject.name);
-        if (LogicNode == vccNode) { vccNode.GetComponent<LogicNode>().SetLogicStateWithoutNotification((int)(LOGIC.INVALID)); }
-        else if (LogicNode == gndNode) { gndNode.GetComponent<LogicNode>().SetLogicStateWithoutNotification((int)(LOGIC.INVALID)); }
-    }
 }

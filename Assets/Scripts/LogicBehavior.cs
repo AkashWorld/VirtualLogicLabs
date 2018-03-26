@@ -10,10 +10,11 @@ public class LogicNode : MonoBehaviour {
     private bool recentStateChange = false;
     private bool recentCollisionEnter = false;
     private bool recentCollisionExit = false;
+    private LogicManager logicManager;
 
 	// Use this for initialization
 	void Start () {
-        
+        logicManager = GameObject.Find("LogicManager").GetComponent<LogicManager>();
         logic_state = (int)LOGIC.INVALID;
         logic_node = this.gameObject;
         this.gameObject.tag = "LOGIC_NODE";
@@ -32,10 +33,10 @@ public class LogicNode : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (recentCollisionExit) /*Recent exit of collision was detected, so reset the entire logic chain*/
+        if (recentCollisionExit)
         {
-            this.RequestResetDevice();
-            this.recentCollisionExit = false;
+            recentCollisionExit = false;
+            this.logicManager.ResetAllLogic();
         }
         //check if node is colliding, and a recent state change is detected
         if ((collidingNode != null) && (recentStateChange  || recentCollisionEnter))
@@ -65,6 +66,7 @@ public class LogicNode : MonoBehaviour {
     {
         if(coll.gameObject.tag == "LOGIC_NODE")
         {
+            logicManager.AddGameObject(this.gameObject);
             Debug.Log("Collision detected between node [" + this.gameObject.name + "] and [" + coll.gameObject.name + "]");
             this.collidingNode = coll.gameObject;
             this.recentCollisionEnter = true;
@@ -77,6 +79,7 @@ public class LogicNode : MonoBehaviour {
         if (collision.gameObject == collidingNode)
         {
             this.collidingNode = null;
+            logicManager.RemoveGameObject(this.gameObject);
             LogicNode collided_logic_node = collision.gameObject.GetComponent<LogicNode>();
             Debug.Log("Collision EXIT between node [" + this.gameObject.name + "] and [" + collision.gameObject.name + "]");
             if (collided_logic_node.GetLogicState() != (int)LOGIC.INVALID)
@@ -87,11 +90,7 @@ public class LogicNode : MonoBehaviour {
             }
         }
     }
-
-    public void RequestResetDevice()
-    {
-        this.OwningDevice.TurnOffRelatedNodes(this.gameObject);
-    }
+    
 
 
     public GameObject GetCollidingNode()
@@ -110,6 +109,11 @@ public class LogicNode : MonoBehaviour {
             OwningDevice = this.gameObject.transform.parent.GetComponent<LogicInterface>();
             OwningDevice.ReactToLogic(this.gameObject, RequestedState);
         }
+    }
+
+    private void RequestLogicReset()
+    {
+
     }
 
     public GameObject GetLogicNode()

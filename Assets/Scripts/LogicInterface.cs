@@ -5,5 +5,4 @@ public interface LogicInterface
 {
     void ReactToLogic(GameObject LogicNode);
     void ReactToLogic(GameObject LogicNode, int requestedState);
-    void TurnOffRelatedNodes(GameObject LogicNode);
 }

@@ -12,12 +12,13 @@ public class Switch : MonoBehaviour, LogicInterface {
     private GameObject middleNode; //output
     private GameObject bottomNode; //input
     private bool SwitchUp = false;
-
+    private LogicManager logicManager;
 
 
 
 	// Use this for initialization
 	void Start () {
+        logicManager = GameObject.Find("LogicManager").GetComponent<LogicManager>();
 		DeviceGameObject = this.gameObject;
 
         topNode = new GameObject(LOGIC_DEVICE_ID + "TOP"); //logic node with the name leftlogicnode_{i}_0
@@ -87,22 +88,23 @@ public class Switch : MonoBehaviour, LogicInterface {
         {
             if (SNAPPED && SwitchUp == false)
             {
-                this.TurnOffRelatedNodes(this.gameObject);
                 SpriteRenderer spr_ren = DeviceGameObject.GetComponent<SpriteRenderer>();
                 spr_ren.sprite = Resources.Load<Sprite>("Sprites/SwitchUP");
                 SwitchUp = true;
+                this.ReactToLogic(this.gameObject, (int)LOGIC.INVALID);
             }
             else if (SNAPPED)
             {
-                this.TurnOffRelatedNodes(this.gameObject);
                 SpriteRenderer spr_ren = DeviceGameObject.GetComponent<SpriteRenderer>();
                 spr_ren.sprite = Resources.Load<Sprite>("Sprites/SwitchDOWN");
                 SwitchUp = false;
+                this.ReactToLogic(this.gameObject, (int)LOGIC.INVALID);
             }
             else
             {
                 this.ClearIO();
             }
+            this.logicManager.ResetAllLogic();
         }
     }
 
@@ -142,47 +144,18 @@ public class Switch : MonoBehaviour, LogicInterface {
         LogicNode bottomLogic = bottomNode.GetComponent<LogicNode>();
         LogicNode collidingTopLogic = topLogic.GetCollidingNode().GetComponent<LogicNode>();
         LogicNode collidingBottomLogic = bottomLogic.GetCollidingNode().GetComponent<LogicNode>();
+        LogicNode collidingMiddleLogic = middleLogic.GetCollidingNode().GetComponent<LogicNode>();
         if (SwitchUp)
         {
             middleLogic.SetLogicState(collidingTopLogic.GetLogicState());
+            collidingMiddleLogic.RequestStateChange(collidingTopLogic.GetLogicState());
         }
         else if (!SwitchUp)
         {
             middleLogic.SetLogicState(collidingBottomLogic.GetLogicState());
+            collidingMiddleLogic.RequestStateChange(collidingTopLogic.GetLogicState());
         }
 
     }
 
-    public void TurnOffRelatedNodes(GameObject LogicNode)
-    {
-
-        if (SNAPPED)
-        {
-            if (LogicNode == topNode)
-            {
-                bottomNode.GetComponent<LogicNode>().GetCollidingNode().GetComponent<LogicNode>().RequestResetDevice();
-                middleNode.GetComponent<LogicNode>().GetCollidingNode().GetComponent<LogicNode>().RequestResetDevice();
-            }
-            else if (LogicNode == middleNode)
-            {
-                topNode.GetComponent<LogicNode>().GetCollidingNode().GetComponent<LogicNode>().RequestResetDevice();
-                middleNode.GetComponent<LogicNode>().GetCollidingNode().GetComponent<LogicNode>().RequestResetDevice();
-            }
-            else if (LogicNode == bottomNode)
-            {
-                bottomNode.GetComponent<LogicNode>().GetCollidingNode().GetComponent<LogicNode>().RequestResetDevice();
-                middleNode.GetComponent<LogicNode>().GetCollidingNode().GetComponent<LogicNode>().RequestResetDevice();
-            }
-            else if(this.gameObject == LogicNode)
-            {
-                topNode.GetComponent<LogicNode>().GetCollidingNode().GetComponent<LogicNode>().RequestResetDevice();
-                bottomNode.GetComponent<LogicNode>().GetCollidingNode().GetComponent<LogicNode>().RequestResetDevice();
-                middleNode.GetComponent<LogicNode>().GetCollidingNode().GetComponent<LogicNode>().RequestResetDevice();
-            }
-        }
-        topNode.GetComponent<LogicNode>().SetLogicStateWithoutNotification((int)LOGIC.INVALID);
-        middleNode.GetComponent<LogicNode>().SetLogicStateWithoutNotification((int)LOGIC.INVALID);
-        bottomNode.GetComponent<LogicNode>().SetLogicStateWithoutNotification((int)LOGIC.INVALID);
-
-    }
 }

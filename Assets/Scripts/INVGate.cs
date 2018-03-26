@@ -492,22 +492,5 @@ public class INVGate : MonoBehaviour, LogicInterface
 
     }
 
-    public void TurnOffRelatedNodes(GameObject LogicNode)
-    {
-        if (!SNAPPED)
-        {
-            return;
-        }
 
-        Debug.Log("RESET on device " + this.gameObject.name + " , The requesting node is: " + LogicNode.gameObject.name);
-        foreach (KeyValuePair<string, GameObject> entry in logic_dictionary)
-        {
-            GameObject logicNodeGameObj = entry.Value;
-            if (LogicNode != logicNodeGameObj)
-            {
-                LogicNode logic_node = logicNodeGameObj.GetComponent<LogicNode>();
-                logic_node.SetLogicState((int)LOGIC.INVALID);
-            }
-        }
-    }
 }

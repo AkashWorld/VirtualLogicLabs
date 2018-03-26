@@ -119,8 +119,5 @@ public class LEDScript : MonoBehaviour, LogicInterface{
         }
     }
 
-    public void TurnOffRelatedNodes(GameObject LogicNode)
-    {
-        
-    }
+
 }
