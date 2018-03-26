@@ -296,6 +296,20 @@ public class ProtoboardObject : MonoBehaviour, LogicInterface{
         }
     }
 
+
+    public List<GameObject> GetGameObjectByID(string ID)
+    {
+        List<GameObject> LogicNodeList;
+        if (LogicID_Node_Dict.TryGetValue(ID, out LogicNodeList))
+        {
+            return LogicNodeList;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
     //Toggles node set from INVALID -> LOW -> HIGH
     private void ToggleNodeSet(GameObject logicNode)
     {

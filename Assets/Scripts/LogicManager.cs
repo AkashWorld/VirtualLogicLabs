@@ -31,9 +31,19 @@ public class LogicManager : MonoBehaviour {
         }
     }
 
+    public void AddGameObject(List<GameObject> list)
+    {
+        foreach(GameObject item in list)
+        {
+            if (!ActiveLogicNodes.Contains(item))
+            {
+                ActiveLogicNodes.AddLast(item);
+            }
+        }
+    }
+
     public void RemoveGameObject(GameObject requestedRemovalNode)
     {
         ActiveLogicNodes.Remove(requestedRemovalNode);
     }
-
 }

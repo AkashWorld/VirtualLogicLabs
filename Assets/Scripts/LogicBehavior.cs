@@ -11,10 +11,12 @@ public class LogicNode : MonoBehaviour {
     private bool recentCollisionEnter = false;
     private bool recentCollisionExit = false;
     private LogicManager logicManager;
+    private GameObject protoboard;
 
 	// Use this for initialization
 	void Start () {
         logicManager = GameObject.Find("LogicManager").GetComponent<LogicManager>();
+        protoboard = GameObject.Find("Protoboard");
         logic_state = (int)LOGIC.INVALID;
         logic_node = this.gameObject;
         this.gameObject.tag = "LOGIC_NODE";
@@ -66,7 +68,14 @@ public class LogicNode : MonoBehaviour {
     {
         if(coll.gameObject.tag == "LOGIC_NODE")
         {
-            logicManager.AddGameObject(this.gameObject);
+            if (this.gameObject.transform.parent == protoboard)
+            {   //Special case for protoboard to add all related nodes to the logic manager.
+                logicManager.AddGameObject(protoboard.GetComponent<ProtoboardObject>().GetGameObjectByID(this.gameObject.name));
+            }
+            else
+            {
+                logicManager.AddGameObject(this.gameObject);
+            }
             Debug.Log("Collision detected between node [" + this.gameObject.name + "] and [" + coll.gameObject.name + "]");
             this.collidingNode = coll.gameObject;
             this.recentCollisionEnter = true;
