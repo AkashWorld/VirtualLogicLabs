@@ -12,7 +12,6 @@ public class Switch : MonoBehaviour, LogicInterface {
     private GameObject middleNode; //output
     private GameObject bottomNode; //input
     private bool SwitchUp = false;
-    private bool deviceReset = false;
 
 
 
