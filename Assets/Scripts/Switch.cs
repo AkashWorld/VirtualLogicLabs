@@ -4,20 +4,29 @@ using UnityEngine;
 
 public class Switch : MonoBehaviour, LogicInterface {
 	GameObject DeviceGameObject;
-	private const string LOGIC_DEVICE_ID = "ST_SWITCH";
+	private const string LOGIC_DEVICE_ID = "SPDT_SWITCH";
 	private Vector3 screenPoint;
 	private Vector3 offset;
 	private bool SNAPPED = false; //Set to true if all Logic Nodes of this device is in collision with an external node
-    private GameObject middleNode;
-    private GameObject bottomNode;
-    private bool SwitchOn = false;
-
+    private GameObject topNode; //input
+    private GameObject middleNode; //output
+    private GameObject bottomNode; //input
+    private bool SwitchUp = false;
+    private LogicManager logicManager;
 
 
 
 	// Use this for initialization
 	void Start () {
+        logicManager = GameObject.Find("LogicManager").GetComponent<LogicManager>();
 		DeviceGameObject = this.gameObject;
+
+        topNode = new GameObject(LOGIC_DEVICE_ID + "TOP"); //logic node with the name leftlogicnode_{i}_0
+        topNode.transform.parent = DeviceGameObject.transform; //sets the Protoboard game object as logicNode_0's parent
+        topNode.transform.localPosition = new Vector3(.009f, .2025f, 0); //'localPosition' sets the position of this node RELATIVE to the protoboard
+        topNode.transform.localScale = new Vector3(.10F, .10F, 0);
+        topNode.AddComponent<LogicNode>();
+
 
         middleNode = new GameObject(LOGIC_DEVICE_ID + "MIDDLE"); //logic node with the name leftlogicnode_{i}_0
         middleNode.transform.parent = DeviceGameObject.transform; //sets the Protoboard game object as logicNode_0's parent
@@ -49,11 +58,12 @@ public class Switch : MonoBehaviour, LogicInterface {
 		transform.position = curPosition;
 	}
 
-    private void CheckIfSnapped()
+    private bool CheckIfSnapped()
     {
 
         //Check if all nodes with the chip is colliding with another logic node;
-        if (middleNode.GetComponent<LogicNode>().GetCollidingNode() == null || bottomNode.GetComponent<LogicNode>().GetCollidingNode() == null)
+        if (middleNode.GetComponent<LogicNode>().GetCollidingNode() == null || bottomNode.GetComponent<LogicNode>().GetCollidingNode() == null
+            || topNode.GetComponent<LogicNode>().GetCollidingNode() == null)
         {
             Debug.Log("LED Not Snapped");
             SNAPPED = false;
@@ -69,34 +79,38 @@ public class Switch : MonoBehaviour, LogicInterface {
             SNAPPED = true;
         }
 
-
+        return SNAPPED;
+    }
+    private void OnMouseOver()
+    {
+        //Right click trigger that switches the state of the switch, from UP to Down
+        if (Input.GetMouseButtonDown(1))
+        {
+            if (SNAPPED && SwitchUp == false)
+            {
+                SpriteRenderer spr_ren = DeviceGameObject.GetComponent<SpriteRenderer>();
+                spr_ren.sprite = Resources.Load<Sprite>("Sprites/SwitchUP");
+                SwitchUp = true;
+                this.ReactToLogic(this.gameObject, (int)LOGIC.INVALID);
+            }
+            else if (SNAPPED)
+            {
+                SpriteRenderer spr_ren = DeviceGameObject.GetComponent<SpriteRenderer>();
+                spr_ren.sprite = Resources.Load<Sprite>("Sprites/SwitchDOWN");
+                SwitchUp = false;
+                this.ReactToLogic(this.gameObject, (int)LOGIC.INVALID);
+            }
+            else
+            {
+                this.ClearIO();
+            }
+            this.logicManager.ResetAllLogic();
+        }
     }
 
     void OnMouseUp()
     {
         CheckIfSnapped();
-        if(SNAPPED && SwitchOn == false)
-        {
-            SpriteRenderer spr_ren = DeviceGameObject.GetComponent<SpriteRenderer>();
-            spr_ren.sprite = Resources.Load<Sprite>("Sprites/SwitchUP");
-            SwitchOn = true;
-        }
-        else if(SNAPPED)
-        {
-            SpriteRenderer spr_ren = DeviceGameObject.GetComponent<SpriteRenderer>();
-            spr_ren.sprite = Resources.Load<Sprite>("Sprites/SwitchDOWN");
-            SwitchOn = false;
-            LogicNode bottomNodeLogic = bottomNode.GetComponent<LogicNode>();
-            bottomNodeLogic.SetLogicState((int)LOGIC.INVALID);
-            bottomNodeLogic.GetCollidingNode().GetComponent<LogicNode>().RequestStateChange((int)LOGIC.INVALID);
-        }
-        else
-        {
-            SpriteRenderer spr_ren = DeviceGameObject.GetComponent<SpriteRenderer>();
-            spr_ren.sprite = Resources.Load<Sprite>("Sprites/SwitchDOWN");
-            SwitchOn = false;
-        }
-
     }
 
 	// Update is called once per frame
@@ -109,20 +123,39 @@ public class Switch : MonoBehaviour, LogicInterface {
         throw new System.NotImplementedException();
     }
 
-    public void ReactToLogic(GameObject LogicNode, int requestedState)
+
+    private void ClearIO()
     {
-        if(SNAPPED && LogicNode == middleNode && SwitchOn)
-        {
-            int inputVoltage = requestedState;
-            Debug.Log("Switch: detected input change " + requestedState);
-            LogicNode middleNodeBehavior = middleNode.GetComponent<LogicNode>();
-            middleNodeBehavior.SetLogicState(inputVoltage);
-            LogicNode bottomNodeBehavior = bottomNode.GetComponent<LogicNode>();
-            bottomNodeBehavior.SetLogicState(inputVoltage);
-            LogicNode collidingNodeBehavior = bottomNodeBehavior.GetCollidingNode().GetComponent<LogicNode>();
-            collidingNodeBehavior.RequestStateChange(inputVoltage);
-        }
+        topNode.GetComponent<LogicNode>().SetLogicState((int)LOGIC.INVALID);
+        middleNode.GetComponent<LogicNode>().SetLogicState((int)LOGIC.INVALID);
+        bottomNode.GetComponent<LogicNode>().SetLogicState((int)LOGIC.INVALID);
     }
 
+
+    public void ReactToLogic(GameObject LogicNode, int requestedState)
+    {
+        if (!SNAPPED)
+        {
+            Debug.Log("Switch cannot react to LOGIC, not SNAPPED.");
+            return;
+        }
+        LogicNode topLogic = topNode.GetComponent<LogicNode>();
+        LogicNode middleLogic = middleNode.GetComponent<LogicNode>();
+        LogicNode bottomLogic = bottomNode.GetComponent<LogicNode>();
+        LogicNode collidingTopLogic = topLogic.GetCollidingNode().GetComponent<LogicNode>();
+        LogicNode collidingBottomLogic = bottomLogic.GetCollidingNode().GetComponent<LogicNode>();
+        LogicNode collidingMiddleLogic = middleLogic.GetCollidingNode().GetComponent<LogicNode>();
+        if (SwitchUp)
+        {
+            middleLogic.SetLogicState(collidingTopLogic.GetLogicState());
+            collidingMiddleLogic.RequestStateChange(collidingTopLogic.GetLogicState());
+        }
+        else if (!SwitchUp)
+        {
+            middleLogic.SetLogicState(collidingBottomLogic.GetLogicState());
+            collidingMiddleLogic.RequestStateChange(collidingTopLogic.GetLogicState());
+        }
+
+    }
 
 }

@@ -15,7 +15,7 @@ public class Equipment : MonoBehaviour {
         equipmentNames = new List<string>();
         equipmentNames.Add("None Selected");
         equipmentNames.Add("74LS00"); equipmentNames.Add("74LS04");
-        equipmentNames.Add("74LS08"); equipmentNames.Add("74LS32"); equipmentNames.Add("LED");
+        equipmentNames.Add("74LS08"); equipmentNames.Add("74LS32"); equipmentNames.Add("LED"); equipmentNames.Add("SPDT");
         equipmentNames.Add("Wire");
         dropDown.ClearOptions();
         List<Dropdown.OptionData> equipmentListDD = new List<Dropdown.OptionData>();
@@ -62,6 +62,9 @@ public class Equipment : MonoBehaviour {
                 break;
             case "LED":
                 newPrefab = Resources.Load<GameObject>("Prefabs/LEDChip");
+                break;
+            case "SPDT":
+                newPrefab = Resources.Load<GameObject>("Prefabs/Switch");
                 break;
             case "Wire": //TODO
                 GameObject wire = new GameObject("[Wire");

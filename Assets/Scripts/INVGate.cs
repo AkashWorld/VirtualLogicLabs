@@ -491,4 +491,6 @@ public class INVGate : MonoBehaviour, LogicInterface
     {
 
     }
+
+
 }

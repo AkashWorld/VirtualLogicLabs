@@ -100,17 +100,16 @@ public class LEDScript : MonoBehaviour, LogicInterface{
 
     public void ReactToLogic(GameObject LogicNode, int requestedState)
     {
-        if(LogicNode == LEDNodeGnd)
+        if (!SNAPPED)
         {
-            LEDNodeGnd.GetComponent<LogicNode>().SetLogicState(requestedState);
+            Debug.Log("LED Is not snapped, cannot react to logic.");
+            return;
         }
-        else if (LogicNode == LEDNodeVCC)
-        {
-            LEDNodeVCC.GetComponent<LogicNode>().SetLogicState(requestedState);
-        }
-        LogicNode logicGND = LEDNodeGnd.GetComponent<LogicNode>(); LogicNode logicVCC = LEDNodeVCC.GetComponent<LogicNode>();
+        LogicNode VCCLogic = LEDNodeVCC.GetComponent<LogicNode>(); LogicNode GNDLogic = LEDNodeGnd.GetComponent<LogicNode>();
+        LogicNode VCCCollidingNode = VCCLogic.GetCollidingNode().GetComponent<LogicNode>();
+        LogicNode GNDCollidingNode = GNDLogic.GetCollidingNode().GetComponent<LogicNode>();
         SpriteRenderer LEDSpriteRen = this.gameObject.GetComponent<SpriteRenderer>();
-        if (logicGND.GetLogicState() == (int)LOGIC.LOW && logicVCC.GetLogicState() == (int)LOGIC.HIGH)
+        if (GNDCollidingNode.GetLogicState() == (int)LOGIC.LOW && VCCCollidingNode.GetLogicState() == (int)LOGIC.HIGH)
         {
             LEDSpriteRen.sprite = Resources.Load<Sprite>("Sprites/LEDon");
         }
@@ -119,4 +118,6 @@ public class LEDScript : MonoBehaviour, LogicInterface{
             LEDSpriteRen.sprite = Resources.Load<Sprite>("Sprites/LEDoff");
         }
     }
+
+
 }

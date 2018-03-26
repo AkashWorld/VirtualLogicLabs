@@ -296,6 +296,20 @@ public class ProtoboardObject : MonoBehaviour, LogicInterface{
         }
     }
 
+
+    public List<GameObject> GetGameObjectByID(string ID)
+    {
+        List<GameObject> LogicNodeList;
+        if (LogicID_Node_Dict.TryGetValue(ID, out LogicNodeList))
+        {
+            return LogicNodeList;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
     //Toggles node set from INVALID -> LOW -> HIGH
     private void ToggleNodeSet(GameObject logicNode)
     {
@@ -332,6 +346,10 @@ public class ProtoboardObject : MonoBehaviour, LogicInterface{
             }
         }
     }
+
+
+ 
+
 
     //Interface method from LogicInterface.cs that allows the protoboard to react to any changes to its logic nodes.
     //This method is called from OnMouseUp() function, so it regulates mouse toggles
@@ -392,4 +410,6 @@ public class ProtoboardObject : MonoBehaviour, LogicInterface{
     void Update () {
 
     }
+
+
 }

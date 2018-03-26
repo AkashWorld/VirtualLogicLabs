@@ -9,9 +9,14 @@ public class LogicNode : MonoBehaviour {
     private GameObject collidingNode;
     private bool recentStateChange = false;
     private bool recentCollisionEnter = false;
+    private bool recentCollisionExit = false;
+    private LogicManager logicManager;
+    private GameObject protoboard;
+
 	// Use this for initialization
 	void Start () {
-        
+        logicManager = GameObject.Find("LogicManager").GetComponent<LogicManager>();
+        protoboard = GameObject.Find("Protoboard");
         logic_state = (int)LOGIC.INVALID;
         logic_node = this.gameObject;
         this.gameObject.tag = "LOGIC_NODE";
@@ -30,8 +35,13 @@ public class LogicNode : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        if (recentCollisionExit)
+        {
+            recentCollisionExit = false;
+            this.logicManager.ResetAllLogic();
+        }
         //check if node is colliding, and a recent state change is detected
-        if((collidingNode != null) && (recentStateChange  || recentCollisionEnter))
+        if ((collidingNode != null) && (recentStateChange  || recentCollisionEnter))
         {
             Debug.Log("Update() in Logic Node: " + this.gameObject.name);
             LogicNode collidedBehavior = collidingNode.GetComponent<LogicNode>();
@@ -58,9 +68,17 @@ public class LogicNode : MonoBehaviour {
     {
         if(coll.gameObject.tag == "LOGIC_NODE")
         {
+            if (this.gameObject.transform.parent == protoboard)
+            {   //Special case for protoboard to add all related nodes to the logic manager.
+                logicManager.AddGameObject(protoboard.GetComponent<ProtoboardObject>().GetGameObjectByID(this.gameObject.name));
+            }
+            else
+            {
+                logicManager.AddGameObject(this.gameObject);
+            }
             Debug.Log("Collision detected between node [" + this.gameObject.name + "] and [" + coll.gameObject.name + "]");
-            collidingNode = coll.gameObject;
-            recentCollisionEnter = true;
+            this.collidingNode = coll.gameObject;
+            this.recentCollisionEnter = true;
         }
 
     }
@@ -69,16 +87,20 @@ public class LogicNode : MonoBehaviour {
     {
         if (collision.gameObject == collidingNode)
         {
-            collidingNode = null;
+            this.collidingNode = null;
+            logicManager.RemoveGameObject(this.gameObject);
             LogicNode collided_logic_node = collision.gameObject.GetComponent<LogicNode>();
             Debug.Log("Collision EXIT between node [" + this.gameObject.name + "] and [" + collision.gameObject.name + "]");
             if (collided_logic_node.GetLogicState() != (int)LOGIC.INVALID)
             {
                 collided_logic_node.RequestStateChange((int)LOGIC.INVALID);
                 this.RequestStateChange((int)LOGIC.INVALID);
+                this.recentCollisionExit = true;
             }
         }
     }
+    
+
 
     public GameObject GetCollidingNode()
     {
@@ -96,6 +118,11 @@ public class LogicNode : MonoBehaviour {
             OwningDevice = this.gameObject.transform.parent.GetComponent<LogicInterface>();
             OwningDevice.ReactToLogic(this.gameObject, RequestedState);
         }
+    }
+
+    private void RequestLogicReset()
+    {
+
     }
 
     public GameObject GetLogicNode()
@@ -139,7 +166,33 @@ public class LogicNode : MonoBehaviour {
 
     //Sets logic state of this particular component. 
     //logic_id MUST be set before this method is called
-    //Accepted values are LOGIC.HIGH(int = 1) and LOGIC.LOW(int = 0)
+    //Accepted values are LOGIC.HIGH(int = 10) and LOGIC.LOW(int = -10)
+    //DOES NOT set '{RecentStateChange}' that gets checked in the update() method
+    public void SetLogicStateWithoutNotification(int requestedState)
+    {
+        //if change is detected in state
+        if (this.logic_state != requestedState)
+        {
+            //check if value of the requested state is valid
+            if ((requestedState == (int)LOGIC.HIGH || requestedState == (int)LOGIC.LOW
+                || requestedState == (int)LOGIC.INVALID))
+            {
+                Debug.Log("Setting Logic State of Node " + this.gameObject.name + " to " + requestedState);
+                this.logic_state = requestedState;
+                SetSpriteLogicColor();
+            }
+            else
+            {
+                Debug.Log("Error setting logic state. Invalid requested recieved.");
+            }
+        }
+        return;
+    }
+
+
+    //Sets logic state of this particular component. 
+    //logic_id MUST be set before this method is called
+    //Accepted values are LOGIC.HIGH(int = 10) and LOGIC.LOW(int = -10)
     public void SetLogicState(int requestedState)
     {
         //if change is detected in state
@@ -161,6 +214,10 @@ public class LogicNode : MonoBehaviour {
         }
         return; 
     }
+
+
+
+
     public int GetLogicState()
     {
         return this.logic_state;

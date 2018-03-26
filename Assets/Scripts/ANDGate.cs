@@ -515,4 +515,6 @@ public class ANDGate : MonoBehaviour, LogicInterface
     {
 
     }
+
+
 }

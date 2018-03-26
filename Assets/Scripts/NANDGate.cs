@@ -523,4 +523,6 @@ public class NANDGate : MonoBehaviour, LogicInterface {
     {
 
     }
+
+ 
 }

@@ -294,6 +294,7 @@
     <Compile Include="Assets\Scripts\LEDScript.cs" />
     <Compile Include="Assets\Scripts\LogicBehavior.cs" />
     <Compile Include="Assets\Scripts\LogicInterface.cs" />
+    <Compile Include="Assets\Scripts\LogicManager.cs" />
     <Compile Include="Assets\Scripts\MagnifierBehavior.cs" />
     <Compile Include="Assets\Scripts\NANDGate.cs" />
     <Compile Include="Assets\Scripts\ORGate.cs" />

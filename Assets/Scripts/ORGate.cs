@@ -540,4 +540,5 @@ public class ORGate : MonoBehaviour, LogicInterface
     {
 
     }
+
 }
