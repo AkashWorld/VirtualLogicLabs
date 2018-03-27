@@ -11,6 +11,7 @@ public class LEDScript : MonoBehaviour, LogicInterface{
     private bool SNAPPED = false; //Set to true if all Logic Nodes of this device is in collision with an external node
     private GameObject LEDNodeVCC, LEDNodeGnd;
     Sprite LEDOn; Sprite LEDOff;
+    private bool LEDState = false;
 
     // Use this for initialization
     void Start () {
@@ -91,9 +92,10 @@ public class LEDScript : MonoBehaviour, LogicInterface{
         CheckIfSnapped();
     }
 
-    private void LEDIO()
+    public bool isLEDON()
     {
-
+        Debug.Log("LED IS " + LEDState);
+        return LEDState;
     }
 
     public void ReactToLogic(GameObject LogicNode)
@@ -114,10 +116,12 @@ public class LEDScript : MonoBehaviour, LogicInterface{
         if (GNDCollidingNode.GetLogicState() == (int)LOGIC.LOW && VCCCollidingNode.GetLogicState() == (int)LOGIC.HIGH)
         {
             LEDSpriteRen.sprite = LEDOn;
+            LEDState = true;
         }
         else
         {
             LEDSpriteRen.sprite = LEDOff;
+            LEDState = false;
         }
     }
 

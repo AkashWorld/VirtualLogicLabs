@@ -108,6 +108,29 @@ public class Switch : MonoBehaviour, LogicInterface {
         }
     }
 
+
+
+    public void ToggleSwitch(bool toggleUp)
+    {
+        if (toggleUp && SNAPPED && SwitchUp == false)
+        {
+            SpriteRenderer spr_ren = DeviceGameObject.GetComponent<SpriteRenderer>();
+            spr_ren.sprite = Resources.Load<Sprite>("Sprites/SwitchUP");
+            SwitchUp = true;
+            this.ReactToLogic(this.gameObject, (int)LOGIC.INVALID);
+        }
+        else if (!toggleUp && SNAPPED)
+        {
+            SpriteRenderer spr_ren = DeviceGameObject.GetComponent<SpriteRenderer>();
+            spr_ren.sprite = Resources.Load<Sprite>("Sprites/SwitchDOWN");
+            SwitchUp = false;
+            this.ReactToLogic(this.gameObject, (int)LOGIC.INVALID);
+        }
+        this.logicManager.ResetAllLogic();
+    }
+
+
+
     void OnMouseUp()
     {
         CheckIfSnapped();
