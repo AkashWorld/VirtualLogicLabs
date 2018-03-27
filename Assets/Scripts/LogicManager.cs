@@ -46,4 +46,12 @@ public class LogicManager : MonoBehaviour {
     {
         ActiveLogicNodes.Remove(requestedRemovalNode);
     }
+
+    public void RemoveGameObject(List<GameObject> removalList)
+    {
+        foreach(GameObject item in removalList)
+        {
+            ActiveLogicNodes.Remove(item);
+        }
+    }
 }

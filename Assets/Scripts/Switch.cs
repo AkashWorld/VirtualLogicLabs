@@ -126,7 +126,6 @@ public class Switch : MonoBehaviour, LogicInterface {
             SwitchUp = false;
             this.ReactToLogic(this.gameObject, (int)LOGIC.INVALID);
         }
-        this.logicManager.ResetAllLogic();
     }
 
 

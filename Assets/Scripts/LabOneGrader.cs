@@ -11,13 +11,14 @@ public class LabOneGrader : MonoBehaviour {
     public Button Finish;
     GameObject InputA, InputB, InputC, OutputF;
     List<GameObject> MarksList; //List that stores checkmark/cross game objects
-
+    LogicManager logicManager;
     Sprite checkMarkSprite, crossMarkSprite;
 	// Use this for initialization
 
 
 
 	void Start () {
+        logicManager = GameObject.Find("LogicManager").GetComponent<LogicManager>();
         MarksList = new List<GameObject>();
         checkMarkSprite = Resources.Load<Sprite>("Sprites/002-tick");
         crossMarkSprite = Resources.Load<Sprite>("Sprites/001-close");
@@ -85,7 +86,6 @@ public class LabOneGrader : MonoBehaviour {
             Destroy(MarksList[i]);
         }
         MarksList.Clear();
-        GameObject check; GameObject cross;
         CheckerTagScript InputATag = InputA.GetComponent<CheckerTagScript>();
         CheckerTagScript InputBTag = InputB.GetComponent<CheckerTagScript>();
         CheckerTagScript InputCTag = InputC.GetComponent<CheckerTagScript>();
@@ -105,6 +105,7 @@ public class LabOneGrader : MonoBehaviour {
 
 
         InputASwitch.ToggleSwitch(false); InputBSwitch.ToggleSwitch(false); InputCSwitch.ToggleSwitch(false);
+        logicManager.ResetAllLogic();
         yield return new WaitForSecondsRealtime(3);
         if (OutputFLED.isLEDON())
         {
@@ -115,6 +116,7 @@ public class LabOneGrader : MonoBehaviour {
         AddCheckMarkOrCross(true);
 
         InputASwitch.ToggleSwitch(false); InputBSwitch.ToggleSwitch(false); InputCSwitch.ToggleSwitch(true);
+        logicManager.ResetAllLogic();
         yield return new WaitForSecondsRealtime(3);
         if (OutputFLED.isLEDON())
         {
@@ -125,6 +127,7 @@ public class LabOneGrader : MonoBehaviour {
         AddCheckMarkOrCross(true);
 
         InputASwitch.ToggleSwitch(false); InputBSwitch.ToggleSwitch(true); InputCSwitch.ToggleSwitch(false);
+        logicManager.ResetAllLogic();
         yield return new WaitForSecondsRealtime(3);
         if (OutputFLED.isLEDON())
         {
@@ -135,6 +138,7 @@ public class LabOneGrader : MonoBehaviour {
         AddCheckMarkOrCross(true);
 
         InputASwitch.ToggleSwitch(false); InputBSwitch.ToggleSwitch(true); InputCSwitch.ToggleSwitch(true);
+        logicManager.ResetAllLogic();
         yield return new WaitForSecondsRealtime(3);
         if (!OutputFLED.isLEDON())
         {
@@ -145,6 +149,7 @@ public class LabOneGrader : MonoBehaviour {
         AddCheckMarkOrCross(true);
 
         InputASwitch.ToggleSwitch(true); InputBSwitch.ToggleSwitch(false); InputCSwitch.ToggleSwitch(false);
+        logicManager.ResetAllLogic();
         yield return new WaitForSecondsRealtime(3);
         if (OutputFLED.isLEDON())
         {
@@ -155,6 +160,7 @@ public class LabOneGrader : MonoBehaviour {
         AddCheckMarkOrCross(true);
 
         InputASwitch.ToggleSwitch(true); InputBSwitch.ToggleSwitch(false); InputCSwitch.ToggleSwitch(true);
+        logicManager.ResetAllLogic();
         yield return new WaitForSecondsRealtime(3);
         if (OutputFLED.isLEDON())
         {
@@ -165,6 +171,7 @@ public class LabOneGrader : MonoBehaviour {
         AddCheckMarkOrCross(true);
 
         InputASwitch.ToggleSwitch(true); InputBSwitch.ToggleSwitch(true); InputCSwitch.ToggleSwitch(false);
+        logicManager.ResetAllLogic();
         yield return new WaitForSecondsRealtime(3);
         if (!OutputFLED.isLEDON())
         {
@@ -175,6 +182,7 @@ public class LabOneGrader : MonoBehaviour {
         AddCheckMarkOrCross(true);
 
         InputASwitch.ToggleSwitch(true); InputBSwitch.ToggleSwitch(true); InputCSwitch.ToggleSwitch(true);
+        logicManager.ResetAllLogic();
         yield return new WaitForSecondsRealtime(3);
         if (!OutputFLED.isLEDON())
         {

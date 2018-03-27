@@ -88,7 +88,14 @@ public class LogicNode : MonoBehaviour {
         if (collision.gameObject == collidingNode)
         {
             this.collidingNode = null;
-            logicManager.RemoveGameObject(this.gameObject);
+            if (this.gameObject.transform.parent == protoboard)
+            {   //Special case for protoboard to add all related nodes to the logic manager.
+                logicManager.RemoveGameObject(protoboard.GetComponent<ProtoboardObject>().GetGameObjectByID(this.gameObject.name));
+            }
+            else
+            {
+                logicManager.RemoveGameObject(this.gameObject);
+            }
             LogicNode collided_logic_node = collision.gameObject.GetComponent<LogicNode>();
             Debug.Log("Collision EXIT between node [" + this.gameObject.name + "] and [" + collision.gameObject.name + "]");
             if (collided_logic_node.GetLogicState() != (int)LOGIC.INVALID)

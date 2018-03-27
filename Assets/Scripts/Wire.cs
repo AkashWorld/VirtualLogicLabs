@@ -46,22 +46,30 @@ public class Wire : MonoBehaviour, LogicInterface {
         if(currentColor == Color.red)
         {
             currentColor = Color.green;
+#pragma warning disable CS0618 // Type or member is obsolete
             WireLine.SetColors(Color.green, Color.green);
+#pragma warning restore CS0618 // Type or member is obsolete
         }
         else if(currentColor == Color.green)
         {
             currentColor = Color.yellow;
+#pragma warning disable CS0618 // Type or member is obsolete
             WireLine.SetColors(Color.yellow, Color.yellow);
+#pragma warning restore CS0618 // Type or member is obsolete
         }
         else if(currentColor == Color.yellow)
         {
             currentColor = Color.black;
+#pragma warning disable CS0618 // Type or member is obsolete
             WireLine.SetColors(Color.black, Color.black);
+#pragma warning restore CS0618 // Type or member is obsolete
         }
         else
         {
             currentColor = Color.red;
+#pragma warning disable CS0618 // Type or member is obsolete
             WireLine.SetColors(Color.red, Color.red);
+#pragma warning restore CS0618 // Type or member is obsolete
         }
     }
 
@@ -130,7 +138,9 @@ public class Wire : MonoBehaviour, LogicInterface {
                         WireLine.positionCount = wireInflectionObjects.Count;
                         WireLine.numCornerVertices = wireInflectionObjects.Count;
                         WireLine.SetPosition(wireInflectionObjects.Count - 1, wireInflectionObjects[wireInflectionObjects.Count - 1].transform.position);
+#pragma warning disable CS0618 // Type or member is obsolete
                         WireLine.SetColors(Color.red, Color.red);
+#pragma warning restore CS0618 // Type or member is obsolete
 
                     }
                 }
