@@ -10,12 +10,18 @@ public static class GradingCONSTANTS{
 public class LabOneGrader : MonoBehaviour {
     public Button Finish;
     GameObject InputA, InputB, InputC, OutputF;
+    List<GameObject> MarksList; //List that stores checkmark/cross game objects
+
+    Sprite checkMarkSprite, crossMarkSprite;
 	// Use this for initialization
 
 
 
 	void Start () {
-		for(int i = 0; i < this.gameObject.transform.childCount; i++)
+        MarksList = new List<GameObject>();
+        checkMarkSprite = Resources.Load<Sprite>("Sprites/002-tick");
+        crossMarkSprite = Resources.Load<Sprite>("Sprites/001-close");
+        for (int i = 0; i < this.gameObject.transform.childCount; i++)
         {
             switch (this.gameObject.transform.GetChild(i).name)
             {
@@ -47,8 +53,39 @@ public class LabOneGrader : MonoBehaviour {
         StartCoroutine(FinishChecker());
     }
 
+    private void AddCheckMarkOrCross(bool isCheckMark)
+    {
+        int count = MarksList.Count;
+        if (isCheckMark)
+        {
+            GameObject check = new GameObject("Check");
+            check.transform.parent = this.gameObject.transform;
+            check.transform.position = new Vector3(-3.3f + count*.9f, 3.10f, 0);
+            SpriteRenderer spriteRenderer = check.AddComponent<SpriteRenderer>();
+            spriteRenderer.sprite = checkMarkSprite;
+            MarksList.Add(check);
+            
+        }
+        else if (!isCheckMark)
+        {
+            GameObject cross = new GameObject("Cross");
+            cross.transform.parent = this.gameObject.transform;
+            cross.transform.position = new Vector3(-3.3f + count * .9f, 3.10f, 0);
+            SpriteRenderer spriteRenderer = cross.AddComponent<SpriteRenderer>();
+            spriteRenderer.sprite = crossMarkSprite;
+            MarksList.Add(cross);
+        }
+    }
+
+
     IEnumerator FinishChecker()
     {
+        for(int i = 0; i < MarksList.Count; i++)
+        {
+            Destroy(MarksList[i]);
+        }
+        MarksList.Clear();
+        GameObject check; GameObject cross;
         CheckerTagScript InputATag = InputA.GetComponent<CheckerTagScript>();
         CheckerTagScript InputBTag = InputB.GetComponent<CheckerTagScript>();
         CheckerTagScript InputCTag = InputC.GetComponent<CheckerTagScript>();
@@ -64,62 +101,88 @@ public class LabOneGrader : MonoBehaviour {
         Switch InputCSwitch = InputCTag.GetCollidingObject().GetComponent<Switch>();
         LEDScript OutputFLED = OutputFTag.GetCollidingObject().GetComponent<LEDScript>();
 
+        
+
+
         InputASwitch.ToggleSwitch(false); InputBSwitch.ToggleSwitch(false); InputCSwitch.ToggleSwitch(false);
-        yield return new WaitForSecondsRealtime(2);
+        yield return new WaitForSecondsRealtime(3);
         if (OutputFLED.isLEDON())
         {
             Debug.Log("Incorrect Output");
+            AddCheckMarkOrCross(false);
             yield break;
         }
+        AddCheckMarkOrCross(true);
+
         InputASwitch.ToggleSwitch(false); InputBSwitch.ToggleSwitch(false); InputCSwitch.ToggleSwitch(true);
-        yield return new WaitForSecondsRealtime(2);
+        yield return new WaitForSecondsRealtime(3);
         if (OutputFLED.isLEDON())
         {
             Debug.Log("Incorrect Output");
+            AddCheckMarkOrCross(false);
             yield break;
         }
+        AddCheckMarkOrCross(true);
+
         InputASwitch.ToggleSwitch(false); InputBSwitch.ToggleSwitch(true); InputCSwitch.ToggleSwitch(false);
-        yield return new WaitForSecondsRealtime(2);
+        yield return new WaitForSecondsRealtime(3);
         if (OutputFLED.isLEDON())
         {
             Debug.Log("Incorrect Output");
+            AddCheckMarkOrCross(false);
             yield break;
         }
+        AddCheckMarkOrCross(true);
+
         InputASwitch.ToggleSwitch(false); InputBSwitch.ToggleSwitch(true); InputCSwitch.ToggleSwitch(true);
-        yield return new WaitForSecondsRealtime(2);
+        yield return new WaitForSecondsRealtime(3);
         if (!OutputFLED.isLEDON())
         {
             Debug.Log("Incorrect Output");
+            AddCheckMarkOrCross(false);
             yield break;
         }
+        AddCheckMarkOrCross(true);
+
         InputASwitch.ToggleSwitch(true); InputBSwitch.ToggleSwitch(false); InputCSwitch.ToggleSwitch(false);
-        yield return new WaitForSecondsRealtime(2);
+        yield return new WaitForSecondsRealtime(3);
         if (OutputFLED.isLEDON())
         {
             Debug.Log("Incorrect Output");
+            AddCheckMarkOrCross(false);
             yield break;
         }
+        AddCheckMarkOrCross(true);
+
         InputASwitch.ToggleSwitch(true); InputBSwitch.ToggleSwitch(false); InputCSwitch.ToggleSwitch(true);
-        yield return new WaitForSecondsRealtime(2);
+        yield return new WaitForSecondsRealtime(3);
         if (OutputFLED.isLEDON())
         {
             Debug.Log("Incorrect Output");
+            AddCheckMarkOrCross(false);
             yield break;
         }
+        AddCheckMarkOrCross(true);
+
         InputASwitch.ToggleSwitch(true); InputBSwitch.ToggleSwitch(true); InputCSwitch.ToggleSwitch(false);
-        yield return new WaitForSecondsRealtime(2);
+        yield return new WaitForSecondsRealtime(3);
         if (!OutputFLED.isLEDON())
         {
             Debug.Log("Incorrect Output");
+            AddCheckMarkOrCross(false);
             yield break;
         }
+        AddCheckMarkOrCross(true);
+
         InputASwitch.ToggleSwitch(true); InputBSwitch.ToggleSwitch(true); InputCSwitch.ToggleSwitch(true);
-        yield return new WaitForSecondsRealtime(2);
+        yield return new WaitForSecondsRealtime(3);
         if (!OutputFLED.isLEDON())
         {
             Debug.Log("Incorrect Output");
+            AddCheckMarkOrCross(false);
             yield break;
         }
+        AddCheckMarkOrCross(true);
 
 
         Debug.Log("Correct output!");
