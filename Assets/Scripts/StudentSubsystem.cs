@@ -23,7 +23,7 @@ public class StudentSubsystem : MonoBehaviour {
     private void EnterLab1()
     {
         Debug.Log("Lab 1 Button Clicked");
-        SceneManager.LoadScene("Scenes/Lab1");
+        SceneManager.LoadScene("Scenes/Prelab1");
     }
 
     private void EnterLab2()

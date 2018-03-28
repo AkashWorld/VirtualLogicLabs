@@ -301,7 +301,9 @@
     <Compile Include="Assets\Scripts\MagnifierBehavior.cs" />
     <Compile Include="Assets\Scripts\NANDGate.cs" />
     <Compile Include="Assets\Scripts\ORGate.cs" />
+    <Compile Include="Assets\Scripts\PostLab1.cs" />
     <Compile Include="Assets\Scripts\PowerSupplyScript.cs" />
+    <Compile Include="Assets\Scripts\PreLab1.cs" />
     <Compile Include="Assets\Scripts\ProtoboardObject.cs" />
     <Compile Include="Assets\Scripts\SquareboxObject.cs" />
     <Compile Include="Assets\Scripts\StudentSubsystem.cs" />

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public static class GradingCONSTANTS{
@@ -106,7 +107,7 @@ public class LabOneGrader : MonoBehaviour {
 
         InputASwitch.ToggleSwitch(false); InputBSwitch.ToggleSwitch(false); InputCSwitch.ToggleSwitch(false);
         logicManager.ResetAllLogic();
-        yield return new WaitForSecondsRealtime(3);
+        yield return new WaitForSecondsRealtime(1);
         if (OutputFLED.isLEDON())
         {
             Debug.Log("Incorrect Output");
@@ -117,7 +118,7 @@ public class LabOneGrader : MonoBehaviour {
 
         InputASwitch.ToggleSwitch(false); InputBSwitch.ToggleSwitch(false); InputCSwitch.ToggleSwitch(true);
         logicManager.ResetAllLogic();
-        yield return new WaitForSecondsRealtime(3);
+        yield return new WaitForSecondsRealtime(1);
         if (OutputFLED.isLEDON())
         {
             Debug.Log("Incorrect Output");
@@ -128,7 +129,7 @@ public class LabOneGrader : MonoBehaviour {
 
         InputASwitch.ToggleSwitch(false); InputBSwitch.ToggleSwitch(true); InputCSwitch.ToggleSwitch(false);
         logicManager.ResetAllLogic();
-        yield return new WaitForSecondsRealtime(3);
+        yield return new WaitForSecondsRealtime(1);
         if (OutputFLED.isLEDON())
         {
             Debug.Log("Incorrect Output");
@@ -139,7 +140,7 @@ public class LabOneGrader : MonoBehaviour {
 
         InputASwitch.ToggleSwitch(false); InputBSwitch.ToggleSwitch(true); InputCSwitch.ToggleSwitch(true);
         logicManager.ResetAllLogic();
-        yield return new WaitForSecondsRealtime(3);
+        yield return new WaitForSecondsRealtime(1);
         if (!OutputFLED.isLEDON())
         {
             Debug.Log("Incorrect Output");
@@ -150,7 +151,7 @@ public class LabOneGrader : MonoBehaviour {
 
         InputASwitch.ToggleSwitch(true); InputBSwitch.ToggleSwitch(false); InputCSwitch.ToggleSwitch(false);
         logicManager.ResetAllLogic();
-        yield return new WaitForSecondsRealtime(3);
+        yield return new WaitForSecondsRealtime(1);
         if (OutputFLED.isLEDON())
         {
             Debug.Log("Incorrect Output");
@@ -161,7 +162,7 @@ public class LabOneGrader : MonoBehaviour {
 
         InputASwitch.ToggleSwitch(true); InputBSwitch.ToggleSwitch(false); InputCSwitch.ToggleSwitch(true);
         logicManager.ResetAllLogic();
-        yield return new WaitForSecondsRealtime(3);
+        yield return new WaitForSecondsRealtime(1);
         if (OutputFLED.isLEDON())
         {
             Debug.Log("Incorrect Output");
@@ -172,7 +173,7 @@ public class LabOneGrader : MonoBehaviour {
 
         InputASwitch.ToggleSwitch(true); InputBSwitch.ToggleSwitch(true); InputCSwitch.ToggleSwitch(false);
         logicManager.ResetAllLogic();
-        yield return new WaitForSecondsRealtime(3);
+        yield return new WaitForSecondsRealtime(1);
         if (!OutputFLED.isLEDON())
         {
             Debug.Log("Incorrect Output");
@@ -183,7 +184,7 @@ public class LabOneGrader : MonoBehaviour {
 
         InputASwitch.ToggleSwitch(true); InputBSwitch.ToggleSwitch(true); InputCSwitch.ToggleSwitch(true);
         logicManager.ResetAllLogic();
-        yield return new WaitForSecondsRealtime(3);
+        yield return new WaitForSecondsRealtime(1);
         if (!OutputFLED.isLEDON())
         {
             Debug.Log("Incorrect Output");
@@ -194,6 +195,8 @@ public class LabOneGrader : MonoBehaviour {
 
 
         Debug.Log("Correct output!");
+        yield return new WaitForSecondsRealtime(5);
+        SceneManager.LoadScene("Scenes/Postlab1");
     }
 
 

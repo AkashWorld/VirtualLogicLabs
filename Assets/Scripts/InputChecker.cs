@@ -1,12 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class InputChecker : MonoBehaviour {
-
+    public Button mainMenu;
 	// Use this for initialization
 	void Start () {
-		
+        mainMenu.onClick.AddListener(TransitionToStudentSubsystem);
 	}
 	
 	// Update is called once per frame
@@ -18,4 +20,9 @@ public class InputChecker : MonoBehaviour {
             wire.transform.parent = Camera.main.transform;
         }
 	}
+
+    private void TransitionToStudentSubsystem()
+    {
+        SceneManager.LoadScene("Scenes/StudentSubsystem");
+    }
 }
