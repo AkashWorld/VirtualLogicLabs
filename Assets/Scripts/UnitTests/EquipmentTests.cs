@@ -486,6 +486,47 @@ public class EquipmentTests {
     }
 
 
+    [UnityTest]
+    [Timeout(100000000)]
+    public IEnumerator ProtoboardTest()
+    {
+        SetupScene();
+        yield return new WaitForSecondsRealtime(1);
+        GameObject Protoboard = GameObject.Find("Protoboard");
+        Assert.IsNotNull(Protoboard);
+        ProtoboardObject protoboardObject = Protoboard.GetComponent<ProtoboardObject>();
+        GameObject testNode = new GameObject("TesterNode");
+        LogicNode testLogic = testNode.AddComponent<LogicNode>();
+        foreach(KeyValuePair<string,List<GameObject>> entry in protoboardObject.GetNodeDictionary())
+        {
+            List<GameObject> relatedNodes = entry.Value;
+            foreach (GameObject protonode in relatedNodes)
+            {
+                testNode.transform.position = protonode.transform.position;
+                testLogic.SetLogicState((int)LOGIC.HIGH);
+                yield return new WaitForSeconds(.1f);
+                foreach (GameObject protoboardNode in relatedNodes) //place node
+                {
+                    Assert.AreEqual(testLogic.GetLogicState(), protoboardNode.GetComponent<LogicNode>().GetLogicState());
+                }
+                testLogic.SetLogicState((int)LOGIC.LOW);
+                yield return new WaitForSeconds(.1f);
+                foreach (GameObject protoboardNode in relatedNodes) //place node
+                {
+                    Assert.AreEqual(testLogic.GetLogicState(), protoboardNode.GetComponent<LogicNode>().GetLogicState());
+                }
+                testLogic.SetLogicState((int)LOGIC.INVALID);
+                yield return new WaitForSeconds(.1f);
+                foreach (GameObject protoboardNode in relatedNodes) //place node
+                {
+                    Assert.AreEqual(testLogic.GetLogicState(), protoboardNode.GetComponent<LogicNode>().GetLogicState());
+                }
+            }
+        }
+        yield return new WaitForSecondsRealtime(1);
+        yield break;
+    }
+
     private void SetupScene()
     {
         SceneManager.LoadScene("Scenes/SandboxLab");

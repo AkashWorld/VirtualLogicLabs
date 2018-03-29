@@ -127,12 +127,7 @@ public class LogicNode : MonoBehaviour {
             OwningDevice.ReactToLogic(this.gameObject, RequestedState);
         }
     }
-
-    private void RequestLogicReset()
-    {
-
-    }
-
+    
     public GameObject GetLogicNode()
     {
         return this.logic_node;

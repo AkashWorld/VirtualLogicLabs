@@ -17,7 +17,10 @@ public class ProtoboardObject : MonoBehaviour, LogicInterface{
     Dictionary<string, List<GameObject>> LogicID_Node_Dict; //Dictionary containing lists of matching Logic IDs
 
 
-
+    public Dictionary<string, List<GameObject>> GetNodeDictionary()
+    {
+        return this.LogicID_Node_Dict;
+    }
 
 	// Use this for initialization
 	void Start () {
@@ -394,7 +397,7 @@ public class ProtoboardObject : MonoBehaviour, LogicInterface{
                     }
                     Debug.Log("Priority state found to be " + priorityState + " from Collided node "
                         + collidedNode.gameObject.name + " in Protoboard Node " + logicNode.gameObject.name 
-                        + " from device " + collidedNode.gameObject.transform.parent.gameObject.name);
+                        + " from device " + collidedNode.gameObject.name);
                 }
             }
             Debug.Log("PROTOBOARD Setting Logic Set " + logicID + " to state " + priorityState);
