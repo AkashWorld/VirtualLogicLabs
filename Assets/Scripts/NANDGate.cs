@@ -6,12 +6,22 @@ public class NANDGate : MonoBehaviour, LogicInterface {
     private Dictionary<string, GameObject> logic_dictionary = new Dictionary<string, GameObject>(); //Contains all the gameobject nodes for the 74LS400 chip.+
     private GameObject DeviceGameObject;
     private GameObject snapIndicatorGameObj;
-    private const string LOGIC_DEVICE_ID = "74LS00_NAND_NODE_";
+    public const string LOGIC_DEVICE_ID = "74LS00_NAND_NODE_";
     private Vector3 screenPoint;
     private Vector3 offset;
     private bool SNAPPED = false; //Set to true if all Logic Nodes of this device is in collision with an external node
 
-    
+
+    public void SetSnapped(bool snap)
+    {
+        this.SNAPPED = snap;
+    }
+
+    public Dictionary<string, GameObject> GetLogicDictionary()
+    {
+        return logic_dictionary;
+    }
+
     // Use this for initialization
     void Start()
     {
@@ -86,8 +96,12 @@ public class NANDGate : MonoBehaviour, LogicInterface {
     }
 
     //The device is on if gnd and vcc have the correct logical inputs
-    private bool IsDeviceOn()
+    public bool IsDeviceOn()
     {
+        if (!SNAPPED)
+        {
+            return false;
+        }
         GameObject logic_gnd;
         GameObject logic_vcc;
         if (logic_dictionary.TryGetValue(LOGIC_DEVICE_ID + 6, out logic_gnd) 
@@ -95,8 +109,10 @@ public class NANDGate : MonoBehaviour, LogicInterface {
         {
             LogicNode logic_behavior_gnd = logic_gnd.GetComponent<LogicNode>();
             LogicNode logic_behavior_vcc = logic_vcc.GetComponent<LogicNode>();
-            LogicNode gndCollision = logic_behavior_gnd.GetCollidingNode().GetComponent<LogicNode>();
-            LogicNode vccCollision = logic_behavior_vcc.GetCollidingNode().GetComponent<LogicNode>();
+            GameObject gndNode = logic_behavior_gnd.GetCollidingNode();
+            GameObject vccNode = logic_behavior_vcc.GetCollidingNode();
+            LogicNode gndCollision = gndNode.GetComponent<LogicNode>();
+            LogicNode vccCollision = vccNode.GetComponent<LogicNode>();
             Debug.Log("GND Set to: " + gndCollision.GetLogicState() + " for Device " + this.gameObject.name);
             Debug.Log("VCC Set to: " + vccCollision.GetLogicState() + " for Device " + this.gameObject.name);
             if (gndCollision.GetLogicState() == (int)LOGIC.LOW 

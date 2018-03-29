@@ -16,6 +16,7 @@ public class LogicNode : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         logicManager = GameObject.Find("LogicManager").GetComponent<LogicManager>();
+        this.gameObject.transform.localScale = new Vector3(.1f, .1f, .1f);
         protoboard = GameObject.Find("Protoboard");
         logic_state = (int)LOGIC.INVALID;
         logic_node = this.gameObject;
@@ -230,4 +231,6 @@ public class LogicNode : MonoBehaviour {
         return this.logic_state;
     }
  
+
+
 }

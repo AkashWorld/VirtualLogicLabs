@@ -8,10 +8,21 @@ public class LEDScript : MonoBehaviour, LogicInterface{
     private const string LOGIC_DEVICE_ID = "LED_";
     private Vector3 screenPoint;
     private Vector3 offset;
-    private bool SNAPPED = false; //Set to true if all Logic Nodes of this device is in collision with an external node
+    public bool SNAPPED = false; //Set to true if all Logic Nodes of this device is in collision with an external node
     private GameObject LEDNodeVCC, LEDNodeGnd;
     Sprite LEDOn; Sprite LEDOff;
     private bool LEDState = false;
+
+
+    public GameObject GetLEDNodeVCC()
+    {
+        return LEDNodeVCC;
+    }
+
+    public GameObject GetLEDNodeGnd()
+    {
+        return LEDNodeGnd;
+    }
 
     // Use this for initialization
     void Start () {
@@ -87,7 +98,7 @@ public class LEDScript : MonoBehaviour, LogicInterface{
 
        
     }
-    void OnMouseUp()
+    public void OnMouseUp()
     {
         CheckIfSnapped();
     }

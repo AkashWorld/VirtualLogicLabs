@@ -130,7 +130,7 @@ public class Switch : MonoBehaviour, LogicInterface {
 
 
 
-    void OnMouseUp()
+    public void OnMouseUp()
     {
         CheckIfSnapped();
     }
@@ -180,4 +180,16 @@ public class Switch : MonoBehaviour, LogicInterface {
 
     }
 
+    public GameObject GetTopNode()
+    {
+        return topNode;
+    }
+    public GameObject GetMiddleNode()
+    {
+        return middleNode;
+    }
+    public GameObject GetBotNode()
+    {
+        return bottomNode;
+    }
 }
