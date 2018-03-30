@@ -5,7 +5,8 @@ using UnityEngine;
 public class TrashBehavior : MonoBehaviour {
 
     GameObject hoverObject = null;
-    int colliderNumber = 0; 
+    int colliderNumber = 0;
+    public bool test = false; 
     void OnTriggerEnter2D(Collider2D col)
     {
         if(col.gameObject.GetComponent<MagnifierBehavior>() == false)
@@ -32,19 +33,13 @@ public class TrashBehavior : MonoBehaviour {
         
     }
 
-    
-        // Use this for initialization
-        void Start ()
-        {
-		
-	    }
 	
 	// Update is called once per frame
 	void Update ()
     {
 		if (hoverObject!= null)
         {
-            if (Input.GetMouseButtonUp(0))
+            if (Input.GetMouseButtonUp(0) || test)
             {
                 Debug.Log("Deleting" + hoverObject.name);
                 Destroy(hoverObject);
@@ -53,3 +48,5 @@ public class TrashBehavior : MonoBehaviour {
         }
 	}
 }
+
+

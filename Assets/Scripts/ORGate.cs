@@ -7,12 +7,21 @@ public class ORGate : MonoBehaviour, LogicInterface
     private Dictionary<string, GameObject> logic_dictionary = new Dictionary<string, GameObject>(); //Contains all the gameobject nodes for the 74LS400 chip.+
     private GameObject DeviceGameObject;
     private GameObject snapIndicatorGameObj;
-    private const string LOGIC_DEVICE_ID = "74LS32_OR_NODE_";
+    public const string LOGIC_DEVICE_ID = "74LS32_OR_NODE_";
     private Vector3 screenPoint;
     private Vector3 offset;
     private bool SNAPPED = false; //Set to true if all Logic Nodes of this device is in collision with an external node
 
 
+    public void SetSnapped(bool snap)
+    {
+        this.SNAPPED = snap;
+    }
+
+    public Dictionary<string, GameObject> GetLogicDictionary()
+    {
+        return logic_dictionary;
+    }
 
     // Use this for initialization
     void Start()
@@ -88,8 +97,12 @@ public class ORGate : MonoBehaviour, LogicInterface
     }
 
     //The device is on if gnd and vcc have the correct logical inputs
-    private bool IsDeviceOn()
+    public bool IsDeviceOn()
     {
+        if (!SNAPPED)
+        {
+            return false;
+        }
         GameObject logic_gnd;
         GameObject logic_vcc;
         if (logic_dictionary.TryGetValue(LOGIC_DEVICE_ID + 6, out logic_gnd)
