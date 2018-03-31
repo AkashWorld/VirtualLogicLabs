@@ -552,7 +552,7 @@ public class ORGate : MonoBehaviour, LogicInterface
     /// Checks if the chip is snapped when the Mouse click is released to snap it
     /// into position.
     /// </summary>
-    void OnMouseUp()
+    public void OnMouseUp()
     {
         CheckIfSnapped();
     }
@@ -594,6 +594,11 @@ public class ORGate : MonoBehaviour, LogicInterface
             ChipIO();
         }
 
+    }
+
+    public bool isSnapped()
+    {
+        return SNAPPED;
     }
 
     public void ReactToLogic(GameObject LogicNode)
