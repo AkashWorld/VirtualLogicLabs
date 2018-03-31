@@ -56,6 +56,17 @@ public class Wire : MonoBehaviour, LogicInterface {
         activelyBeingPlaced = true;
 
     }
+
+
+    public void SetNodePositions(Vector3 firstNodePos, Vector3 secondNodePos)
+    {
+        startNode.transform.position = firstNodePos;
+        endNode.transform.position = secondNodePos;
+        activelyBeingPlaced = false;
+    }
+
+
+
     /// <summary>
     /// Callback helper function that toggles line color
     /// when the user clicks on the wire

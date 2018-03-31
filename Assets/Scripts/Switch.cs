@@ -161,8 +161,17 @@ public class Switch : MonoBehaviour, LogicInterface {
         CheckIfSnapped();
     }
 
-	// Update is called once per frame
-	void Update () {
+
+
+    public bool isSnapped()
+    {
+        return SNAPPED;
+    }
+
+
+
+    // Update is called once per frame
+    void Update () {
 		
 	}
 

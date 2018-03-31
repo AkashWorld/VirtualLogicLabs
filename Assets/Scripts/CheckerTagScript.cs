@@ -65,7 +65,7 @@ public class CheckerTagScript : MonoBehaviour {
     }
 
 
-    private void OnMouseUp()
+    public void OnMouseUp()
     {
         if(collidingObject == null)
         {

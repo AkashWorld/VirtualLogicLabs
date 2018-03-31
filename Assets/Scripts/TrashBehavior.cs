@@ -7,19 +7,15 @@ using UnityEngine;
 /// equipments in the Virtual Logic Lab.
 /// </summary>
 public class TrashBehavior : MonoBehaviour {
-
+    int colliderNumber = 0;
+    public bool test = false;
     GameObject hoverObject = null;
-<<<<<<< HEAD
-    int colliderNumber = 0; 
     /// <summary>
     /// Detects entering collision with another object to show the indicator
     /// for an active "Trash"
     /// </summary>
     /// <param name="col"></param>
-=======
-    int colliderNumber = 0;
-    public bool test = false; 
->>>>>>> 036dd0cf659c9724356dad7ecadd72357cea6761
+
     void OnTriggerEnter2D(Collider2D col)
     {
         if(col.gameObject.GetComponent<MagnifierBehavior>() == false)

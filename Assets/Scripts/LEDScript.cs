@@ -130,6 +130,13 @@ public class LEDScript : MonoBehaviour, LogicInterface{
     }
 
 
+    public bool isSnapped()
+    {
+        return SNAPPED;
+    }
+
+
+
     /// <summary>
     /// Checks if the chip is snapped when the Mouse click is released to snap it
     /// into position.
