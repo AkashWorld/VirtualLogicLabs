@@ -2,6 +2,29 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+///  We represent a Logic Node graphically with a small circle that has
+///  three different colors, Green for Logic High, Red for Logic Low, 
+///  and White for Neutral. These states are kept by each Logic Node as 
+///  an integer that is predefined statically. Outside of testing scenarios,
+///  every single Logic Node is a child of a GameObject that implements an 
+///  interface called Logic Device. We will expand upon this further down
+///  in the document.
+///  For each Logic Node, it is incredibly important to determine if it is 
+///  positionally overlapping with another Logic Node, analogous to a digital 
+///  logic component connecting to another digital logic component via physical
+///  contact.This is only detected when a collider component in the shape of the
+///  GameObject’s collision perimeter is added to the Logic Node GameObject on 
+///  object instantiation. Whenever this overlap happens between two Logic Nodes, 
+///  a collision is detected by the Unity engine, and a callback function called 
+///  OnTriggerEnter() is called, which notifies the programmer to react to this 
+///  collision.For Logic Nodes, we notify the object that a collision has been
+///  detected recently and keep note of the Logic Node that collided.The Logic
+///  Node object does not immediately react to any collisions as the user may
+///  be actively moving the Logic Node’s position. Upon reaching the next Update loop,
+///  responsibility of how to change the Logic State is given to the owning device 
+///  of the Logic Node.
+/// </summary>
 public class LogicNode : MonoBehaviour {
     private GameObject logic_node;
     public int logic_state;
@@ -13,7 +36,11 @@ public class LogicNode : MonoBehaviour {
     private LogicManager logicManager;
     private GameObject protoboard;
 
-	// Use this for initialization
+	/// <summary>
+    /// Creates the initilization state for a normal Logic Node. Sets the scale of every
+    /// dimension to 10% the normal sprite size. Sets the tag of the GameObject to "LOGIC_NODE",
+    /// adds a Sprite, Box Collider, and RigidBody2D components.
+    /// </summary>
 	void Start () {
         logicManager = GameObject.Find("LogicManager").GetComponent<LogicManager>();
         this.gameObject.transform.localScale = new Vector3(.1f, .1f, .1f);
@@ -34,7 +61,11 @@ public class LogicNode : MonoBehaviour {
         rigidbody.isKinematic = true;
     }
 	
-	// Update is called once per frame
+	/// <summary>
+    /// Update loop that checks if the node recently exited collision. If it did, it resets
+    /// the Logic of all LogicNodes in the system.
+    /// It also checks if there is a colliding node, and a recent state change or recent collision enter.
+    /// </summary>
 	void Update () {
         if (recentCollisionExit)
         {
@@ -52,6 +83,9 @@ public class LogicNode : MonoBehaviour {
         }
     }
 
+    /// <summary>
+    /// Checks if the user right clicked, asks owning device to take care of the Logic.
+    /// </summary>
     private void OnMouseOver()
     {
         if (Input.GetMouseButtonDown(1))
@@ -65,6 +99,12 @@ public class LogicNode : MonoBehaviour {
     }
 
 
+    /// <summary>
+    /// Checks if the Logic Node entered collision with another Logic Node
+    /// Also adds the Logic Node itself to the Logic Manager's tracking of Active 
+    /// Logic Nodes.
+    /// </summary>
+    /// <param name="coll"></param>
     private void OnTriggerEnter2D(Collider2D coll)
     {
         if(coll.gameObject.tag == "LOGIC_NODE")
@@ -84,6 +124,13 @@ public class LogicNode : MonoBehaviour {
 
     }
 
+    /// <summary>
+    /// On collision exit, takes this Logic Node, and all related nodes (for Protoboard),
+    /// takes itself out of the Logic Manager's tracking of Active Logic Nodes.
+    /// Also requests the owning device to set the Logic Node to neutral
+    /// Logic State.
+    /// </summary>
+    /// <param name="collision"></param>
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.gameObject == collidingNode)
@@ -166,11 +213,14 @@ public class LogicNode : MonoBehaviour {
             spriteRenderer.material.color = new Color(1, 0, 0);
         }
     }
+    /// <summary>
+    ///Sets logic state of this particular component. 
+    ///logic_id MUST be set before this method is called
+    ///Accepted values are LOGIC.HIGH(int = 10) and LOGIC.LOW(int = -10)
+    ///DOES NOT set '{RecentStateChange}' that gets checked in the update() method
+    /// </summary>
+    /// <param name="requestedState"></param>
 
-    //Sets logic state of this particular component. 
-    //logic_id MUST be set before this method is called
-    //Accepted values are LOGIC.HIGH(int = 10) and LOGIC.LOW(int = -10)
-    //DOES NOT set '{RecentStateChange}' that gets checked in the update() method
     public void SetLogicStateWithoutNotification(int requestedState)
     {
         //if change is detected in state
@@ -192,10 +242,10 @@ public class LogicNode : MonoBehaviour {
         return;
     }
 
-
-    //Sets logic state of this particular component. 
-    //logic_id MUST be set before this method is called
-    //Accepted values are LOGIC.HIGH(int = 10) and LOGIC.LOW(int = -10)
+    ///<summary>
+    ///Sets logic state of this particular component. 
+    ///logic_id MUST be set before this method is called
+    ///Accepted values are LOGIC.HIGH(int = 10) and LOGIC.LOW(int = -10)</summary>
     public void SetLogicState(int requestedState)
     {
         //if change is detected in state

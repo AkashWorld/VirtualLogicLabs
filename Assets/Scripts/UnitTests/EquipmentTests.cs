@@ -32,6 +32,7 @@ public class EquipmentTests {
         {
             Assert.Fail();
         }
+        
         gndLogic.SetLogicState((int)LOGIC.LOW); vccLogic.SetLogicState((int)LOGIC.HIGH);
         yield return new WaitForSecondsRealtime(1);
         if (!ledScript.isLEDON())
@@ -612,6 +613,7 @@ public class EquipmentTests {
         Assert.AreNotEqual(GameObject.Find("NANDChip(Clone)"), true); 
         yield break; 
     }
+
 
     private void SetupScene()
     {

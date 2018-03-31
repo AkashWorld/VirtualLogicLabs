@@ -2,11 +2,33 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// The Protoboard acts as both an input and output device on all of it’s Logic Nodes. 
+/// A crucial data structure for the Protoboard is the hash table, due to the way the 
+/// data is structured, and the speed of the retrieval of data. As specific rows, and 
+/// specific columns of Logic Nodes have the relationship of representing one Logic Nodes, 
+/// they need to represented in a way where a list of Logic Nodes is retrieved for a 
+/// specific column/row request. A Hash Table is the perfect data structure for this as 
+/// a key can be assigned to every set of related nodes, and a List (Array) data structure
+/// of Logic Node GameObjects can be assigned as the value for the key value pair. During 
+/// the ReactToLogic() function, the relevant list of of Logic Nodes can be received by 
+/// knowing the calling Logic Node’s key in a time complexity of O(1). As mentioned earlier, 
+/// a priority system is used to update the list of Logic Node’s state as a set must all 
+/// have the same state. All colliding Logic Node’s with the set are checked for their Logic
+/// States, and based on a priority system, the set as a whole is assigned one logic state.
+/// The priority system assigns the logic low first, logic high second, and assigns logic 
+/// neutral last. The protoboard is an immovable device as for the protoboard to be clickable, 
+/// it would need to have a Box Collider component for the mouse input callbacks to be registered. 
+/// However, since the Logic Nodes contained inside it also have Colliders, the Unity engine 
+/// has a difficult time distinguishing which GameObject is colliding with which other GameObject.
+/// We decided to remove the movable functionality from the protoboard due to this.
+/// </summary>
+/// 
 public class ProtoboardObject : MonoBehaviour, LogicInterface{
-    /**
-     * Left/Right column: 20x2
-     * Middle Left/Right column: 27x5
-     **/
+     ///
+     ///Left/Right column: 20x2
+     /// Middle Left/Right column: 27x5
+     ///
     GameObject protoboard;
     const string LEFT_NODE = "leftlogicnode";
     const string RIGHT_NODE = "rightlogicnode";
@@ -22,7 +44,10 @@ public class ProtoboardObject : MonoBehaviour, LogicInterface{
         return this.LogicID_Node_Dict;
     }
 
-	// Use this for initialization
+	/// <summary>
+    /// Initializes the nodes on the protoboard and positions them. Adds them to the 
+    /// protoboard's Dictionary data structure.
+    /// </summary>
 	void Start () {
         protoboard = this.gameObject;
         LogicID_Node_Dict = new Dictionary<string, List<GameObject>>(); //a dictionary (HASH TABLE) of the logic ID and GameObject pairs
@@ -313,7 +338,11 @@ public class ProtoboardObject : MonoBehaviour, LogicInterface{
         }
     }
 
-    //Toggles node set from INVALID -> LOW -> HIGH
+    /// <summary>
+    /// Method for debugging a set of Logic Nodes to different states
+    /// by the programmer.
+    /// </summary>
+    /// <param name="logicNode">Logic Node that is conatained in the set that is being toggled.</param>
     private void ToggleNodeSet(GameObject logicNode)
     {
         LogicNode logicBehaviorScript = logicNode.GetComponent<LogicNode>();
@@ -351,11 +380,15 @@ public class ProtoboardObject : MonoBehaviour, LogicInterface{
     }
 
 
- 
 
 
-    //Interface method from LogicInterface.cs that allows the protoboard to react to any changes to its logic nodes.
-    //This method is called from OnMouseUp() function, so it regulates mouse toggles
+    /// <summary>
+    ///Interface method from LogicInterface.cs that allows the protoboard to react to any changes to its logic nodes.
+    ///This method is called from OnMouseUp() function, so it regulates mouse toggles
+    /// </summary>
+    /// <param name="logicNode">
+    /// The logic node that calls the ReactToLogic method
+    /// </param>
     public void ReactToLogic(GameObject logicNode)
     {
   
@@ -364,7 +397,13 @@ public class ProtoboardObject : MonoBehaviour, LogicInterface{
 
     }
 
-
+    /// <summary>
+    ///Interface method from LogicInterface.cs that allows the protoboard to react to any changes to its logic nodes.
+    ///This method is called from OnMouseUp() function, so it regulates mouse toggles
+    /// </summary>
+    /// <param name="logicNode"></param>
+    /// <param name="requestedState"></param>
+    /// The logic node that calls the ReactToLogic method and the requestedState
     public void ReactToLogic(GameObject logicNode, int requestedState)
     {
         Debug.Log("Protoboard node reacting: " + logicNode.gameObject.name);

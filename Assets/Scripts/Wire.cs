@@ -2,7 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Experimental.UIElements;
-
+/// <summary>
+/// Wires are generated using the ‘w’ key on the keyboard, 
+/// or can be accessed via the dropdown menu. After initializing 
+/// them, a click on a Logic Node is listened for on a callback, 
+/// after the first click, the Wire ‘Line’ is rendered to follow 
+/// the mouse from the specified Logic Node. Every click after 
+/// ward creates an inflection point for the wire, if the clicked 
+/// point is not a Logic Node, in which another ‘Line’ is rendered
+/// from that point to the mouse. Only when a Logic Node is clicked 
+/// is the wire sequence is done executing within the Wire object’s 
+/// Update function, and two new Logic Nodes are created at each
+/// end of the wire. The wire follows a similar priority system
+/// to that of the Protoboard by analyzing the colliding Logic Nodes
+/// of both ends of the wire.
+/// </summary>
 public class Wire : MonoBehaviour, LogicInterface {
     private GameObject startNode, endNode;
     private GameObject DeviceGameObject;
@@ -14,7 +28,10 @@ public class Wire : MonoBehaviour, LogicInterface {
     private int currentState;
     private GameObject placingText;
 
-    // Use this for initialization
+    /// <summary>
+    /// Two LogicNodes are created, and a Text is also created to
+    /// show that a wire is being placed. 
+    /// </summary>
     void Start () {
         currentState = (int)LOGIC.INVALID;
         wireInflectionObjects = new List<GameObject>();
@@ -39,7 +56,10 @@ public class Wire : MonoBehaviour, LogicInterface {
         activelyBeingPlaced = true;
 
     }
-
+    /// <summary>
+    /// Callback helper function that toggles line color
+    /// when the user clicks on the wire
+    /// </summary>
     public void ToggleLineColor()
     {
         Debug.Log("Toggling WIRE color");
@@ -74,7 +94,11 @@ public class Wire : MonoBehaviour, LogicInterface {
     }
 
 
-    //GO = GameObject
+    /// <summary>
+    /// Helper function that helps draw a line between
+    /// the origin position, and the current mouse position
+    /// </summary>
+    /// <param name="currentMousePos"></param>
     private void DrawLineBetweenGO(Vector3 currentMousePos)
     {
         if (WireLine == null)
@@ -87,6 +111,11 @@ public class Wire : MonoBehaviour, LogicInterface {
         WireLine.SetPosition(wireInflectionObjects.Count, new Vector3(worldPoint.x,worldPoint.y,10));
     }
 	
+    /// <summary>
+    /// After the Wire is set, with both ends connecting to a Logic Node,
+    /// the LogicNode's positions are changed to go to each end of the
+    /// wire.
+    /// </summary>
     private void SetLogicNodePositions()
     {
 
@@ -96,9 +125,16 @@ public class Wire : MonoBehaviour, LogicInterface {
     }
 
 
-
-	// Update is called once per frame
-	void Update () {
+    /// <summary>
+    /// Update loop that helps implement the sequence that the wire
+    /// goes through to place the wire. Based on several conditions, the
+    /// state of the wire is changed from starting to be placed, to changing
+    /// line positions, to adding lines based on inflection points, to ending
+    /// the line on a Logic Node to create the wire. After the sequence is
+    /// over, the activeBeingPlaced variable is toggled false to render
+    /// the Update loop unsuable.
+    /// </summary>
+    void Update () {
         if (activelyBeingPlaced)
         {
             DrawLineBetweenGO(Input.mousePosition);
@@ -224,7 +260,14 @@ public class Wire : MonoBehaviour, LogicInterface {
     {
         throw new System.NotImplementedException();
     }
-
+    /// <summary>
+    /// Reacts to the Logic of the two ends of the wires and sets the overall
+    /// Logic state of the wire based on a priority system that prioritizes
+    /// LOGIC.LOW first, LOGIC.HIGH next, and finally LOGIC.INVALID. This
+    /// method is only usuable after activeBeingPlaced is toggled false.
+    /// </summary>
+    /// <param name="LogicNode"></param>
+    /// <param name="requestedState"></param>
     public void ReactToLogic(GameObject LogicNode, int requestedState)
     {
         if (activelyBeingPlaced)

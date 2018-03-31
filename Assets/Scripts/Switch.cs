@@ -2,6 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// The switch is another important movable device, similar to the LED. 
+/// It contains three Logic Nodes, two of which are inputs, and one of which is an output. 
+/// It can be toggled up or down, and will prioritize the output to reflect the top, 
+/// or bottom Logic Node input. Similar to the LED, they play an important role 
+/// when analyzing the built in circuit as they can be designated as an overall 
+/// input to the system.
+/// </summary>
 public class Switch : MonoBehaviour, LogicInterface {
 	GameObject DeviceGameObject;
 	private const string LOGIC_DEVICE_ID = "SPDT_SWITCH";
@@ -16,7 +24,9 @@ public class Switch : MonoBehaviour, LogicInterface {
 
 
 
-	// Use this for initialization
+	/// <summary>
+    ///  Place Logic Nodes on the switch GameObject on the top, middle, and bottom
+    /// </summary>
 	void Start () {
         logicManager = GameObject.Find("LogicManager").GetComponent<LogicManager>();
 		DeviceGameObject = this.gameObject;
@@ -42,7 +52,9 @@ public class Switch : MonoBehaviour, LogicInterface {
         bottomNode.AddComponent<LogicNode>();
     }
 
-
+    /// <summary>
+    /// Method to facilitate dragging the object
+    /// </summary>
 	void OnMouseDown()
 	{
 		Debug.Log("SWITCH Mouse Down");
@@ -50,14 +62,20 @@ public class Switch : MonoBehaviour, LogicInterface {
 		offset = gameObject.transform.position - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z));
 
 	}
-
-	void OnMouseDrag()
+    /// <summary>
+    /// Method to facilitate dragging the object
+    /// </summary>
+    void OnMouseDrag()
 	{
 		Vector3 curScreenPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z);
 		Vector3 curPosition = Camera.main.ScreenToWorldPoint(curScreenPoint);
 		transform.position = curPosition;
 	}
 
+    /// <summary>
+    /// Checks if all nodes are connected to another set of nodes
+    /// </summary>
+    /// <returns>Boolean value that indicates whether the device is SNAPPED or Not</returns>
     private bool CheckIfSnapped()
     {
 
@@ -81,6 +99,11 @@ public class Switch : MonoBehaviour, LogicInterface {
 
         return SNAPPED;
     }
+
+    /// <summary>
+    /// Method that detects if the Mouse is over the switch. It contains a method that
+    /// checks if the user is Right clicking on the object to toggle the state of the switch.
+    /// </summary>
     private void OnMouseOver()
     {
         //Right click trigger that switches the state of the switch, from UP to Down
@@ -109,7 +132,10 @@ public class Switch : MonoBehaviour, LogicInterface {
     }
 
 
-
+    /// <summary>
+    /// Method that switches the Sprite and state of the switch from top biased, to bottom biased
+    /// </summary>
+    /// <param name="toggleUp"></param>
     public void ToggleSwitch(bool toggleUp)
     {
         if (toggleUp && SNAPPED && SwitchUp == false)
@@ -145,7 +171,9 @@ public class Switch : MonoBehaviour, LogicInterface {
         throw new System.NotImplementedException();
     }
 
-
+    /// <summary>
+    /// Clears all of the node to LOGIC.INVALID of the Switch
+    /// </summary>
     private void ClearIO()
     {
         topNode.GetComponent<LogicNode>().SetLogicState((int)LOGIC.INVALID);
@@ -153,7 +181,12 @@ public class Switch : MonoBehaviour, LogicInterface {
         bottomNode.GetComponent<LogicNode>().SetLogicState((int)LOGIC.INVALID);
     }
 
-
+    /// <summary>
+    /// Method that reacts to the Logic Node's callback to handle it's Logic State
+    /// </summary>
+    /// <param name="LogicNode">LogicNode GameObject that called the method</param>
+    /// <param name="requestedState">The requestedState that the Logic Node asked the device
+    /// to change to.</param>
     public void ReactToLogic(GameObject LogicNode, int requestedState)
     {
         if (!SNAPPED)

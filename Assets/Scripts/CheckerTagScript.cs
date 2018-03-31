@@ -13,6 +13,10 @@ public class CheckerTagScript : MonoBehaviour {
         type = GradingCONSTANTS.INPUT;
 	}
 
+    public bool isSnapped()
+    {
+        return SNAPPED;
+    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {

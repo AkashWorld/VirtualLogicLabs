@@ -308,6 +308,7 @@
     <Compile Include="Assets\Scripts\TrashBehavior.cs" />
     <Compile Include="Assets\Scripts\TruthTable.cs" />
     <Compile Include="Assets\Scripts\UnitTests\EquipmentTests.cs" />
+    <Compile Include="Assets\Scripts\UnitTests\IntegrationTesting.cs" />
     <Compile Include="Assets\Scripts\Wire.cs" />
     <Compile Include="Assets\Scripts\WireInflection.cs" />
   </ItemGroup>

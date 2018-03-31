@@ -1,7 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/// <summary>
+///     The LED is an important movable device, and similar to the ‘chips’,
+///     they can be snapped. The LED takes in two inputs by detecting collision 
+///     on both of it’s ‘legs’. If the shorter leg’s collided Logic Node has
+///     a state of logic low and the longer leg’s collided Logic Node has a 
+///     state of logic high, then the LED has a state of being “On”. This also
+///     means that the sprite of the LED is modified to show that it is emitting
+///     a light source. In every other situation, the LED is in the state of 
+///     being “Off” and has a sprite that reflects that. The importance of the
+///     LED doesn’t only come from being a good debugging device for the user,
+///     but also is important in a technical aspect as it is used to check the
+///     input and output states of the overall circuit of the lab. This will be
+///     further expanded on.
+/// </summary>
 public class LEDScript : MonoBehaviour, LogicInterface{
     private GameObject DeviceGameObject;
     private GameObject snapIndicatorGameObj;
@@ -24,7 +37,10 @@ public class LEDScript : MonoBehaviour, LogicInterface{
         return LEDNodeGnd;
     }
 
-    // Use this for initialization
+    /// <summary>
+    /// Sets all 2 nodes in the specified position in the Logic Chips
+    /// and loads the sprites for LEDON and LEDOFF into memory
+    /// </summary>
     void Start () {
         DeviceGameObject = this.gameObject;
 
@@ -46,6 +62,10 @@ public class LEDScript : MonoBehaviour, LogicInterface{
     }
 
 
+    /// <summary>
+    /// Mouse down on GameObject activates the movement of the object
+    /// to follow the mouse position
+    /// </summary>
     void OnMouseDown()
     {
         Debug.Log("LED Mouse Down");
@@ -53,7 +73,11 @@ public class LEDScript : MonoBehaviour, LogicInterface{
         offset = gameObject.transform.position - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z));
 
     }
-
+    /// <summary>
+    /// Callback that notifies the object that the mouse is being dragged
+    /// on it. This is used to help 'move' the GameObject by calculating the offset
+    /// from the previous mouse position. 
+    /// </summary>
     void OnMouseDrag()
     {
         Vector3 curScreenPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z);
@@ -64,7 +88,11 @@ public class LEDScript : MonoBehaviour, LogicInterface{
     void Update () {
 		
 	}
-
+    /// <summary>
+    /// Checks if the ground node is connected to ground.
+    /// This is checked whenever a new state change is requested to be reacted to.
+    /// </summary>
+    /// <returns>True or False boolean value on whether the Device is considered on</returns>
     private bool IsDeviceOn()
     {
         if(LEDNodeGnd.GetComponent<LogicNode>().GetLogicState() == (int)LOGIC.LOW 
@@ -75,7 +103,9 @@ public class LEDScript : MonoBehaviour, LogicInterface{
         }
         return false;
     }
-
+    /// <summary>
+    /// Check if the device has all it's nodes is colliding with another set of Logic Nodes
+    /// </summary>
     private void CheckIfSnapped()
     {
 
@@ -98,21 +128,41 @@ public class LEDScript : MonoBehaviour, LogicInterface{
 
        
     }
+
+
+    /// <summary>
+    /// Checks if the chip is snapped when the Mouse click is released to snap it
+    /// into position.
+    /// </summary>
     public void OnMouseUp()
     {
         CheckIfSnapped();
     }
 
+    /// <summary>
+    /// Checks if the LED is in the on state, meaning
+    /// that the ground node is connected to a ground state,
+    /// and the vcc node is connected to a logic high.
+    /// </summary>
+    /// <returns></returns>
     public bool isLEDON()
     {
         Debug.Log("LED IS " + LEDState);
         return LEDState;
     }
 
+
     public void ReactToLogic(GameObject LogicNode)
     {
     }
 
+
+    /// <summary>
+    /// If the chip is snapped, react to the input logics and set the outputs
+    /// to the correct states. Otherwise, clear the chips.
+    /// </summary>
+    /// <param name="logicNode"></param>
+    /// <param name="requestedState"></param>
     public void ReactToLogic(GameObject LogicNode, int requestedState)
     {
         if (!SNAPPED)
