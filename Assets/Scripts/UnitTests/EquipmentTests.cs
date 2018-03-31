@@ -32,6 +32,7 @@ public class EquipmentTests {
         {
             Assert.Fail();
         }
+        
         gndLogic.SetLogicState((int)LOGIC.LOW); vccLogic.SetLogicState((int)LOGIC.HIGH);
         yield return new WaitForSecondsRealtime(1);
         if (!ledScript.isLEDON())
@@ -526,6 +527,7 @@ public class EquipmentTests {
         yield return new WaitForSecondsRealtime(1);
         yield break;
     }
+
 
     private void SetupScene()
     {

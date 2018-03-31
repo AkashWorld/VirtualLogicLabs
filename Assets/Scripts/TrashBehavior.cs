@@ -2,10 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Facilitates deletion of GameObjects that represent
+/// equipments in the Virtual Logic Lab.
+/// </summary>
 public class TrashBehavior : MonoBehaviour {
 
     GameObject hoverObject = null;
     int colliderNumber = 0; 
+    /// <summary>
+    /// Detects entering collision with another object to show the indicator
+    /// for an active "Trash"
+    /// </summary>
+    /// <param name="col"></param>
     void OnTriggerEnter2D(Collider2D col)
     {
         if(col.gameObject.GetComponent<MagnifierBehavior>() == false)
@@ -18,7 +27,11 @@ public class TrashBehavior : MonoBehaviour {
             sprite.color = new Color(1F, 1F, 0F); 
         }
     }
-
+    /// <summary>
+    /// Detects exiting collision with another object to show the indicator
+    /// for an inactive "Trash"
+    /// </summary>
+    /// <param name="col"></param>
     void OnTriggerExit2D(Collider2D col)
     {
         colliderNumber--;
@@ -39,7 +52,9 @@ public class TrashBehavior : MonoBehaviour {
 		
 	    }
 	
-	// Update is called once per frame
+	/// <summary>
+    /// Destroys the GameObject is the mouse button is lifted up
+    /// </summary>
 	void Update ()
     {
 		if (hoverObject!= null)

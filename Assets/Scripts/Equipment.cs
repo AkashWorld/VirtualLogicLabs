@@ -3,13 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Equipment object that holds information about all Equipment available to
+/// use and lists them on a Dropdown menu. Allows the user to create new
+/// equipment from clicking the Dropdown.
+/// </summary>
 public class Equipment : MonoBehaviour {
 
     public Dropdown dropDown;
     public List<string> equipmentNames;
     GameObject mainCamera;
     int resetValue;
-	// Use this for initialization
+	/// <summary>
+    /// Lists the available equipment to the Dropdown menu
+    /// </summary>
 	public void Start () {
         mainCamera = GameObject.Find("Main Camera");
         equipmentNames = new List<string>();
@@ -30,6 +37,10 @@ public class Equipment : MonoBehaviour {
         dropDown.onValueChanged.AddListener(CallBackWithParameter);
 	}
 	
+    /// <summary>
+    /// Call back from clicking the Equipment Dropdown menu
+    /// </summary>
+    /// <param name="index">Index in which the equipment is contained.</param>
     public void CallBackWithParameter(int index)
     {
         string equipmentName = dropDown.GetComponent<Dropdown>().options[index].text;
@@ -41,6 +52,12 @@ public class Equipment : MonoBehaviour {
         LoadPrefab(equipmentName);
     }
 
+
+    /// <summary>
+    /// Load the Prefab (premade GameObject) based on what is clicked on the
+    /// Dropdown menu.
+    /// </summary>
+    /// <param name="equipmentName">Name of the equipment</param>
     private void LoadPrefab(string equipmentName)
     {
         GameObject newPrefab = null;

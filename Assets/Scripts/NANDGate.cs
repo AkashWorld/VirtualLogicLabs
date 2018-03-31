@@ -1,7 +1,23 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/// <summary>
+/// The chips are all movable devices that contain 14 Logic Nodes.
+/// These Logic Nodes are stored in Hash Tables, but the implementation
+/// can easily be changed to Lists as well. To function correctly,
+/// they must be ‘snapped’ to 14 other nodes, typically this means 
+/// a collision between all of the chip’s Logic Nodes and the Protoboard’s
+/// Logic Nodes are detected simultaneously. Once the chip detect that all
+/// 14 nodes are collided with, and the user lifts the mouse, the OnMouseUp()
+/// callback is recorded, and the position of the chip is snapped to the
+/// top left Logic Node’s collided Logic Node’s position (arbitrarily chosen),
+/// a green indicator is shown to show potential snappings.  Once the device
+/// is snapped, before any logic calculation is done, the chip must detect
+/// a collided node on both the 7th pin, and the 14th pin, with a logic low
+/// and a logic high going to the respective nodes. After that, based
+/// on the datasheet, the collided input Logic Node’s states are taken, and the 
+/// output is set.
+/// </summary>
 public class NANDGate : MonoBehaviour, LogicInterface {
     private Dictionary<string, GameObject> logic_dictionary = new Dictionary<string, GameObject>(); //Contains all the gameobject nodes for the 74LS400 chip.+
     private GameObject DeviceGameObject;
@@ -22,7 +38,9 @@ public class NANDGate : MonoBehaviour, LogicInterface {
         return logic_dictionary;
     }
 
-    // Use this for initialization
+    /// <summary>
+    /// Sets all 14 nodes in the specified position in the Logic Chips
+    /// </summary>
     void Start()
     {
         DeviceGameObject = this.gameObject;
@@ -58,7 +76,10 @@ public class NANDGate : MonoBehaviour, LogicInterface {
         sprite_renderer.material.color = new Color(1, 1, 1);
     }
 
-
+    /// <summary>
+    /// Mouse down on GameObject activates the movement of the object
+    /// to follow the mouse position
+    /// </summary>
     void OnMouseDown()
     {
         Debug.Log("74LS00 Mouse Down");
@@ -66,7 +87,12 @@ public class NANDGate : MonoBehaviour, LogicInterface {
         offset = gameObject.transform.position - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z));
 
     }
-
+    /// <summary>
+    /// Callback that notifies the object that the mouse is being dragged
+    /// on it. This is used to help 'move' the GameObject by calculating the offset
+    /// from the previous mouse position. It also checks if the chip is in the
+    /// 'Snapped' position if the Mouse click is let go.
+    /// </summary>
     void OnMouseDrag()
     {
         Vector3 curScreenPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z);
@@ -95,7 +121,11 @@ public class NANDGate : MonoBehaviour, LogicInterface {
 
     }
 
-    //The device is on if gnd and vcc have the correct logical inputs
+    /// <summary>
+    /// Checks if pin 7 and pin 14 is connected to ground and logic high respectively.
+    /// This is checked whenever a new state change is requested to be reacted to.
+    /// </summary>
+    /// <returns>True or False boolean value on whether the Device is considered on</returns>
     public bool IsDeviceOn()
     {
         if (!SNAPPED)
@@ -127,7 +157,10 @@ public class NANDGate : MonoBehaviour, LogicInterface {
     }
 
 
-    //Method that handles the input and output nodes based on the collisions
+    /// <summary>
+    /// Checks if the Device is On, and then continues to check all the inputs colliding
+    /// node and sets the output nodes to the correct state.
+    /// </summary>
     private void ChipIO()
     {
         GameObject logic_0, logic_1, logic_2, logic_3, logic_4, logic_5, logic_6,
@@ -463,6 +496,9 @@ public class NANDGate : MonoBehaviour, LogicInterface {
             collided_behavior.RequestStateChange(logic_behavior.GetLogicState());
         }
     }
+    /// <summary>
+    /// Check if the device has all it's nodes is colliding with another set of Logic Nodes
+    /// </summary>
     private void CheckIfSnapped()
     {
         Debug.Log("74LS00 Mouse Up");
@@ -499,13 +535,20 @@ public class NANDGate : MonoBehaviour, LogicInterface {
             SNAPPED = true;
         }
     }
+
+    /// <summary>
+    /// Checks if the chip is snapped when the Mouse click is released to snap it
+    /// into position.
+    /// </summary>
     void OnMouseUp()
     {
         CheckIfSnapped();
     }
 
-     
-    
+
+    /// <summary>
+    /// Sets all the nodes of the chip to a logic of invalid/neutral.
+    /// </summary>
     private void ClearChip()
     {
         foreach(KeyValuePair<string, GameObject> entry in logic_dictionary)
@@ -520,7 +563,12 @@ public class NANDGate : MonoBehaviour, LogicInterface {
     void Update () {
 
 	}
-
+    /// <summary>
+    /// If the chip is snapped, react to the input logics and set the outputs
+    /// to the correct states. Otherwise, clear the chips.
+    /// </summary>
+    /// <param name="logicNode"></param>
+    /// <param name="requestedState"></param>
     public void ReactToLogic(GameObject logicNode, int requestedState)
     {
         if(requestedState == (int)LOGIC.INVALID && !SNAPPED)
