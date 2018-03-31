@@ -527,6 +527,92 @@ public class EquipmentTests {
         yield return new WaitForSecondsRealtime(1);
         yield break;
     }
+    
+    [UnityTest]
+    public IEnumerator Magnifier()
+    {
+        SetupScene();
+        yield return new WaitForSeconds(2);
+        GameObject MagnifyingGlass = GameObject.Find("MagnifyingGlass");
+        MagnifyingGlass.transform.position = new Vector3(0, 0, 0);
+
+        //Test 74LS00 Collision On
+        GameObject NANDChip = Resources.Load<GameObject>("Prefabs/Lab/NANDChip");
+        GameObject NANDGO = GameObject.Instantiate<GameObject>(NANDChip);
+        NANDGO.transform.position = new Vector3(0, 0, 0);
+        yield return new WaitForSeconds(3); 
+        GameObject NANDInfo = GameObject.Find("74LS00Info");
+        SpriteRenderer NANDInfoSprite = NANDInfo.GetComponent<SpriteRenderer>();
+        Assert.AreEqual(NANDInfoSprite.color, new Color(1f, 1f, 1f, 1f));
+       
+        //Test 74LS04 Collision On
+        GameObject INVChip = Resources.Load<GameObject>("Prefabs/Lab/INVChip");
+        GameObject INVGO = GameObject.Instantiate<GameObject>(INVChip);
+        INVGO.transform.position = new Vector3(0, 0, 0);
+        yield return new WaitForSeconds(3);
+        GameObject INVInfo = GameObject.Find("74LS04Info");
+        SpriteRenderer INVInfoSprite = INVInfo.GetComponent<SpriteRenderer>();
+        Assert.AreEqual(INVInfoSprite.color, new Color(1f, 1f, 1f, 1f));
+
+        //Test 74LS08 Collision On
+        GameObject ANDChip = Resources.Load<GameObject>("Prefabs/Lab/ANDChip");
+        GameObject ANDGO = GameObject.Instantiate<GameObject>(ANDChip);
+        ANDGO.transform.position = new Vector3(0, 0, 0);
+        yield return new WaitForSeconds(3);
+        GameObject ANDInfo = GameObject.Find("74LS08Info");
+        SpriteRenderer ANDInfoSprite = ANDInfo.GetComponent<SpriteRenderer>();
+        Assert.AreEqual(ANDInfoSprite.color, new Color(1f, 1f, 1f, 1f));
+
+        //Test 74LS08 Collision On
+        GameObject ORChip = Resources.Load<GameObject>("Prefabs/Lab/ORChip");
+        GameObject ORGO = GameObject.Instantiate<GameObject>(ORChip);
+        ORGO.transform.position = new Vector3(0, 0, 0);
+        yield return new WaitForSeconds(3);
+        GameObject ORInfo = GameObject.Find("74LS32Info");
+        SpriteRenderer ORInfoSprite = ORInfo.GetComponent<SpriteRenderer>();
+        Assert.AreEqual(ORInfoSprite.color, new Color(1f, 1f, 1f, 1f));
+
+        //Test 74LS00 Collision Off
+        NANDGO.transform.position = new Vector3(5, 5, 0);
+        yield return new WaitForSeconds(3);
+        Assert.AreEqual(NANDInfoSprite.color, new Color(1f, 1f, 1f, 0f));
+
+        //Test 74LS04 Collision Off
+        INVGO.transform.position = new Vector3(5, 5, 0);
+        yield return new WaitForSeconds(3);
+        Assert.AreEqual(INVInfoSprite.color, new Color(1f, 1f, 1f, 0f));
+
+        //Test 74LS08 Collision Off
+        ANDGO.transform.position = new Vector3(5, 5, 0);
+        yield return new WaitForSeconds(3);
+        Assert.AreEqual(ANDInfoSprite.color, new Color(1f, 1f, 1f, 0f));
+
+        //Test 74LS32 Collision Off
+        ORGO.transform.position = new Vector3(5, 5, 0);
+        yield return new WaitForSeconds(3);
+        Assert.AreEqual(ORInfoSprite.color, new Color(1f, 1f, 1f, 0f));
+
+        yield break; 
+    }
+
+    [UnityTest]
+    public IEnumerator Trash()
+    {
+        SetupScene();
+        yield return new WaitForSeconds(2);
+        GameObject Trash = GameObject.Find("Trash");
+        TrashBehavior trashBehavior = Trash.GetComponent<TrashBehavior>(); 
+        Trash.transform.position = new Vector3(0, 0, 0);
+
+        GameObject NANDChip = Resources.Load<GameObject>("Prefabs/Lab/NANDChip");
+        GameObject NANDGO = GameObject.Instantiate<GameObject>(NANDChip);
+        NANDGO.transform.position = new Vector3(0, 0, 0);
+        Assert.AreEqual((bool)GameObject.Find("NANDChip(Clone)"), true);
+        trashBehavior.test = true;
+        yield return new WaitForSeconds(2);
+        Assert.AreNotEqual(GameObject.Find("NANDChip(Clone)"), true); 
+        yield break; 
+    }
 
 
     private void SetupScene()

@@ -9,12 +9,17 @@ using UnityEngine;
 public class TrashBehavior : MonoBehaviour {
 
     GameObject hoverObject = null;
+<<<<<<< HEAD
     int colliderNumber = 0; 
     /// <summary>
     /// Detects entering collision with another object to show the indicator
     /// for an active "Trash"
     /// </summary>
     /// <param name="col"></param>
+=======
+    int colliderNumber = 0;
+    public bool test = false; 
+>>>>>>> 036dd0cf659c9724356dad7ecadd72357cea6761
     void OnTriggerEnter2D(Collider2D col)
     {
         if(col.gameObject.GetComponent<MagnifierBehavior>() == false)
@@ -45,12 +50,6 @@ public class TrashBehavior : MonoBehaviour {
         
     }
 
-    
-        // Use this for initialization
-        void Start ()
-        {
-		
-	    }
 	
 	/// <summary>
     /// Destroys the GameObject is the mouse button is lifted up
@@ -59,7 +58,7 @@ public class TrashBehavior : MonoBehaviour {
     {
 		if (hoverObject!= null)
         {
-            if (Input.GetMouseButtonUp(0))
+            if (Input.GetMouseButtonUp(0) || test)
             {
                 Debug.Log("Deleting" + hoverObject.name);
                 Destroy(hoverObject);
@@ -68,3 +67,5 @@ public class TrashBehavior : MonoBehaviour {
         }
 	}
 }
+
+
