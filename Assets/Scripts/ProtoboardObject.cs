@@ -25,10 +25,14 @@ using UnityEngine;
 /// </summary>
 /// 
 public class ProtoboardObject : MonoBehaviour, LogicInterface{
-     ///
-     ///Left/Right column: 20x2
-     /// Middle Left/Right column: 27x5
-     ///
+    ///
+    ///Left/Right column: 20x2
+    /// Middle Left/Right column: 27x5
+    ///
+    int currentProtoboard = 0;
+    Vector3[] protoboardPositions = new[] { new Vector3(-5.017177F, -1.284522F, 20), new Vector3(-4.29216F, -1.284522F, 20F), new Vector3(-3.5671F, -1.284522F, 20F), new Vector3(-2.84212F, -1.284522F, 20F), new Vector3(-2.11714F, -1.284522F, 20F), new Vector3(-1.39217F, -1.284522F, 20F), new Vector3(-0.66716F, -1.284522F, 20F) };
+    string[] protoboardNames = {"extendedProtoboard", "extendedProtoboard1" , "extendedProtoboard2" , "extendedProtoboard3" , "extendedProtoboard4" , "extendedProtoboard5" , "extendedProtoboard6" }; 
+    Vector3 horizontalOffset = new Vector3(0.725285F,0,0); 
     GameObject protoboard;
     const string LEFT_NODE = "leftlogicnode";
     const string RIGHT_NODE = "rightlogicnode";
@@ -43,12 +47,13 @@ public class ProtoboardObject : MonoBehaviour, LogicInterface{
     {
         return this.LogicID_Node_Dict;
     }
-
-	/// <summary>
+    
+    /// <summary>
     /// Initializes the nodes on the protoboard and positions them. Adds them to the 
     /// protoboard's Dictionary data structure.
     /// </summary>
-	void Start () {
+    void Start () {
+
         protoboard = this.gameObject;
         LogicID_Node_Dict = new Dictionary<string, List<GameObject>>(); //a dictionary (HASH TABLE) of the logic ID and GameObject pairs
         float vertical_offset = 0; //this variable dictate the offset in the Y axis of the protoboard when populating the logic nodes
@@ -440,6 +445,7 @@ public class ProtoboardObject : MonoBehaviour, LogicInterface{
                 }
             }
             Debug.Log("PROTOBOARD Setting Logic Set " + logicID + " to state " + priorityState);
+
             foreach (GameObject node in LogicNodeList)
             {
                 LogicNode logicScript = node.GetComponent<LogicNode>();
@@ -453,5 +459,79 @@ public class ProtoboardObject : MonoBehaviour, LogicInterface{
 
     }
 
+    public void IncrementProtoboard()
+    {
+        if (currentProtoboard >= 6) return; 
+        currentProtoboard++; 
+        SpriteRenderer sprite = this.gameObject.GetComponent<SpriteRenderer>(); 
+        sprite.sprite = Resources.Load<Sprite>("Sprites/Protoboards/" + protoboardNames[currentProtoboard]);
+        this.gameObject.transform.position = protoboardPositions[currentProtoboard];
+        List<string> keyList = new List<string>(this.LogicID_Node_Dict.Keys);
+        foreach (string keyString in keyList)
+        {
+            foreach (GameObject child in LogicID_Node_Dict[keyString])
+            {
+                child.transform.localPosition = child.transform.localPosition - horizontalOffset;
+            }
+        }
+        foreach(GameObject child in LogicID_Node_Dict[RIGHT_NODE + "_RIGHT"])
+        {
+            child.transform.localPosition = child.transform.localPosition + 2*horizontalOffset;
+        }
+        foreach (GameObject child in LogicID_Node_Dict[RIGHT_NODE + "_LEFT"])
+        {
+            child.transform.localPosition = child.transform.localPosition + 2*horizontalOffset;
+        }
+        for (int i = 0; i < 27; i++)
+        {
+            LogicID_Node_Dict.Add("extranode_" + i + "_" + currentProtoboard, new List<GameObject>());
+            List<GameObject> extra_list;
+            foreach (GameObject child in LogicID_Node_Dict[MIDDLE_RR_NODE + "_" + i])
+            {
+                GameObject clone = Instantiate(child, this.gameObject.transform);
+                clone.name = "extranode_" + i + "_" + currentProtoboard;
+                clone.transform.localPosition = clone.transform.localPosition + 2 * horizontalOffset * currentProtoboard;
+                if (LogicID_Node_Dict.TryGetValue("extranode_" + i + "_" + currentProtoboard, out extra_list))
+                {
+                    extra_list.Add(clone);
+                }
+            }
+        }
+        return; 
+    }
+
+    public void DecrementProtoboard()
+    {
+        if (currentProtoboard <= 0) return;
+        currentProtoboard--;
+        SpriteRenderer sprite = this.gameObject.GetComponent<SpriteRenderer>();
+        sprite.sprite = Resources.Load<Sprite>("Sprites/Protoboards/" + protoboardNames[currentProtoboard]);
+        this.gameObject.transform.position = protoboardPositions[currentProtoboard];
+        List<string> keyList = new List<string>(this.LogicID_Node_Dict.Keys);
+        foreach (string keyString in keyList)
+        {
+            foreach (GameObject child in LogicID_Node_Dict[keyString])
+            {
+                child.transform.localPosition = child.transform.localPosition + horizontalOffset; 
+            }
+        }
+        foreach (GameObject child in LogicID_Node_Dict[RIGHT_NODE + "_RIGHT"])
+        {
+            child.transform.localPosition = child.transform.localPosition - 2*horizontalOffset;
+        }
+        foreach (GameObject child in LogicID_Node_Dict[RIGHT_NODE + "_LEFT"])
+        {
+            child.transform.localPosition = child.transform.localPosition - 2*horizontalOffset;
+        }
+        for (int i = 0; i < 27; i++)
+        {
+            foreach (GameObject child in LogicID_Node_Dict["extranode_" + i + "_" + (currentProtoboard+1)])
+            {
+                Destroy(child); 
+            }
+            LogicID_Node_Dict.Remove("extranode_" + i + "_" + (currentProtoboard + 1)); 
+        }
+        return;
+    }
 
 }
