@@ -72,6 +72,7 @@ public class LogicNode : MonoBehaviour {
             recentCollisionExit = false;
             this.logicManager.ResetAllLogic();
         }
+
         //check if node is colliding, and a recent state change is detected
         if ((collidingNode != null) && (recentStateChange  || recentCollisionEnter))
         {
