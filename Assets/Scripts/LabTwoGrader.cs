@@ -4,15 +4,10 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public static class GradingCONSTANTS
-{
-    public static string INPUT = "INPUTSWITCH";
-    public static string OUTPUT = "OUTPUTLED";
-}
-public class LabOneGrader : MonoBehaviour
+public class LabTwoGrader : MonoBehaviour
 {
     public Button Finish;
-    GameObject InputA, InputB, InputC, OutputF;
+    GameObject InputA, InputB, InputCin, OutputS, OutputCo;
     List<GameObject> MarksList; //List that stores checkmark/cross game objects
     LogicManager logicManager;
     Sprite checkMarkSprite, crossMarkSprite;
@@ -38,13 +33,17 @@ public class LabOneGrader : MonoBehaviour
                     InputB = this.gameObject.transform.GetChild(i).gameObject;
                     InputB.GetComponent<CheckerTagScript>().Type = GradingCONSTANTS.INPUT;
                     break;
-                case "InputC":
-                    InputC = this.gameObject.transform.GetChild(i).gameObject;
-                    InputC.GetComponent<CheckerTagScript>().Type = GradingCONSTANTS.INPUT;
+                case "InputCin":
+                    InputCin = this.gameObject.transform.GetChild(i).gameObject;
+                    InputCin.GetComponent<CheckerTagScript>().Type = GradingCONSTANTS.INPUT;
                     break;
-                case "OutputF":
-                    OutputF = this.gameObject.transform.GetChild(i).gameObject;
-                    OutputF.GetComponent<CheckerTagScript>().Type = GradingCONSTANTS.OUTPUT;
+                case "OutputS":
+                    OutputS = this.gameObject.transform.GetChild(i).gameObject;
+                    OutputS.GetComponent<CheckerTagScript>().Type = GradingCONSTANTS.OUTPUT;
+                    break;
+                case "OutputCo":
+                    OutputCo = this.gameObject.transform.GetChild(i).gameObject;
+                    OutputCo.GetComponent<CheckerTagScript>().Type = GradingCONSTANTS.OUTPUT;
                     break;
             }
         }
@@ -92,26 +91,29 @@ public class LabOneGrader : MonoBehaviour
         MarksList.Clear();
         CheckerTagScript InputATag = InputA.GetComponent<CheckerTagScript>();
         CheckerTagScript InputBTag = InputB.GetComponent<CheckerTagScript>();
-        CheckerTagScript InputCTag = InputC.GetComponent<CheckerTagScript>();
-        CheckerTagScript OutputFTag = OutputF.GetComponent<CheckerTagScript>();
+        CheckerTagScript InputCinTag = InputCin.GetComponent<CheckerTagScript>();
+        CheckerTagScript OutputSTag = OutputS.GetComponent<CheckerTagScript>();
+        CheckerTagScript OutputCoTag = OutputCo.GetComponent<CheckerTagScript>();
         if (InputATag.GetCollidingObject() == null || InputBTag.GetCollidingObject() == null
-            || InputCTag.GetCollidingObject() == null || OutputFTag.GetCollidingObject() == null)
+            || InputCinTag.GetCollidingObject() == null || OutputSTag.GetCollidingObject() == null
+            || OutputCoTag.GetCollidingObject() == null)
         {
             Debug.Log("All tags are not SNAPPED!");
             yield break;
         }
         Switch InputASwitch = InputATag.GetCollidingObject().GetComponent<Switch>();
         Switch InputBSwitch = InputBTag.GetCollidingObject().GetComponent<Switch>();
-        Switch InputCSwitch = InputCTag.GetCollidingObject().GetComponent<Switch>();
-        LEDScript OutputFLED = OutputFTag.GetCollidingObject().GetComponent<LEDScript>();
+        Switch InputCinSwitch = InputCinTag.GetCollidingObject().GetComponent<Switch>();
+        LEDScript OutputSLED = OutputSTag.GetCollidingObject().GetComponent<LEDScript>();
+        LEDScript OutputCoLED = OutputCoTag.GetCollidingObject().GetComponent<LEDScript>();
 
 
 
 
-        InputASwitch.ToggleSwitch(false); InputBSwitch.ToggleSwitch(false); InputCSwitch.ToggleSwitch(false);
+        InputASwitch.ToggleSwitch(false); InputBSwitch.ToggleSwitch(false); InputCinSwitch.ToggleSwitch(false);
         logicManager.ResetAllLogic();
         yield return new WaitForSecondsRealtime(1);
-        if (OutputFLED.isLEDON())
+        if (OutputSLED.isLEDON() && OutputCoLED.isLEDON())
         {
             Debug.Log("Incorrect Output");
             AddCheckMarkOrCross(false);
@@ -119,10 +121,10 @@ public class LabOneGrader : MonoBehaviour
         }
         AddCheckMarkOrCross(true);
 
-        InputASwitch.ToggleSwitch(false); InputBSwitch.ToggleSwitch(false); InputCSwitch.ToggleSwitch(true);
+        InputASwitch.ToggleSwitch(false); InputBSwitch.ToggleSwitch(false); InputCinSwitch.ToggleSwitch(true);
         logicManager.ResetAllLogic();
         yield return new WaitForSecondsRealtime(1);
-        if (OutputFLED.isLEDON())
+        if (!OutputSLED.isLEDON() && OutputCoLED.isLEDON())
         {
             Debug.Log("Incorrect Output");
             AddCheckMarkOrCross(false);
@@ -130,10 +132,10 @@ public class LabOneGrader : MonoBehaviour
         }
         AddCheckMarkOrCross(true);
 
-        InputASwitch.ToggleSwitch(false); InputBSwitch.ToggleSwitch(true); InputCSwitch.ToggleSwitch(false);
+        InputASwitch.ToggleSwitch(false); InputBSwitch.ToggleSwitch(true); InputCinSwitch.ToggleSwitch(false);
         logicManager.ResetAllLogic();
         yield return new WaitForSecondsRealtime(1);
-        if (OutputFLED.isLEDON())
+        if (!OutputSLED.isLEDON() && OutputCoLED.isLEDON())
         {
             Debug.Log("Incorrect Output");
             AddCheckMarkOrCross(false);
@@ -141,10 +143,10 @@ public class LabOneGrader : MonoBehaviour
         }
         AddCheckMarkOrCross(true);
 
-        InputASwitch.ToggleSwitch(false); InputBSwitch.ToggleSwitch(true); InputCSwitch.ToggleSwitch(true);
+        InputASwitch.ToggleSwitch(false); InputBSwitch.ToggleSwitch(true); InputCinSwitch.ToggleSwitch(true);
         logicManager.ResetAllLogic();
         yield return new WaitForSecondsRealtime(1);
-        if (!OutputFLED.isLEDON())
+        if (OutputSLED.isLEDON() && !OutputCoLED.isLEDON())
         {
             Debug.Log("Incorrect Output");
             AddCheckMarkOrCross(false);
@@ -152,10 +154,10 @@ public class LabOneGrader : MonoBehaviour
         }
         AddCheckMarkOrCross(true);
 
-        InputASwitch.ToggleSwitch(true); InputBSwitch.ToggleSwitch(false); InputCSwitch.ToggleSwitch(false);
+        InputASwitch.ToggleSwitch(true); InputBSwitch.ToggleSwitch(false); InputCinSwitch.ToggleSwitch(false);
         logicManager.ResetAllLogic();
         yield return new WaitForSecondsRealtime(1);
-        if (OutputFLED.isLEDON())
+        if (!OutputSLED.isLEDON() && OutputCoLED.isLEDON())
         {
             Debug.Log("Incorrect Output");
             AddCheckMarkOrCross(false);
@@ -163,10 +165,10 @@ public class LabOneGrader : MonoBehaviour
         }
         AddCheckMarkOrCross(true);
 
-        InputASwitch.ToggleSwitch(true); InputBSwitch.ToggleSwitch(false); InputCSwitch.ToggleSwitch(true);
+        InputASwitch.ToggleSwitch(true); InputBSwitch.ToggleSwitch(false); InputCinSwitch.ToggleSwitch(true);
         logicManager.ResetAllLogic();
         yield return new WaitForSecondsRealtime(1);
-        if (OutputFLED.isLEDON())
+        if (OutputSLED.isLEDON() && !OutputCoLED.isLEDON())
         {
             Debug.Log("Incorrect Output");
             AddCheckMarkOrCross(false);
@@ -174,10 +176,10 @@ public class LabOneGrader : MonoBehaviour
         }
         AddCheckMarkOrCross(true);
 
-        InputASwitch.ToggleSwitch(true); InputBSwitch.ToggleSwitch(true); InputCSwitch.ToggleSwitch(false);
+        InputASwitch.ToggleSwitch(true); InputBSwitch.ToggleSwitch(true); InputCinSwitch.ToggleSwitch(false);
         logicManager.ResetAllLogic();
         yield return new WaitForSecondsRealtime(1);
-        if (!OutputFLED.isLEDON())
+        if (OutputSLED.isLEDON() && !OutputCoLED.isLEDON())
         {
             Debug.Log("Incorrect Output");
             AddCheckMarkOrCross(false);
@@ -185,10 +187,10 @@ public class LabOneGrader : MonoBehaviour
         }
         AddCheckMarkOrCross(true);
 
-        InputASwitch.ToggleSwitch(true); InputBSwitch.ToggleSwitch(true); InputCSwitch.ToggleSwitch(true);
+        InputASwitch.ToggleSwitch(true); InputBSwitch.ToggleSwitch(true); InputCinSwitch.ToggleSwitch(true);
         logicManager.ResetAllLogic();
         yield return new WaitForSecondsRealtime(1);
-        if (!OutputFLED.isLEDON())
+        if (!OutputSLED.isLEDON() && !OutputCoLED.isLEDON())
         {
             Debug.Log("Incorrect Output");
             AddCheckMarkOrCross(false);
