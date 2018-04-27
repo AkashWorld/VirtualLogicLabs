@@ -60,9 +60,22 @@ public class Wire : MonoBehaviour, LogicInterface {
 
     public void SetNodePositions(Vector3 firstNodePos, Vector3 secondNodePos)
     {
+        activelyBeingPlaced = false;
         startNode.transform.position = firstNodePos;
         endNode.transform.position = secondNodePos;
-        activelyBeingPlaced = false;
+        WireLine = this.gameObject.AddComponent<LineRenderer>();
+        WireLine.material = new Material(Shader.Find("Particles/Alpha Blended Premultiply"));
+        WireLine.startWidth = (float)0.1;
+        WireLine.endWidth = (float)0.1;
+        WireLine.sortingLayerName = "ActiveDevices";
+        WireLine.positionCount = 2;
+        WireLine.numCornerVertices = 2;
+        WireLine.SetPosition(0, firstNodePos);
+        WireLine.SetPosition(1, secondNodePos);
+#pragma warning disable CS0618 // Type or member is obsolete
+        WireLine.SetColors(Color.yellow, Color.yellow);
+#pragma warning restore CS0618 // Type or member is obsolete
+
     }
 
 
