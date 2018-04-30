@@ -1033,6 +1033,11 @@ Prefab:
       propertyPath: m_Colors.m_NormalColor.b
       value: 0.8088235
       objectReference: {fileID: 0}
+    - target: {fileID: 114094167750203210, guid: 7ac53229d7b94be41a6e0d0d6151689c,
+        type: 2}
+      propertyPath: m_Text
+      value: Implement the full adder using only NAND Gates!
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 7ac53229d7b94be41a6e0d0d6151689c, type: 2}
   m_IsPrefabParent: 0

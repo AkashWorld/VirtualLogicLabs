@@ -294,7 +294,9 @@
     <Compile Include="Assets\Scripts\AddSubtract.cs" />
     <Compile Include="Assets\Scripts\ANDGate.cs" />
     <Compile Include="Assets\Scripts\CheckerTagScript.cs" />
+    <Compile Include="Assets\Scripts\DataInsert.cs" />
     <Compile Include="Assets\Scripts\Equipment.cs" />
+    <Compile Include="Assets\Scripts\Grades.cs" />
     <Compile Include="Assets\Scripts\InputChecker.cs" />
     <Compile Include="Assets\Scripts\INVGate.cs" />
     <Compile Include="Assets\Scripts\Kmap.cs" />
@@ -308,6 +310,7 @@
     <Compile Include="Assets\Scripts\MagnifierBehavior.cs" />
     <Compile Include="Assets\Scripts\MUXGate.cs" />
     <Compile Include="Assets\Scripts\NANDGate.cs" />
+    <Compile Include="Assets\Scripts\NewBehaviourScript.cs" />
     <Compile Include="Assets\Scripts\ORGate.cs" />
     <Compile Include="Assets\Scripts\PostLab1.cs" />
     <Compile Include="Assets\Scripts\PowerSupplyScript.cs" />
@@ -324,6 +327,7 @@
     <Compile Include="Assets\Scripts\UnitTests\IntegrationTesting.cs" />
     <Compile Include="Assets\Scripts\UnitTests\PostlabTests.cs" />
     <Compile Include="Assets\Scripts\UnitTests\PrelabTests.cs" />
+    <Compile Include="Assets\Scripts\Webcam.cs" />
     <Compile Include="Assets\Scripts\Wire.cs" />
     <Compile Include="Assets\Scripts\WireInflection.cs" />
     <Compile Include="Assets\Scripts\XORGate.cs" />
