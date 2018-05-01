@@ -11,6 +11,7 @@ public class LabTwoGrader : MonoBehaviour
     List<GameObject> MarksList; //List that stores checkmark/cross game objects
     LogicManager logicManager;
     Sprite checkMarkSprite, crossMarkSprite;
+    int Lab2Grade = 80;
     // Use this for initialization
 
 
@@ -116,6 +117,10 @@ public class LabTwoGrader : MonoBehaviour
         if (OutputSLED.isLEDON() && OutputCoLED.isLEDON())
         {
             Debug.Log("Incorrect Output");
+            if(Lab2Grade > 10)
+            {
+                Lab2Grade -= 5;
+            }
             AddCheckMarkOrCross(false);
             yield break;
         }
@@ -127,6 +132,10 @@ public class LabTwoGrader : MonoBehaviour
         if (!OutputSLED.isLEDON() && OutputCoLED.isLEDON())
         {
             Debug.Log("Incorrect Output");
+            if (Lab2Grade > 10)
+            {
+                Lab2Grade -= 5;
+            }
             AddCheckMarkOrCross(false);
             yield break;
         }
@@ -138,6 +147,10 @@ public class LabTwoGrader : MonoBehaviour
         if (!OutputSLED.isLEDON() && OutputCoLED.isLEDON())
         {
             Debug.Log("Incorrect Output");
+            if (Lab2Grade > 10)
+            {
+                Lab2Grade -= 5;
+            }
             AddCheckMarkOrCross(false);
             yield break;
         }
@@ -149,6 +162,10 @@ public class LabTwoGrader : MonoBehaviour
         if (OutputSLED.isLEDON() && !OutputCoLED.isLEDON())
         {
             Debug.Log("Incorrect Output");
+            if (Lab2Grade > 10)
+            {
+                Lab2Grade -= 5;
+            }
             AddCheckMarkOrCross(false);
             yield break;
         }
@@ -160,6 +177,10 @@ public class LabTwoGrader : MonoBehaviour
         if (!OutputSLED.isLEDON() && OutputCoLED.isLEDON())
         {
             Debug.Log("Incorrect Output");
+            if (Lab2Grade > 10)
+            {
+                Lab2Grade -= 5;
+            }
             AddCheckMarkOrCross(false);
             yield break;
         }
@@ -171,6 +192,10 @@ public class LabTwoGrader : MonoBehaviour
         if (OutputSLED.isLEDON() && !OutputCoLED.isLEDON())
         {
             Debug.Log("Incorrect Output");
+            if (Lab2Grade > 10)
+            {
+                Lab2Grade -= 5;
+            }
             AddCheckMarkOrCross(false);
             yield break;
         }
@@ -182,6 +207,10 @@ public class LabTwoGrader : MonoBehaviour
         if (OutputSLED.isLEDON() && !OutputCoLED.isLEDON())
         {
             Debug.Log("Incorrect Output");
+            if (Lab2Grade > 10)
+            {
+                Lab2Grade -= 5;
+            }
             AddCheckMarkOrCross(false);
             yield break;
         }
@@ -193,15 +222,19 @@ public class LabTwoGrader : MonoBehaviour
         if (!OutputSLED.isLEDON() && !OutputCoLED.isLEDON())
         {
             Debug.Log("Incorrect Output");
+            if (Lab2Grade > 10)
+            {
+                Lab2Grade -= 5;
+            }
             AddCheckMarkOrCross(false);
             yield break;
         }
         AddCheckMarkOrCross(true);
 
-
+        DataInsert.inputLab2Grade += Lab2Grade;
         Debug.Log("Correct output!");
         yield return new WaitForSecondsRealtime(5);
-        SceneManager.LoadScene("Scenes/Postlab1");
+        SceneManager.LoadScene("Scenes/Postlab2");
     }
 
 

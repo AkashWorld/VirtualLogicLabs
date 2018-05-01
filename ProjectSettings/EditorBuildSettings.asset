@@ -26,3 +26,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Lab1Tester.unity
     guid: 93276af5535cf5147a0ad38bdaac19bc
+  - enabled: 1
+    path: Assets/Scenes/Camera.unity
+    guid: ce9c801200915c640829e503dbae3f9e

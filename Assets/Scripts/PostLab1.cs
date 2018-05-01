@@ -24,11 +24,12 @@ public class PostLab1 : MonoBehaviour {
     public GameObject inputfield1101;
     public GameObject inputfield1110;
     public GameObject inputfield1111;
-
-
+    int postLabGrade = 10;
+    DataInsert dataInsert;
     // Use this for initialization
     void Start () {
-
+        GameObject dbConn = new GameObject("dbConn");
+        dataInsert = dbConn.AddComponent<DataInsert>();
         inputfield0000 = GameObject.Find("InputField (0000)");
         inputfield0001 = GameObject.Find("InputField (0001)");
         inputfield0010 = GameObject.Find("InputField (0010)");
@@ -100,6 +101,8 @@ public class PostLab1 : MonoBehaviour {
             field1110.text == "0" &&
             field1111.text == "1")
         {
+            DataInsert.inputLab1Grade += postLabGrade;
+            dataInsert.InsertStudentGrade(DataInsert.inputStudent, DataInsert.inputPassword, DataInsert.inputLab1Grade, DataInsert.inputLab2Grade);
             message.text = "";
             function.text = "That's Right!\t" +
                 "The reduced function can be now be found, which in this case is: F = D";
@@ -110,6 +113,10 @@ public class PostLab1 : MonoBehaviour {
             message.text = "That's wrong. " +
                 "Try again.";
             function.text = "";
+            if(postLabGrade > 0)
+            {
+                postLabGrade--;
+            }
         }
 
     }

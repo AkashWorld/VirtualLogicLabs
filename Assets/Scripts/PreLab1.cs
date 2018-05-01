@@ -16,10 +16,13 @@ public class PreLab1 : MonoBehaviour {
     public GameObject inputfield101;
     public GameObject inputfield110;
     public GameObject inputfield111;
-
+    DataInsert Grader;
+    string Owner;
+    double prelabGrade = 10;
     // Use this for initialization
     void Start () {
-
+        GameObject grader = new GameObject("Grader");
+        Grader = grader.AddComponent<DataInsert>();
         inputfield000 = GameObject.Find("InputField (000)");
         inputfield001 = GameObject.Find("InputField (001)");
         inputfield010 = GameObject.Find("InputField (010)");
@@ -32,7 +35,6 @@ public class PreLab1 : MonoBehaviour {
         GameObject button1 = GameObject.Find("Button");
         Button btn = button1.GetComponent<Button>();
         btn.onClick.AddListener(TaskOnClick);
-
     }
 
     // Update is called once per frame
@@ -65,12 +67,17 @@ public class PreLab1 : MonoBehaviour {
             field111.text == "1")
         {
             message.text = "That's right!";
+            DataInsert.inputLab1Grade = (int)prelabGrade;
             StartCoroutine(TransitionToLab1());
         }
         else
         {
             message.text = "That's wrong. " +
                 "Try again.";
+            if(prelabGrade > 0)
+            {
+                prelabGrade--;
+            }
         }
 
     }
