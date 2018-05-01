@@ -29,3 +29,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Camera.unity
     guid: ce9c801200915c640829e503dbae3f9e
+  - enabled: 1
+    path: Assets/Scenes/AdminSubsystem.unity
+    guid: b1621ab1459894d47bcd7425aca78cf7

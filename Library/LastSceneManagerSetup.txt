@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Scenes/Postlab2.unity
+- path: Assets/Scenes/AdminSubsystem.unity
   isLoaded: 1
   isActive: 1

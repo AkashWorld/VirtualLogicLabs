@@ -44,7 +44,7 @@ public class Login : MonoBehaviour
         else if (InputUsername.text == "admin" && InputPassword.text == "admin")
         {
             Debug.Log("Hard forcing into admin subsystem");
-            SceneManager.LoadScene("");
+            SceneManager.LoadScene("Scenes/AdminSubsystem");
             yield break;
         }
         if (dataInsert.CheckIfStudentExists(InputUsername.text))

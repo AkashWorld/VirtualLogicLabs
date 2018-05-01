@@ -11,6 +11,7 @@ public class DataInsert : MonoBehaviour {
     public static int inputLab2Grade;
     public static double lab1avg;
     public static double lab2avg;
+    public Boolean isDataObtained = false;
     public string[] students;
     WWW studentData;
     public string gradeOwner;
@@ -44,6 +45,8 @@ public class DataInsert : MonoBehaviour {
         students = studentDataString.Split(';');
         lab1avg = getlab1Avg();
         lab2avg = getlab2avg();
+        this.isDataObtained = true;
+        Debug.Log("Data is obtained.");
         yield break;
     }
 
@@ -84,7 +87,20 @@ public class DataInsert : MonoBehaviour {
     }
 
 
-    int GetStudentLab1Grade(string name)
+    public string[] getAllStudentsName()
+    {
+        string[] studentNames = new string[students.Length - 1];
+        for (int i = 0; i < students.Length - 1; i++)
+        {
+            string studentName = GetDataValue(students[i], "Student:");
+            Debug.Log("Student name: " + studentName);
+            studentNames[i] = studentName;
+        }
+        return studentNames;
+    }
+
+
+    public int GetStudentLab1Grade(string name)
     {
         string grade = "";
 
@@ -132,7 +148,7 @@ public class DataInsert : MonoBehaviour {
         return avg;
     }
 
-    int GetStudentLab2Grade(string name)
+    public int GetStudentLab2Grade(string name)
     {
         string grade = "";
 
