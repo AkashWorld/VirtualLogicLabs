@@ -901,6 +901,48 @@ Transform:
   m_PrefabParentObject: {fileID: 4230968652052698, guid: 4b26f9e96f7906444b2faa48f707fa11,
     type: 2}
   m_PrefabInternal: {fileID: 1706007251}
+--- !u!1001 &1342946554
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4557342722403964, guid: 1286a2c21c66a9c4eb482c2aa3c580d2, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: -8.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4557342722403964, guid: 1286a2c21c66a9c4eb482c2aa3c580d2, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 1.37
+      objectReference: {fileID: 0}
+    - target: {fileID: 4557342722403964, guid: 1286a2c21c66a9c4eb482c2aa3c580d2, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4557342722403964, guid: 1286a2c21c66a9c4eb482c2aa3c580d2, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4557342722403964, guid: 1286a2c21c66a9c4eb482c2aa3c580d2, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4557342722403964, guid: 1286a2c21c66a9c4eb482c2aa3c580d2, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4557342722403964, guid: 1286a2c21c66a9c4eb482c2aa3c580d2, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4557342722403964, guid: 1286a2c21c66a9c4eb482c2aa3c580d2, type: 2}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 1286a2c21c66a9c4eb482c2aa3c580d2, type: 2}
+  m_IsPrefabParent: 0
 --- !u!4 &1343181657 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4616423336414422, guid: 781364608163ada4db159be0a6f0d16d,
