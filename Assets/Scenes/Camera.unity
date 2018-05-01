@@ -218,10 +218,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 757434712}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86aeb5a41459d4567bbd537f045f4682, type: 3}
+  m_Script: {fileID: 11500000, guid: 746d173f569663140a2a9d305504cd04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  display: {fileID: 1901191931}
+  display: {fileID: 0}
 --- !u!4 &757434714
 Transform:
   m_ObjectHideFlags: 0
@@ -459,9 +459,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Record
-
-'
+  m_Text: 'Record '
 --- !u!222 &1559643314
 CanvasRenderer:
   m_ObjectHideFlags: 0

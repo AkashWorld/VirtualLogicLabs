@@ -11,11 +11,10 @@ public class Prelab2Script : MonoBehaviour
     private Text text;
     private GameObject SInput0, SInput1, SInput2, SInput3, SInput4, SInput5, SInput6, SInput7;
     private GameObject CoInput0, CoInput1, CoInput2, CoInput3, CoInput4, CoInput5, CoInput6, CoInput7;
-
+    int prelab2Grade = 10;
     // Use this for initialization
     void Start()
     {
-
         SInput0 = GameObject.Find("SInput0");
         SInput1 = GameObject.Find("SInput1");
         SInput2 = GameObject.Find("SInput2");
@@ -36,7 +35,6 @@ public class Prelab2Script : MonoBehaviour
         GameObject button1 = GameObject.Find("Button");
         Button btn = button1.GetComponent<Button>();
         btn.onClick.AddListener(TaskOnClick);
-
     }
 
     // Update is called once per frame
@@ -86,12 +84,17 @@ public class Prelab2Script : MonoBehaviour
             IFCoInput7.text == "1")
         {
             message.text = "That's right!";
+            DataInsert.inputLab2Grade = prelab2Grade;
             StartCoroutine(TransitionToLab2());
         }
         else
         {
             message.text = "That's wrong. " +
                 "Try again.";
+            if(prelab2Grade > 0)
+            {
+                prelab2Grade--;
+            }
         }
 
     }

@@ -18,7 +18,7 @@ public class PreLab1 : MonoBehaviour {
     public GameObject inputfield111;
     DataInsert Grader;
     string Owner;
-    int Prelab1Grade = 10;
+    double prelabGrade = 10;
     // Use this for initialization
     void Start () {
         GameObject grader = new GameObject("Grader");
@@ -67,26 +67,17 @@ public class PreLab1 : MonoBehaviour {
             field111.text == "1")
         {
             message.text = "That's right!";
-            int prevPrelab1Grade = Grader.GetStudentLab1Grade(Owner);
-            if (prevPrelab1Grade == 0)
-            {
-                prevPrelab1Grade += Prelab1Grade;
-            }
-            else
-            {
-                prevPrelab1Grade = Prelab1Grade;
-            }
-            Grader.InsertStudentGrade()
+            DataInsert.inputLab1Grade = (int)prelabGrade;
             StartCoroutine(TransitionToLab1());
         }
         else
         {
-            if(Prelab1Grade > 1)
-            {
-                Prelab1Grade--;
-            }
             message.text = "That's wrong. " +
                 "Try again.";
+            if(prelabGrade > 0)
+            {
+                prelabGrade--;
+            }
         }
 
     }
