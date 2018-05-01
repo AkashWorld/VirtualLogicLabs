@@ -8,10 +8,13 @@ public class AdminScrollView : MonoBehaviour {
     DataInsert dataInsert;
     public GameObject scrollViewContent;
     private Boolean isDatafound = false;
+    public Button CSVButton;
     // Use this for initialization
     void Start () {
         GameObject dataInsertGO = new GameObject("dbConn");
+        dataInsertGO.transform.parent = this.gameObject.transform;
         dataInsert = dataInsertGO.AddComponent<DataInsert>();
+        CSVButton.onClick.AddListener(CSVOutput);
     }
 	
 	// Update is called once per frame
@@ -51,5 +54,8 @@ public class AdminScrollView : MonoBehaviour {
         }
 	}
 
-
+    private void CSVOutput()
+    {
+        dataInsert.PrintToCSVFormat();
+    }
 }

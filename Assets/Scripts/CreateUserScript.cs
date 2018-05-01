@@ -11,6 +11,7 @@ public class CreateUserScript : MonoBehaviour {
     void Start () {
         createUserButton.onClick.AddListener(CreateUser);
         GameObject dataInsertGO = new GameObject("dbConn");
+        dataInsertGO.transform.parent = this.gameObject.transform;
         dataInsert = dataInsertGO.AddComponent<DataInsert>();
     }
 	

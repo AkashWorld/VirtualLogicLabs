@@ -109,7 +109,7 @@ MonoBehaviour:
   m_MinSize: {x: 681, y: 492}
   m_MaxSize: {x: 14004, y: 14042}
   vertical: 0
-  controlID: 12873
+  controlID: 119
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -133,7 +133,7 @@ MonoBehaviour:
   m_MinSize: {x: 404, y: 492}
   m_MaxSize: {x: 10002, y: 14042}
   vertical: 1
-  controlID: 12874
+  controlID: 10
 --- !u!114 &7
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -157,7 +157,7 @@ MonoBehaviour:
   m_MinSize: {x: 404, y: 221}
   m_MaxSize: {x: 8004, y: 4021}
   vertical: 0
-  controlID: 12807
+  controlID: 11
 --- !u!114 &8
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -254,8 +254,8 @@ MonoBehaviour:
     y: 0
     width: 448
     height: 741
-  m_MinSize: {x: 277, y: 71}
-  m_MaxSize: {x: 4002, y: 4021}
+  m_MinSize: {x: 275, y: 50}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 18}
   m_Panes:
   - {fileID: 18}
@@ -367,28 +367,28 @@ MonoBehaviour:
   m_PersistentViewDataDictionary: {fileID: 0}
   m_TreeViewState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 4c290000
+    m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 66a4f5ff64d5f5ff74e9f5ff78f0f5ff3662f6ffaa65f6ff2c6ef6ffec70f6ff489ef6ff5ecef6ff68cef6ff72cef6ff7acef6ff86b2faff8cb2faff92b2faffba32fbff5a4afbff0084fbff1684fbff7686fbff02cbfbffcce8fbff9ceffbff0af1fbff30f2fbff9ef3fbffdef5fbff1af9fbff5042fcff7055fcff1858fcff7459fcff2c5bfcff525cfcffd2acfcfff8adfcff82b0fcffc2b2fcff8873fdffc875fdff3a8ffdff948ffdff4691fdff7201feff7401feffce01feffc00efeff2e11feff7a59fefff0c1feff76c5feffa0ddfeffb2eeffffdef1ffff0af4ffff84fbffff00000000bc2e0000923000007e330000d0380000403e000052400000224100008e47000088480000b853000072560000b2560000b26100003c90000096900000aa90000036960000
+    m_ExpandedIDs: bea8ffff1ac3ffff82e5ffff8ce5ffff96e5ffff9ee5ffff4cf0ffff54f0ffff9efbffff000000009e2a0000d82d0000322e0000462e00003c300000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
-      m_Name: Canvas
-      m_OriginalName: Canvas
+      m_Name: 
+      m_OriginalName: 
       m_EditFieldRect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 0
         height: 0
-      m_UserData: 38454
+      m_UserData: 0
       m_IsWaitingForDelay: 0
       m_IsRenaming: 0
-      m_OriginalEventType: 0
+      m_OriginalEventType: 11
       m_IsRenamingFilename: 0
       m_ClientGUIView: {fileID: 8}
     m_SearchString: 
   m_ExpandedScenes:
-  - AdminSubsystem
+  - Camera
   m_CurrenRootInstanceID: 0
   m_Locked: 0
   m_CurrentSortingName: TransformSorting
@@ -420,7 +420,7 @@ MonoBehaviour:
     height: 427
   m_PersistentViewDataDictionary: {fileID: 0}
   m_SceneLighting: 1
-  lastFramingTime: 8463.764685000802
+  lastFramingTime: 421.9560141175346
   m_2DMode: 1
   m_isRotationLocked: 0
   m_AudioPlay: 0
@@ -455,9 +455,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
-    m_Target: 233.34525
+    m_Target: 542.34955
     speed: 2
-    m_Value: 233.34525
+    m_Value: 542.34955
   m_Ortho:
     m_Target: 1
     speed: 2
@@ -535,19 +535,19 @@ MonoBehaviour:
     m_ShowAllHits: 0
     m_SearchArea: 0
     m_Folders:
-    - Assets/Resources/Prefabs/Subsystems
+    - Assets/Resources/Prefabs/Lab
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/Resources/Prefabs/Subsystems
+  - Assets/Resources/Prefabs/Lab
   m_LastFoldersGridSize: -1
   m_LastProjectPath: D:\Programming Projects\Unity Projects\LogicLab
   m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 53}
-    m_SelectedIDs: 4c290000
-    m_LastClickedID: 10572
-    m_ExpandedIDs: 000000001028000088280000ca280000d2280000d6290000e029000000ca9a3bffffff7f
+    m_SelectedIDs: ac290000
+    m_LastClickedID: 10668
+    m_ExpandedIDs: 00000000d027000054280000962800009e280000bc290000c629000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -575,7 +575,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 000000001028000088280000ca280000d2280000d6290000e029000000ca9a3bffffff7f
+    m_ExpandedIDs: 00000000d027000054280000962800009e280000bc290000c6290000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
