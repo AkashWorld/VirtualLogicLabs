@@ -16,6 +16,7 @@ public class LabOneGrader : MonoBehaviour
     List<GameObject> MarksList; //List that stores checkmark/cross game objects
     LogicManager logicManager;
     Sprite checkMarkSprite, crossMarkSprite;
+    int LabOneGrade = 80;
     // Use this for initialization
 
 
@@ -114,6 +115,7 @@ public class LabOneGrader : MonoBehaviour
         if (OutputFLED.isLEDON())
         {
             Debug.Log("Incorrect Output");
+            LabOneGrade -= 5;
             AddCheckMarkOrCross(false);
             yield break;
         }
@@ -125,6 +127,7 @@ public class LabOneGrader : MonoBehaviour
         if (OutputFLED.isLEDON())
         {
             Debug.Log("Incorrect Output");
+            LabOneGrade -= 5;
             AddCheckMarkOrCross(false);
             yield break;
         }
@@ -136,6 +139,7 @@ public class LabOneGrader : MonoBehaviour
         if (OutputFLED.isLEDON())
         {
             Debug.Log("Incorrect Output");
+            LabOneGrade -= 5;
             AddCheckMarkOrCross(false);
             yield break;
         }
@@ -147,6 +151,7 @@ public class LabOneGrader : MonoBehaviour
         if (!OutputFLED.isLEDON())
         {
             Debug.Log("Incorrect Output");
+            LabOneGrade -= 5;
             AddCheckMarkOrCross(false);
             yield break;
         }
@@ -158,6 +163,7 @@ public class LabOneGrader : MonoBehaviour
         if (OutputFLED.isLEDON())
         {
             Debug.Log("Incorrect Output");
+            LabOneGrade -= 5;
             AddCheckMarkOrCross(false);
             yield break;
         }
@@ -169,6 +175,7 @@ public class LabOneGrader : MonoBehaviour
         if (OutputFLED.isLEDON())
         {
             Debug.Log("Incorrect Output");
+            LabOneGrade -= 5;
             AddCheckMarkOrCross(false);
             yield break;
         }
@@ -180,6 +187,7 @@ public class LabOneGrader : MonoBehaviour
         if (!OutputFLED.isLEDON())
         {
             Debug.Log("Incorrect Output");
+            LabOneGrade -= 5;
             AddCheckMarkOrCross(false);
             yield break;
         }
@@ -191,6 +199,7 @@ public class LabOneGrader : MonoBehaviour
         if (!OutputFLED.isLEDON())
         {
             Debug.Log("Incorrect Output");
+            LabOneGrade -= 5;
             AddCheckMarkOrCross(false);
             yield break;
         }
@@ -198,6 +207,7 @@ public class LabOneGrader : MonoBehaviour
 
 
         Debug.Log("Correct output!");
+        DataInsert.inputLab1Grade += LabOneGrade;
         yield return new WaitForSecondsRealtime(5);
         SceneManager.LoadScene("Scenes/Postlab1");
     }

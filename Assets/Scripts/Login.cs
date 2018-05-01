@@ -13,9 +13,11 @@ public class Login : MonoBehaviour
     public Button BtnLogin;
     public Button BtnResetPassword;
     public Button BtnExit;
-
+    public DataInsert dataInsert;
     private void Start()
     {
+        GameObject dbConn = new GameObject("DataInsert dbConn");
+        dataInsert = dbConn.AddComponent<DataInsert>();
         BtnLogin.onClick.AddListener(OnLoginClick);
         BtnExit.onClick.AddListener(() => Application.Quit());
         BtnResetPassword.onClick.AddListener(() => SceneManager.LoadScene("ResetPswd"));
@@ -45,6 +47,21 @@ public class Login : MonoBehaviour
             SceneManager.LoadScene("");
             yield break;
         }
+        if (dataInsert.CheckIfStudentExists(InputUsername.text))
+        {
+            Debug.Log("Checking Password - Current Password: " +  DataInsert.inputPassword);
+            if (InputPassword.text == DataInsert.inputPassword)
+            {
+                dataInsert.SetAllValues(InputUsername.text);
+                Debug.Log("Success Loggin In!");
+                SceneManager.LoadScene("Scenes/StudentSubsystem");
+            }
+            else
+            {
+                Debug.Log("Failed Logging on!");
+            }
+        }
+        /*
         string url = "http://chang1134.com/php/taobao/purties180323/manager.php?action=login&username=" + InputUsername.text + "&password=" + InputPassword.text;
         WWW www = new WWW(url);
         yield return www;
@@ -60,5 +77,6 @@ public class Login : MonoBehaviour
         }
         //登陆成功
         SceneManager.LoadScene(int.Parse(www.text) < 10 ? "UserManage" : "BaseUnity");
+        */
     }
 }

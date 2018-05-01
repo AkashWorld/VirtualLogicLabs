@@ -16,7 +16,7 @@ public class PreLab1 : MonoBehaviour {
     public GameObject inputfield101;
     public GameObject inputfield110;
     public GameObject inputfield111;
-
+    double prelabGrade = 10;
     // Use this for initialization
     void Start () {
 
@@ -65,12 +65,17 @@ public class PreLab1 : MonoBehaviour {
             field111.text == "1")
         {
             message.text = "That's right!";
+            DataInsert.inputLab1Grade = (int)prelabGrade;
             StartCoroutine(TransitionToLab1());
         }
         else
         {
             message.text = "That's wrong. " +
                 "Try again.";
+            if(prelabGrade > 0)
+            {
+                prelabGrade--;
+            }
         }
 
     }

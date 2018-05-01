@@ -296,7 +296,6 @@
     <Compile Include="Assets\Scripts\CheckerTagScript.cs" />
     <Compile Include="Assets\Scripts\DataInsert.cs" />
     <Compile Include="Assets\Scripts\Equipment.cs" />
-    <Compile Include="Assets\Scripts\Grades.cs" />
     <Compile Include="Assets\Scripts\InputChecker.cs" />
     <Compile Include="Assets\Scripts\INVGate.cs" />
     <Compile Include="Assets\Scripts\Kmap.cs" />
