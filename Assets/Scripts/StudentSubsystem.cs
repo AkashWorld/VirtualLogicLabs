@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class StudentSubsystem : MonoBehaviour {
-    public Button SandboxMode, Lab1Button, Lab2Button, CameraButton, ChatButton;
+    public Button SandboxMode, Lab1Button, Lab2Button, CameraButton, ChatButton, LogoutButton;
     public Text Lab1Avg, Lab2Avg, currScore1, currScore2, username;
     DataInsert dataInsert;
     // Use this for initialization
@@ -18,6 +18,7 @@ public class StudentSubsystem : MonoBehaviour {
         Lab1Button.onClick.AddListener(EnterLab1);
         Lab2Button.onClick.AddListener(EnterLab2);
         CameraButton.onClick.AddListener(EnterCamera);
+        LogoutButton.onClick.AddListener(Logout);
         Lab1Avg = GameObject.Find("Lab1Avg").GetComponent<Text>();
         Lab2Avg = GameObject.Find("Lab2Avg").GetComponent<Text>();
         currScore1 = GameObject.Find("currScore1").GetComponent<Text>();
@@ -59,6 +60,12 @@ public class StudentSubsystem : MonoBehaviour {
     {
         Debug.Log("Chat button clicked");
         
+    }
+
+    private void Logout()
+    {
+        Debug.Log("Logout Button Clicked");
+        SceneManager.LoadScene("Scenes/Login");
     }
 
 

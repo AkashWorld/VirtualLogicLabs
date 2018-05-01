@@ -8,7 +8,6 @@ public class InputChecker : MonoBehaviour {
     public Button mainMenu;
 	// Use this for initialization
 	void Start () {
-        mainMenu.onClick.AddListener(TransitionToStudentSubsystem);
 	}
 	
 	// Update is called once per frame
@@ -21,8 +20,5 @@ public class InputChecker : MonoBehaviour {
         }
 	}
 
-    private void TransitionToStudentSubsystem()
-    {
-        SceneManager.LoadScene("Scenes/StudentSubsystem");
-    }
+
 }
