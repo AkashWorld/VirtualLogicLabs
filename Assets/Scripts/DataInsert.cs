@@ -200,7 +200,7 @@ public class DataInsert : MonoBehaviour {
             string studentName = studentNames[i];
             string grade1 = this.GetStudentLab1Grade(studentName) + "";
             string grade2 = this.GetStudentLab2Grade(studentName) + "";
-            string line = "\"" + studentName + "\"" + "," + "\"" + grade1 + "\"" + "," + "\"" + grade2 + "\"" + "";
+            string line = studentName  + "," + grade1  + "," + grade2 + "";
             lines[i] = line;
         }
         System.IO.File.WriteAllLines(path + "\\CSVFile.txt", lines);

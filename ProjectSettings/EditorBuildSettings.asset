@@ -32,3 +32,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/AdminSubsystem.unity
     guid: b1621ab1459894d47bcd7425aca78cf7
+  - enabled: 1
+    path: Assets/Scenes/Prelab2.unity
+    guid: 42ae8eec5ecf14f44b5c5ab3515cf3b0
+  - enabled: 1
+    path: Assets/Scenes/Postlab2.unity
+    guid: 507d5c6a90fabe648b48ce10eea01a11
+  - enabled: 1
+    path: Assets/Scenes/Lab2.unity
+    guid: 99439b72af11d5941b9ca970fe793255

@@ -61,22 +61,5 @@ public class Login : MonoBehaviour
                 Debug.Log("Failed Logging on!");
             }
         }
-        /*
-        string url = "http://chang1134.com/php/taobao/purties180323/manager.php?action=login&username=" + InputUsername.text + "&password=" + InputPassword.text;
-        WWW www = new WWW(url);
-        yield return www;
-        if (www.error != null)
-        {
-            Toast.Instance.Show("Error:" + www.error);
-            yield break;
-        }
-        if (www.text == "E")
-        {
-            Toast.Instance.Show("Username Or Password Error");
-            yield break;
-        }
-        //登陆成功
-        SceneManager.LoadScene(int.Parse(www.text) < 10 ? "UserManage" : "BaseUnity");
-        */
     }
 }
