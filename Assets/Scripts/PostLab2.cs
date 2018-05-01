@@ -4,7 +4,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class PostLab1 : MonoBehaviour {
+public class PostLab2 : MonoBehaviour
+{
 
     public Button button;
     public Text text;
@@ -24,10 +25,11 @@ public class PostLab1 : MonoBehaviour {
     public GameObject inputfield1101;
     public GameObject inputfield1110;
     public GameObject inputfield1111;
-    int postLabGrade = 10;
     DataInsert dataInsert;
+    int postlabtwograde = 10;
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         GameObject dbConn = new GameObject("dbConn");
         dataInsert = dbConn.AddComponent<DataInsert>();
         inputfield0000 = GameObject.Find("InputField (0000)");
@@ -52,11 +54,12 @@ public class PostLab1 : MonoBehaviour {
         btn.onClick.AddListener(TaskOnClick);
 
     }
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
 
     void TaskOnClick()
     {
@@ -90,22 +93,22 @@ public class PostLab1 : MonoBehaviour {
             field0011.text == "1" &&
             field0100.text == "0" &&
             field0101.text == "1" &&
-            field0110.text == "0" &&
+            field0110.text == "1" &&
             field0111.text == "1" &&
             field1000.text == "0" &&
-            field1001.text == "1" &&
+            field1001.text == "0" &&
             field1010.text == "0" &&
-            field1011.text == "1" &&
+            field1011.text == "0" &&
             field1100.text == "0" &&
-            field1101.text == "1" &&
-            field1110.text == "0" &&
-            field1111.text == "1")
+            field1101.text == "0" &&
+            field1110.text == "1" &&
+            field1111.text == "0")
         {
-            DataInsert.inputLab1Grade += postLabGrade;
-            dataInsert.InsertStudentGrade(DataInsert.inputStudent, DataInsert.inputPassword, DataInsert.inputLab1Grade, DataInsert.inputLab2Grade);
             message.text = "";
             function.text = "That's Right!\t" +
-                "The reduced function can be now be found, which in this case is: F = D";
+                "The minimal product of sums can be now be found, which in this case is: F = (B+C’+D)(A’+D’)(C+D)";
+            DataInsert.inputLab2Grade = postlabtwograde;
+            dataInsert.InsertStudentGrade(DataInsert.inputStudent, DataInsert.inputPassword, DataInsert.inputLab1Grade, DataInsert.inputLab2Grade);
             StartCoroutine(TransitionToStudentSubsystem());
         }
         else
@@ -113,9 +116,9 @@ public class PostLab1 : MonoBehaviour {
             message.text = "That's wrong. " +
                 "Try again.";
             function.text = "";
-            if(postLabGrade > 0)
+            if(postlabtwograde > 0)
             {
-                postLabGrade--;
+                postlabtwograde--;
             }
         }
 
