@@ -15,5 +15,3 @@ Password: student
 To login to the Admin Subsystem, enter the following values-  
 Username: admin  
 Password: admin
-
-Please read the README.txt for additional information.
